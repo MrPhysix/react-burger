@@ -1,0 +1,30 @@
+.burger-constructor {
+    height: 100%;
+}
+
+.burger-constructor__ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 80%;
+}
+
+.ul__scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.burger-constructor__info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.info__price {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+

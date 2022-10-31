@@ -1,0 +1,19 @@
+.ingredient-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ingredient-card__image {
+
+}
+
+.ingredient-card__price {
+    display: flex;
+    gap: 8px;
+}
+
+.ingredient-card__name {
+    height: 48px;
+    text-align: center;
+}
