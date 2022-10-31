@@ -1,19 +1,16 @@
-.ingredient-card {
+.card {
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 }
 
-.ingredient-card__image {
-
-}
-
-.ingredient-card__price {
+.price {
     display: flex;
     gap: 8px;
 }
 
-.ingredient-card__name {
+.name {
     height: 48px;
     text-align: center;
 }
