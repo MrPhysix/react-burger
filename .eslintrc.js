@@ -29,6 +29,5 @@ module.exports = {
     'class-methods-use-this': ['off'],
     'import/extensions': 0,
     'import/no-unresolved': 0,
-
   },
 };

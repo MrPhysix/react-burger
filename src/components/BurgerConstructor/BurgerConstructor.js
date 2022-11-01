@@ -1,29 +1,32 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 //
 import {
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
-import './BurgerConstructor.css';
+import style from './burger-constructor.module.css';
 import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstructorElement';
+import { INGREDIENT_TYPES } from '../../utils/const';
+import dataObjectPropTypes from '../../utils/propTypes';
 
 function BurgerConstructor({ data }) {
+  const bun = data.filter((item) => item.type === INGREDIENT_TYPES.BUN[0]);
+  const ingredients = data.filter((item) => item.type !== INGREDIENT_TYPES.BUN[0]);
   const getTotalPrice = () => data.reduce((total, curr) => total + curr.price, 0);
-  const bun = data.filter((item) => item.type === 'bun');
-  const ingredients = data.filter((item) => item.type !== 'bun');
 
   return (
-    <section className="burger-constructor pt-25 pl-4">
-      <ul className="burger-constructor__ul">
+    <section className={`${style.element} pt-25 pl-4`}>
+      <ul className={style.ul}>
         <BurgerConstructorElement data={bun[0]} position="top" />
         {/* не очень понял как тут реализовать нужно было верстку */}
         {/* уверен что можно делать в одном скролле с фиксом позиции (но я не знаю) */}
-        <ul className="ul__scroll scroll">
+        <ul className={`${style.scroll} scroll`}>
           {
             ingredients.map((item) => (
               <BurgerConstructorElement
-                key={item.name}
+                key={item._id}
                 data={item}
               />
             ))
@@ -31,8 +34,8 @@ function BurgerConstructor({ data }) {
         </ul>
         <BurgerConstructorElement data={bun[1]} position="bottom" />
       </ul>
-      <div className="burger-constructor__info mt-10" style={{ display: 'flex' }}>
-        <div className="info__price mr-10">
+      <div className={`${style.info} mt-10`} style={{ display: 'flex' }}>
+        <div className={`${style.price} mr-10`}>
           <p className="text text_type_digits-medium">{getTotalPrice()}</p>
           <CurrencyIcon type="primary" />
         </div>
@@ -43,5 +46,9 @@ function BurgerConstructor({ data }) {
     </section>
   );
 }
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(dataObjectPropTypes).isRequired,
+};
 
 export default BurgerConstructor;

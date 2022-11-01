@@ -10,11 +10,12 @@ function App() {
   const [data, setData] = useState(importData);
   useEffect(() => {
     setData(importData);
-  }, [data]);
+  }, []);
+
   return (
     <>
       <Header />
-      <Main data={importData} />
+      <Main data={data} />
     </>
   );
 }

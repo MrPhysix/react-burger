@@ -1,20 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 //
 import {
   DragIcon,
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
+import style from './burger-constructor-element.module.css';
+import dataObjectPropTypes from '../../../utils/propTypes';
 
 function BurgerConstructorElement({ data, position }) {
-  const style = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  };
-
   return (
-    <li className={`burger-constructor-element ${position && 'pl-8'} mr-4`} style={style}>
+    <li className={`${style.element} ${position && 'pl-8'} mr-4 no-select`}>
       {!position && <DragIcon type="primary" />}
       <ConstructorElement
         type={position}
@@ -26,5 +23,14 @@ function BurgerConstructorElement({ data, position }) {
     </li>
   );
 }
+
+BurgerConstructorElement.propTypes = {
+  data: PropTypes.objectOf(dataObjectPropTypes).isRequired,
+  position: PropTypes.string,
+};
+
+BurgerConstructorElement.defaultProps = {
+  position: null,
+};
 
 export default BurgerConstructorElement;

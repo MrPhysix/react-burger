@@ -1,5 +1,6 @@
 import React from 'react';
-import './HeaderLink.css';
+import PropTypes from 'prop-types';
+import style from './header-link.module.css';
 
 function HeaderLink({
   link, children, text, selected,
@@ -10,7 +11,7 @@ function HeaderLink({
 
   return (
     <button
-      className="header__link text text_type_main-small pl-5 pr-5 pt-4 pb-4 mt-4 mb-4"
+      className={`${style.link} text text_type_main-small pl-5 pr-5 pt-4 pb-4 mt-4 mb-4 no-select`}
       onClick={handleClick}
       type="button"
       style={{ cursor: 'pointer' }}
@@ -20,5 +21,16 @@ function HeaderLink({
     </button>
   );
 }
+
+HeaderLink.propTypes = {
+  link: PropTypes.string.isRequired,
+  children: PropTypes.element.isRequired,
+  text: PropTypes.string.isRequired,
+  selected: PropTypes.string,
+};
+
+HeaderLink.defaultProps = {
+  selected: false,
+};
 
 export default HeaderLink;

@@ -1,30 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 //
 import IngredientCard from '../IngredientCard/IngredientCard';
-import './IngredientsList.css';
+import style from './ingredients-list.module.css';
+import dataObjectPropTypes from '../../../utils/propTypes';
 
-function IngredientsList({ ingredients }) {
-  const getTypeName = () => {
-    switch (ingredients[0].type) {
-      case 'bun':
-        return 'Булки';
-      case 'sauce':
-        return 'Соусы';
-      case 'main':
-        return 'Основные';
-      default:
-        return 'Основные';
-    }
-  };
-
+function IngredientsList({ ingredients, name }) {
   return (
     <section className="ingredients-list">
-      <h3 className="ingredients-list__title text text_type_main-medium">{getTypeName()}</h3>
-      <ul className="ingredients-list__ul pt-6 pl-4 pr-4">
+      <h3 className="ingredients-list__title text text_type_main-medium">{name}</h3>
+      <ul className={`${style.ul} pt-6 pl-4 pr-4`}>
         {
         ingredients.map((item) => (
           <IngredientCard
-            key={item.name}
+            key={item._id}
             name={item.name}
             img={item.image}
             price={item.price}
@@ -35,5 +24,10 @@ function IngredientsList({ ingredients }) {
     </section>
   );
 }
+
+IngredientsList.propTypes = {
+  ingredients: PropTypes.objectOf(dataObjectPropTypes).isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default IngredientsList;
