@@ -1,12 +1,7 @@
-export default function getInitialIngredients(url) {
-  const _checkResult = (res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(new Error(`Ошибка: ${res.status}`));
-  };
+import checkResult from './checkResult';
 
+export default function getInitialIngredients(url) {
   return fetch(url)
-    .then((res) => _checkResult(res))
+    .then((res) => checkResult(res))
     .then((res) => res.data);
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ingredientPropTypes from '../../../utils/propTypes';
 import style from './ingredient-details.module.css';
-import Modal from '../Modal';
 //
 
 function NutritionValue({ children, value }) {
@@ -14,18 +13,18 @@ function NutritionValue({ children, value }) {
   );
 }
 
-function IngredientDetails({ data, isOpen, handleClose }) {
+function IngredientDetails({ ingredient }) {
   return (
-    <Modal title="Детали ингредиента" isOpen={isOpen} handleClose={handleClose}>
-      <img src={data.image_large} className="ml-4 mr-4" alt={data.name} />
-      <p className="text text_type_main-medium mt-4 mb-8">{data.name}</p>
+    <>
+      <img src={ingredient.image_large} className="ml-4 mr-4" alt={ingredient.name} />
+      <p className="text text_type_main-medium mt-4 mb-8">{ingredient.name}</p>
       <ul className={style.ul}>
-        <NutritionValue value={data.calories}>Калории,ккал</NutritionValue>
-        <NutritionValue value={data.proteins}>Белки, г</NutritionValue>
-        <NutritionValue value={data.fat}>Жиры, г</NutritionValue>
-        <NutritionValue value={data.carbohydrates}>Углеводы, г</NutritionValue>
+        <NutritionValue value={ingredient.calories}>Калории,ккал</NutritionValue>
+        <NutritionValue value={ingredient.proteins}>Белки, г</NutritionValue>
+        <NutritionValue value={ingredient.fat}>Жиры, г</NutritionValue>
+        <NutritionValue value={ingredient.carbohydrates}>Углеводы, г</NutritionValue>
       </ul>
-    </Modal>
+    </>
   );
 }
 
@@ -35,9 +34,7 @@ NutritionValue.propTypes = {
 };
 
 IngredientDetails.propTypes = {
-  data: ingredientPropTypes.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  ingredient: ingredientPropTypes.isRequired,
 };
 
 export default IngredientDetails;

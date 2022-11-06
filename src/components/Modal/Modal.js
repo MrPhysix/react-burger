@@ -7,26 +7,24 @@ import ModalOverlay from './ModalOverlay/ModalOverlay';
 const root = document.getElementById('modal');
 
 function Modal({
-  children, title, isOpen, handleClose,
+  children, title, handleClose,
 }) {
   // handlers
   const handleCloseByKey = (evt) => (evt.key === 'Escape') && handleClose() && evt.target.blur();
 
   // effects
   useEffect(() => {
-    if (!isOpen) return undefined;
     document.addEventListener('keydown', handleCloseByKey);
+    document.body.style.overflow = 'hidden';// scroll stop
 
-    return () => document.removeEventListener('keydown', handleCloseByKey);
-  }, [isOpen]);
-
-  useEffect(() => { // scroll stop
-    if (isOpen) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = 'unset';
-  }, [isOpen]);
+    return () => {
+      document.removeEventListener('keydown', handleCloseByKey);
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   const jsx = (
-    <ModalOverlay handleClose={handleClose} isOpen={isOpen}>
+    <>
       <div className={style.modal}>
         <div className={style.top}>
           <h2 className="text text_type_main-large">{title}</h2>
@@ -34,10 +32,11 @@ function Modal({
         </div>
         {children}
       </div>
-    </ModalOverlay>
+      <ModalOverlay handleClose={handleClose} />
+    </>
   );
 
-  return isOpen ? createPortal(jsx, root) : null;
+  return createPortal(jsx, root);
 }
 
 Modal.propTypes = {
@@ -46,7 +45,6 @@ Modal.propTypes = {
     PropTypes.node,
   ]).isRequired,
   title: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 

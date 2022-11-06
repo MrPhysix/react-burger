@@ -1,3 +1,7 @@
+const BASE_URL = 'https://norma.nomoreparties.space/api';
+
+export const API_INGREDIENTS_URL = `${BASE_URL}/ingredients`;
+
 export const INGREDIENT_TYPES = {
   BUN: {
     TYPE: 'bun',
@@ -12,5 +16,3 @@ export const INGREDIENT_TYPES = {
     NAME: 'Соусы',
   },
 };
-
-export const API_INGREDIENTS_URL = 'https://norma.nomoreparties.space/api/ingredients';

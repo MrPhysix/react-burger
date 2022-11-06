@@ -7,20 +7,24 @@ import {
 import style from './ingredient-card.module.css';
 import ingredientPropTypes from '../../../utils/propTypes';
 import IngredientDetails from '../../Modal/IngredientDetails/IngredientDetails';
+import Modal from '../../Modal/Modal';
 
 function IngredientCard({ item }) {
   const [isOpen, setIsOpen] = useState(false);
 
   // handlers
-  const handleClose = () => {
-    setIsOpen(() => false);
-  };
+  const handleClose = () => setIsOpen(false);
+  const handleOpen = () => setIsOpen(true);
 
   return (
     <>
       { item && isOpen
-        && <IngredientDetails data={item} isOpen={isOpen} handleClose={handleClose} />}
-      <section role="presentation" className={style.card} onClick={() => setIsOpen(true)}>
+        && (
+        <Modal handleClose={handleClose}>
+          <IngredientDetails ingredient={item} />
+        </Modal>
+        )}
+      <section role="presentation" className={style.card} onClick={handleOpen}>
         <img className="ml-4 mr-4" src={item.image} alt={item.name} />
         <div className={`${style.price} text text_type_digits-default mt-1 mb-1`}>
           {item.price}

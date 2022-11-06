@@ -7,18 +7,17 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 //
 import ingredientPropTypes from '../../utils/propTypes';
 
-function Main({ data, states }) {
+function Main({ ingredients }) {
   return (
     <main className={style.main}>
-      <BurgerIngredients data={data} />
-      <BurgerConstructor data={data} handleOrderModal={states.handleOrderModal} />
+      <BurgerIngredients ingredients={ingredients} />
+      <BurgerConstructor ingredients={ingredients} />
     </main>
   );
 }
 
 Main.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
-  states: PropTypes.shape({}).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
 };
 
 export default Main;

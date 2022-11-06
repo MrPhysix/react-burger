@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 //
 import {
   Tab,
@@ -10,18 +10,27 @@ import style from './burger-ingredients.module.css';
 import { INGREDIENT_TYPES } from '../../utils/const';
 import ingredientPropTypes from '../../utils/propTypes';
 
-function BurgerIngredients({ data }) {
+function BurgerIngredients({ ingredients }) {
   //
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN[0]);
   //
-  const bun = data.filter((item) => item.type === INGREDIENT_TYPES.BUN.TYPE);
-  const main = data.filter((item) => item.type === INGREDIENT_TYPES.MAIN.TYPE);
-  const sauce = data.filter((item) => item.type === INGREDIENT_TYPES.SAUCE.TYPE);
+  const bun = useMemo(
+    () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
+    [ingredients],
+  );
+  const main = useMemo(
+    () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.MAIN.TYPE),
+    [ingredients],
+  );
+  const sauce = useMemo(
+    () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.SAUCE.TYPE),
+    [ingredients],
+  );
 
   return (
     <section className={`${style.ingredients} pt-10`}>
-      <h2 className="burger-ingredients__title text text text_type_main-large mb-5">Соберите бургер</h2>
-      <ul className="burger-ingredients__tabs" style={{ display: 'flex' }}>
+      <h2 className="text text text_type_main-large mb-5">Соберите бургер</h2>
+      <ul className={style.flex}>
         <Tab value="bun" active={current === INGREDIENT_TYPES.BUN.TYPE} onClick={setCurrent}>
           {INGREDIENT_TYPES.BUN.NAME}
         </Tab>
@@ -42,7 +51,7 @@ function BurgerIngredients({ data }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
 };
 
 export default BurgerIngredients;
