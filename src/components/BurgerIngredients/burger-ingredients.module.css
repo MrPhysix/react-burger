@@ -1,0 +1,12 @@
+.ingredients {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ul {
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
