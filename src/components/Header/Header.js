@@ -14,7 +14,7 @@ function Header() {
   return (
     <header className={style.header}>
       <nav className={style.nav}>
-        <HeaderLink link="#" text="Конст руктор" selected><BurgerIcon type="primary" /></HeaderLink>
+        <HeaderLink link="#" text="Конструктор" selected><BurgerIcon type="primary" /></HeaderLink>
         <HeaderLink link="#" text="Лента заказов"><ListIcon type="secondary" /></HeaderLink>
       </nav>
       <Logo />

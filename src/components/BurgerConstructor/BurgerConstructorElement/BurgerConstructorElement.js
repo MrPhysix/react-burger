@@ -7,7 +7,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
 import style from './burger-constructor-element.module.css';
-import dataObjectPropTypes from '../../../utils/propTypes';
+import ingredientPropTypes from '../../../utils/propTypes';
 
 function BurgerConstructorElement({ data, position }) {
   return (
@@ -25,7 +25,7 @@ function BurgerConstructorElement({ data, position }) {
 }
 
 BurgerConstructorElement.propTypes = {
-  data: PropTypes.objectOf(dataObjectPropTypes).isRequired,
+  data: ingredientPropTypes.isRequired,
   position: PropTypes.string,
 };
 

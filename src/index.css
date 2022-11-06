@@ -1,6 +1,12 @@
 @import url('./vendor/normalize.css');
 @import url('./vendor/scroll.css');
 @import url('./vendor/no-select.css');
+@import url('./vendor/visible.css');
+
+:root {
+  --modal-bg: #1C1C21;
+
+}
 
 body,
 body::after,
@@ -25,4 +31,10 @@ body::before {
   padding: 0 2vw;
 }
 
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
 

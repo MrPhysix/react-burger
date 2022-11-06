@@ -1,7 +1,16 @@
 export const INGREDIENT_TYPES = {
-  BUN: ['bun', 'Булки'],
-  MAIN: ['main', 'Основные'],
-  SAUCE: ['sauce', 'Соусы'],
+  BUN: {
+    TYPE: 'bun',
+    NAME: 'Булки',
+  },
+  MAIN: {
+    TYPE: 'main',
+    NAME: 'Основные',
+  },
+  SAUCE: {
+    TYPE: 'sauce',
+    NAME: 'Соусы',
+  },
 };
 
-export const a = 0;
+export const API_INGREDIENTS_URL = 'https://norma.nomoreparties.space/api/ingredients';

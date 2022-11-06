@@ -14,7 +14,6 @@ function HeaderLink({
       className={`${style.link} text text_type_main-small pl-5 pr-5 pt-4 pb-4 mt-4 mb-4 no-select`}
       onClick={handleClick}
       type="button"
-      style={{ cursor: 'pointer' }}
     >
       {children }
       <span className={`${!selected && 'text_color_inactive'} ml-2`}>{text}</span>
@@ -26,7 +25,7 @@ HeaderLink.propTypes = {
   link: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
   text: PropTypes.string.isRequired,
-  selected: PropTypes.string,
+  selected: PropTypes.bool,
 };
 
 HeaderLink.defaultProps = {

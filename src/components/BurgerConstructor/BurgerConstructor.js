@@ -9,19 +9,20 @@ import {
 import style from './burger-constructor.module.css';
 import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstructorElement';
 import { INGREDIENT_TYPES } from '../../utils/const';
-import dataObjectPropTypes from '../../utils/propTypes';
+import ingredientPropTypes from '../../utils/propTypes';
 
-function BurgerConstructor({ data }) {
-  const bun = data.filter((item) => item.type === INGREDIENT_TYPES.BUN[0]);
-  const ingredients = data.filter((item) => item.type !== INGREDIENT_TYPES.BUN[0]);
+function BurgerConstructor({ data, handleOrderModal }) {
+  // consts
+  const bun = data.filter((item) => item.type === INGREDIENT_TYPES.BUN.TYPE);
+  const ingredients = data.filter((item) => item.type !== INGREDIENT_TYPES.BUN.TYPE);
   const getTotalPrice = () => data.reduce((total, curr) => total + curr.price, 0);
+
+  // states
 
   return (
     <section className={`${style.element} pt-25 pl-4`}>
       <ul className={style.ul}>
         <BurgerConstructorElement data={bun[0]} position="top" />
-        {/* не очень понял как тут реализовать нужно было верстку */}
-        {/* уверен что можно делать в одном скролле с фиксом позиции (но я не знаю) */}
         <ul className={`${style.scroll} scroll`}>
           {
             ingredients.map((item) => (
@@ -34,12 +35,12 @@ function BurgerConstructor({ data }) {
         </ul>
         <BurgerConstructorElement data={bun[1]} position="bottom" />
       </ul>
-      <div className={`${style.info} mt-10`} style={{ display: 'flex' }}>
+      <div className={`${style.info} mt-10`}>
         <div className={`${style.price} mr-10`}>
           <p className="text text_type_digits-medium">{getTotalPrice()}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large" htmlType="button">
+        <Button type="primary" size="large" htmlType="button" onClick={() => handleOrderModal.open()}>
           Оформить заказ
         </Button>
       </div>
@@ -48,7 +49,11 @@ function BurgerConstructor({ data }) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataObjectPropTypes).isRequired,
+  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  handleOrderModal: PropTypes.shape({
+    close: PropTypes.func.isRequired,
+    open: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default BurgerConstructor;
