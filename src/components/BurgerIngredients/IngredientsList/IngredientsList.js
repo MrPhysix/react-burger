@@ -13,7 +13,7 @@ function IngredientsList({ ingredients, name }) {
         {
         ingredients.map((item) => (
           <IngredientCard
-            key={item._key}
+            key={item._id}
             item={item}
           />
         ))
