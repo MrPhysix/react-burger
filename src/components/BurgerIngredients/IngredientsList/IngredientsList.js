@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 //
 import IngredientCard from '../IngredientCard/IngredientCard';
 import style from './ingredients-list.module.css';
-import ingredientPropTypes from '../../../utils/propTypes';
+import { ingredientPropTypes } from '../../../utils/propTypes';
 
 function IngredientsList({ ingredients, name }) {
   return (
@@ -13,7 +13,7 @@ function IngredientsList({ ingredients, name }) {
         {
         ingredients.map((item) => (
           <IngredientCard
-            key={item._id}
+            key={item._key}
             item={item}
           />
         ))
