@@ -9,7 +9,7 @@ import Main from '../Main/Main';
 import getInitialIngredients from '../../utils/api/indredients';
 import Modal from '../Modal/Modal';
 import ErrorModal from '../Modal/ErrorModal/ErrorModal';
-import { IngredientsContext, ConstructorContext } from '../../utils/context';
+import { IngredientsContext, ConstructorContext, LoadingContext } from '../../utils/context';
 //
 
 function App() {
@@ -54,15 +54,22 @@ function App() {
     [selectedIngredients, setSelectedIngredients],
   );
 
+  const loadingContextValue = useMemo(
+    () => ({ isLoading, setIsLoading }),
+    [isLoading, setIsLoading],
+  );
+
   return (
-    <IngredientsContext.Provider value={ingredientsContextValue}>
-      <ConstructorContext.Provider value={constructorContextValue}>
-        <Header />
-        { isLoading
-          ? <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />
-          : ingredients.length > 0 && <Main />}
-      </ConstructorContext.Provider>
-    </IngredientsContext.Provider>
+    <LoadingContext.Provider value={loadingContextValue}>
+      <IngredientsContext.Provider value={ingredientsContextValue}>
+        <ConstructorContext.Provider value={constructorContextValue}>
+          <Header />
+          { isLoading
+            ? <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />
+            : ingredients.length > 0 && <Main />}
+        </ConstructorContext.Provider>
+      </IngredientsContext.Provider>
+    </LoadingContext.Provider>
   );
 }
 

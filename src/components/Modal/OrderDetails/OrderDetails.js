@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { CirclesWithBar } from 'react-loader-spinner';
 import style from './order-details.module.css';
 import DoneImage from '../../../images/done.svg';
 import { orderPropTypes } from '../../../utils/propTypes';
@@ -7,7 +7,7 @@ import { orderPropTypes } from '../../../utils/propTypes';
 function OrderDetails({ order }) {
   console.log(order);
 
-  if (!order || order.success !== true) return null;
+  if (!order || order.success !== true) return <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />;
 
   return (
     <>
@@ -20,8 +20,8 @@ function OrderDetails({ order }) {
   );
 }
 
-OrderDetails.propTypes = PropTypes.shape({
+OrderDetails.propTypes = {
   order: orderPropTypes.isRequired,
-});
+};
 
 export default OrderDetails;

@@ -12,13 +12,14 @@ import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstruct
 import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../Modal/OrderDetails/OrderDetails';
-
-import { ConstructorContext } from '../../utils/context';
+import { ConstructorContext, LoadingContext } from '../../utils/context';
 import getOrderDetails from '../../utils/api/order';
 
 function BurgerConstructor() {
   // consts
   const { selectedIngredients } = useContext(ConstructorContext);
+  const { setIsLoading } = useContext(LoadingContext);
+  //
   const [order, setOrder] = useState({});
 
   const bun = useMemo(
@@ -46,9 +47,16 @@ function BurgerConstructor() {
   // handlers
   const handleOrderModal = {
     open: () => {
-      setOrderIsOpen(true);
+      // setIsLoading(true); не получается лоадер сделать так((
       const ids = selectedIngredients.map((i) => i._id);
-      getOrderDetails(ids).then((res) => setOrder(res));
+      getOrderDetails(ids)
+        .then((res) => {
+          setOrder(res);
+          setIsLoading(false);
+        })
+        .then(() => setOrderIsOpen(true))
+        .then(() => orderIsOpen && setOrder({})); // желательно очищать конструктор
+      // после успешного получения номера заказа с сервера в блоке then
     },
     close: () => setOrderIsOpen(false),
   };
@@ -58,12 +66,12 @@ function BurgerConstructor() {
   return (
     <>
       {
-        orderIsOpen
-        && (
-        <Modal handleClose={() => handleOrderModal.close()}>
-          <OrderDetails order={order} />
-        </Modal>
-        )
+      orderIsOpen
+         && (
+           <Modal handleClose={() => handleOrderModal.close()}>
+             <OrderDetails order={order} />
+           </Modal>
+         )
       }
       <section className={`${style.element} pt-25 pl-4`}>
         <ul className={style.ul}>

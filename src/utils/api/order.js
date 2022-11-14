@@ -11,5 +11,6 @@ export default function getOrderDetails(ingredients) {
     body: JSON.stringify({ ingredients }),
   })
     .then((res) => checkResult(res))
-    .then((res) => res);
+    .then((res) => res)
+    .catch((err) => console.log(err));
 }
