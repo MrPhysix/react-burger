@@ -1,28 +1,34 @@
-import React, { useContext } from 'react';
+import React from 'react';
 //
 import {
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-//
 import { v4 as uuidv4 } from 'uuid';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+import { addConstructorIngredient, getConstructorIngredients } from '../../../store/reducers/constructorIngredientsSlice';
+//
 import style from './ingredient-card.module.css';
 import { ingredientPropTypes } from '../../../utils/propTypes';
-import { ConstructorContext } from '../../../utils/context';
 import { INGREDIENT_TYPES } from '../../../utils/const';
 
 function IngredientCard({ item, onClick }) {
-  const { selectedIngredients, setSelectedIngredients } = useContext(ConstructorContext);
+  const dispatch = useDispatch();
+  const { constructorIngredients } = useSelector((state) => state.constructorIngredients);
+  // const { selectedIngredients, setSelectedIngredients } = useContext(ConstructorContext);
   // handlers
   const addIngredientToConstructor = () => {
     const isBun = item.type === INGREDIENT_TYPES.BUN.TYPE;
     if (isBun) {
-      const updatedIngredients = selectedIngredients.filter((i) => i.type !== item.type);
-      setSelectedIngredients(updatedIngredients);
+      const updatedIngredients = constructorIngredients.filter((i) => i.type !== item.type);
+      // setSelectedIngredients(updatedIngredients);
+      dispatch(getConstructorIngredients(updatedIngredients));
     }
 
     const generatedId = uuidv4();
 
-    return setSelectedIngredients((prev) => [...prev, { ...item, _key: generatedId }]);
+    // return setSelectedIngredients((prev) => [...prev, { ...item, _key: generatedId }]);
+    return dispatch(addConstructorIngredient({ ...item, _key: generatedId }));
   };
 
   const handleOpen = () => {

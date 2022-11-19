@@ -1,24 +1,29 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 //
 import {
   DragIcon,
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+// import { ConstructorContext } from '../../../utils/context';
 //
 import style from './burger-constructor-element.module.css';
 import { ingredientPropTypes } from '../../../utils/propTypes';
-import { ConstructorContext } from '../../../utils/context';
+import { getConstructorIngredients } from '../../../store/reducers/constructorIngredientsSlice';
 
 function BurgerConstructorElement({ data, position }) {
   // const
-  const { selectedIngredients, setSelectedIngredients } = useContext(ConstructorContext);
+  // const { selectedIngredients, setSelectedIngredients } = useContext(ConstructorContext);
+  const dispatch = useDispatch();
+  const { constructorIngredients } = useSelector((state) => state.constructorIngredients);
   const bunPosText = position && position === 'bottom' ? '(низ)' : position && '(вверх)';
 
   // handlers
   const handleRemoveFromConstructor = () => {
-    const updatedIngredients = selectedIngredients.filter((item) => item !== data);
-    setSelectedIngredients(updatedIngredients);
+    const updatedIngredients = constructorIngredients.filter((item) => item !== data);
+    dispatch(getConstructorIngredients(updatedIngredients));
   };
 
   return (

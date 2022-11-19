@@ -1,5 +1,5 @@
 import React, {
-  useState, useMemo, useContext,
+  useMemo, useContext,
 } from 'react';
 //
 import {
@@ -7,66 +7,88 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
+import { useDispatch, useSelector } from 'react-redux';
 import style from './burger-constructor.module.css';
 import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstructorElement';
 import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../Modal/OrderDetails/OrderDetails';
-import { ConstructorContext, LoadingContext } from '../../utils/context';
+import { LoadingContext } from '../../utils/context';
 import getOrderDetails from '../../utils/api/order';
+import { setOrder, resetOrder, openOrder } from '../../store/reducers/order';
 
 function BurgerConstructor() {
   // consts
-  const { selectedIngredients } = useContext(ConstructorContext);
+  const store = useSelector((state) => state);
+  const dispatch = useDispatch();
+  console.log('store', store);
+  // const { selectedIngredients } = useContext(ConstructorContext);
+  const { constructorIngredients } = useSelector((state) => state.constructorIngredients);
+  const { order } = useSelector((state) => state);
   const { setIsLoading } = useContext(LoadingContext);
   //
-  const [order, setOrder] = useState({});
+  // const [order, setOrder] = useState({});
 
   const bun = useMemo(
-    () => selectedIngredients.length > 0
-      && selectedIngredients.find((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
-    [selectedIngredients],
+    () => constructorIngredients.length > 0
+      && constructorIngredients.find((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
+    [constructorIngredients],
   );
 
   const noBunIngredients = useMemo(
-    () => selectedIngredients.filter((item) => item.type !== INGREDIENT_TYPES.BUN.TYPE),
-    [selectedIngredients],
+    () => constructorIngredients.filter((item) => item.type !== INGREDIENT_TYPES.BUN.TYPE),
+    [constructorIngredients],
   );
 
   const totalPrice = useMemo(
-    () => selectedIngredients.reduce((total, curr) => {
+    () => constructorIngredients.reduce((total, curr) => {
       if (curr.type === INGREDIENT_TYPES.BUN.TYPE) return total + curr.price * 2;
       return total + curr.price;
     }, 0),
-    [selectedIngredients],
+    [constructorIngredients],
   );
 
   // states
-  const [orderIsOpen, setOrderIsOpen] = useState(false);
+
+  // const [orderIsOpen, setOrderIsOpen] = useState(false);
 
   // handlers
+
+  // const handleOrderModal = {
+  //   open: () => {
+  //     // setIsLoading(true); не получается лоадер сделать так((
+  //     const ids = constructorIngredients.map((i) => i._id);
+  //     getOrderDetails(ids)
+  //       .then((res) => {
+  //         setOrder(res);
+  //         setIsLoading(false);
+  //       })
+  //       .then(() => setOrderIsOpen(true))
+  //       .then(() => orderIsOpen && setOrder({})); // желательно очищать конструктор
+  //     // после успешного получения номера заказа с сервера в блоке then
+  //   },
+  //   close: () => setOrderIsOpen(false),
+  // };
+
   const handleOrderModal = {
     open: () => {
-      // setIsLoading(true); не получается лоадер сделать так((
-      const ids = selectedIngredients.map((i) => i._id);
+      const ids = constructorIngredients.map((i) => i._id);
       getOrderDetails(ids)
         .then((res) => {
-          setOrder(res);
+          dispatch(setOrder(res));
           setIsLoading(false);
         })
-        .then(() => setOrderIsOpen(true))
-        .then(() => orderIsOpen && setOrder({})); // желательно очищать конструктор
-      // после успешного получения номера заказа с сервера в блоке then
+        .then(() => dispatch(openOrder()));
     },
-    close: () => setOrderIsOpen(false),
+    close: () => dispatch(resetOrder()),
   };
 
-  if (!selectedIngredients || selectedIngredients.length === 0) return <p className={`${style.noIngredient} text text_type_main-large`}>Ингредиенты не выбраны</p>;
+  if (!constructorIngredients || constructorIngredients.length === 0) return <p className={`${style.noIngredient} text text_type_main-large`}>Ингредиенты не выбраны</p>;
 
   return (
     <>
       {
-      orderIsOpen
+      order.isOpen
          && (
            <Modal handleClose={() => handleOrderModal.close()}>
              <OrderDetails order={order} />

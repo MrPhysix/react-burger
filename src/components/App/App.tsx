@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { CirclesWithBar } from 'react-loader-spinner';
 //
+import { useDispatch } from 'react-redux';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 //
@@ -10,9 +11,11 @@ import getInitialIngredients from '../../utils/api/indredients';
 import Modal from '../Modal/Modal';
 import ErrorModal from '../Modal/ErrorModal/ErrorModal';
 import { IngredientsContext, ConstructorContext, LoadingContext } from '../../utils/context';
+import { getIngredients } from '../../store/reducers/ingredientsSlice';
 //
 
 function App() {
+  const dispatch = useDispatch();
   // states
   const [isLoading, setIsLoading] = useState(false);
   const [ingredients, setIngredients] = useState([]);
@@ -26,6 +29,7 @@ function App() {
       getInitialIngredients()
         .then((res) => {
           setIngredients(res);
+          dispatch(getIngredients(res));
         })
         .catch((err) => setError(err))
         .finally(() => setIsLoading(false));

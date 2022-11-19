@@ -29,5 +29,11 @@ module.exports = {
     'class-methods-use-this': ['off'],
     'import/extensions': 0,
     'import/no-unresolved': 0,
+    'no-param-reassign': ['error', {
+      props: true,
+      ignorePropertyModificationsFor: [
+        'state',
+      ],
+    }],
   },
 };
