@@ -1,5 +1,5 @@
 import React, {
-  useState, useMemo, useEffect,
+  useState, useMemo, useEffect, useRef,
 } from 'react';
 //
 import {
@@ -23,10 +23,13 @@ function BurgerIngredients() {
   //
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
-  const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN[0]);
+  const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN.TYPE);
   // const [modal, setModal] = useState({ isOpen: false, item: null });
   const { ingredientDetails } = useSelector((state) => state);
-  console.log('ingredientDetails', ingredientDetails);
+  // refs
+  const [
+    scrollRef, bunRef, mainRef, sauceRef,
+  ] = [useRef(), useRef(), useRef(), useRef()];
   //
   const bun = useMemo(
     () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
@@ -45,28 +48,43 @@ function BurgerIngredients() {
   // handlers
   const handleDetailsModal = (item) => {
     // setModal({ item, isOpen: true });
-    console.log('item', item);
     dispatch(setIngredientDetails(item));
     dispatch(openIngredientDetails());
   };
 
   useEffect(() => {
-    const scrollElement = document.getElementById('scroll-list');
-    const element = document.getElementById('1');
-    const element2 = document.getElementById('2');
-    const element3 = document.getElementById('3');
+    const scrollElement = scrollRef.current;
 
     const scrollListener = () => {
-      // console.log('scrollElement', scrollElement.getBoundingClientRect());
-      console.log('element', element.getBoundingClientRect().top === scrollElement.getBoundingClientRect().height - scrollElement.getBoundingClientRect().top);
-      console.log('element2', element2.getBoundingClientRect().top === scrollElement.getBoundingClientRect().height);
-      console.log('element3', element3.getBoundingClientRect().top === scrollElement.getBoundingClientRect().height);
+      setCurrent(() => {
+        const scrollElementTop = scrollRef.current.getBoundingClientRect().top;
+        const bunTab = Math.abs(scrollElementTop - bunRef.current.getBoundingClientRect().top);
+        const mainTab = Math.abs(scrollElementTop - mainRef.current.getBoundingClientRect().top);
+        const sauceTab = Math.abs(scrollElementTop - sauceRef.current.getBoundingClientRect().top);
+
+        setCurrent((state) => {
+          switch (Math.min(bunTab, mainTab, sauceTab)) {
+            case bunTab:
+              return INGREDIENT_TYPES.BUN.TYPE;
+            case mainTab:
+              return INGREDIENT_TYPES.MAIN.TYPE;
+            case sauceTab:
+              return INGREDIENT_TYPES.SAUCE.TYPE;
+
+            default: return state;
+          }
+        });
+      });
     };
+
     scrollElement.addEventListener('scroll', scrollListener);
+
     return () => {
       scrollElement.removeEventListener('scroll', scrollListener);
     };
   }, []);
+
+  const scrollToList = (ref) => ref.current.scrollIntoView();
 
   return (
     <>
@@ -78,31 +96,31 @@ function BurgerIngredients() {
       <section className={`${style.ingredients} pt-10`}>
         <h2 className="text text text_type_main-large mb-5">Соберите бургер</h2>
         <ul className={style.flex}>
-          <Tab value="bun" active={current === INGREDIENT_TYPES.BUN.TYPE} onClick={setCurrent}>
+          <Tab value="bun" active={current === INGREDIENT_TYPES.BUN.TYPE} onClick={() => scrollToList(bunRef) && setCurrent}>
             {INGREDIENT_TYPES.BUN.NAME}
           </Tab>
-          <Tab value="main" active={current === INGREDIENT_TYPES.MAIN.TYPE} onClick={setCurrent}>
+          <Tab value="main" active={current === INGREDIENT_TYPES.MAIN.TYPE} onClick={() => scrollToList(mainRef) && setCurrent}>
             {INGREDIENT_TYPES.MAIN.NAME}
           </Tab>
-          <Tab value="sauce" active={current === INGREDIENT_TYPES.SAUCE.TYPE} onClick={setCurrent}>
+          <Tab value="sauce" active={current === INGREDIENT_TYPES.SAUCE.TYPE} onClick={() => scrollToList(sauceRef) && setCurrent}>
             {INGREDIENT_TYPES.SAUCE.NAME}
           </Tab>
         </ul>
-        <ul className={`${style.ul} mt-10 scroll`} id="scroll-list">
+        <ul className={`${style.ul} mt-10 scroll`} ref={scrollRef} id="scroll-list">
           <IngredientsList
-            id="1"
+            ref={bunRef}
             ingredients={bun}
             name={INGREDIENT_TYPES.BUN.NAME}
             onIngredientClick={() => handleDetailsModal}
           />
           <IngredientsList
-            id="2"
+            ref={mainRef}
             ingredients={main}
             name={INGREDIENT_TYPES.MAIN.NAME}
             onIngredientClick={() => handleDetailsModal}
           />
           <IngredientsList
-            id="3"
+            ref={sauceRef}
             ingredients={sauce}
             name={INGREDIENT_TYPES.SAUCE.NAME}
             onIngredientClick={() => handleDetailsModal}

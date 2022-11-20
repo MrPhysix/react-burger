@@ -19,9 +19,7 @@ import { setOrder, resetOrder, openOrder } from '../../store/reducers/order';
 
 function BurgerConstructor() {
   // consts
-  const store = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.log('store', store);
   // const { selectedIngredients } = useContext(ConstructorContext);
   const { constructorIngredients } = useSelector((state) => state.constructorIngredients);
   const { order } = useSelector((state) => state);
