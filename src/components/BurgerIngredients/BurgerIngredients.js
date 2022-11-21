@@ -17,14 +17,13 @@ import {
   openIngredientDetails,
   resetIngredientDetails,
   setIngredientDetails,
-} from '../../store/reducers/ingredientDetails';
+} from '../../services/reducers/ingredientDetails';
 
 function BurgerIngredients() {
   //
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN.TYPE);
-  // const [modal, setModal] = useState({ isOpen: false, item: null });
   const { ingredientDetails } = useSelector((state) => state);
   // refs
   const [
@@ -47,7 +46,6 @@ function BurgerIngredients() {
 
   // handlers
   const handleDetailsModal = (item) => {
-    // setModal({ item, isOpen: true });
     dispatch(setIngredientDetails(item));
     dispatch(openIngredientDetails());
   };

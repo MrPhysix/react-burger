@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 import ErrorIcon from './ErrorIcon/ErrorIcon';
 import style from './error-modal.module.css';
+import Modal from '../Modal';
 
 function ErrorModal({ handleClose }) {
   return (
@@ -12,5 +14,9 @@ function ErrorModal({ handleClose }) {
     </div>
   );
 }
+
+Modal.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+};
 
 export default ErrorModal;

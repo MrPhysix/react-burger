@@ -18,11 +18,7 @@ const constructorIngredientsSlice = createSlice({
       const ingredients = [...state.constructorIngredients];
       ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);
 
-      console.log('state.constructorIngredients', state.constructorIngredients);
-      console.log('ingredients', ingredients);
-
       state.constructorIngredients = ingredients;
-      console.log('state.constructorIngredients2', state.constructorIngredients);
     },
   },
 });

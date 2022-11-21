@@ -7,16 +7,16 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-// import { ConstructorContext } from '../../../utils/context';
 //
 import { useDrag, useDrop } from 'react-dnd';
 import style from './burger-constructor-element.module.css';
 import { ingredientPropTypes } from '../../../utils/propTypes';
-import { getConstructorIngredients } from '../../../store/reducers/constructorIngredientsSlice';
+import { getConstructorIngredients } from '../../../services/reducers/constructorIngredientsSlice';
 
 function BurgerConstructorElement({
   data, position,
   moveIngredient, index,
+  id,
 }) {
   // const
   const dispatch = useDispatch();
@@ -26,16 +26,20 @@ function BurgerConstructorElement({
 
   const [{ isDragging }, drag] = useDrag({
     type: 'constructorIngredient',
-    item: () => ({ index }),
+    item: () => ({ id, index }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
   /* eslint no-param-reassign: "error" */
-  const [, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop({
     accept: 'constructorIngredient',
-    item: data,
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
     hover(dragItem, monitor) {
       if (!ref.current) return;
 
@@ -67,9 +71,14 @@ function BurgerConstructorElement({
   const draggableRef = !position ? ref : null;
 
   return (
-    !isDragging && (
-    <li className={`${style.element} ${position && 'pl-8'} mr-4 `} ref={draggableRef}>
+    <li
+      style={{ minHeight: '80px' }}
+      className={`${style.element} ${position && 'pl-8'} mr-4 `}
+      draggable
+      ref={draggableRef}
+    >
       {!position && <DragIcon type="primary" />}
+      {!isDragging && (
       <ConstructorElement
         type={position}
         text={`${data.name} ${bunPosText || ''}`}
@@ -77,15 +86,19 @@ function BurgerConstructorElement({
         price={data.price}
         isLocked={position}
         handleClose={handleRemoveFromConstructor}
+        data-handler-id={handlerId}
       />
+      )}
     </li>
-    )
   );
 }
 
 BurgerConstructorElement.propTypes = {
   data: ingredientPropTypes.isRequired,
   position: PropTypes.string,
+  moveIngredient: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 BurgerConstructorElement.defaultProps = {

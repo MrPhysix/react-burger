@@ -18,12 +18,12 @@ import Modal from '../Modal/Modal';
 import OrderDetails from '../Modal/OrderDetails/OrderDetails';
 import { LoadingContext } from '../../utils/context';
 import getOrderDetails from '../../utils/api/order';
-import { setOrder, resetOrder, openOrder } from '../../store/reducers/order';
+import { setOrder, resetOrder, openOrder } from '../../services/reducers/order';
 import {
   addConstructorIngredient,
   getConstructorIngredients,
   swapConstructorIngredients,
-} from '../../store/reducers/constructorIngredientsSlice';
+} from '../../services/reducers/constructorIngredientsSlice';
 
 function BurgerConstructor() {
   // consts
@@ -101,28 +101,13 @@ function BurgerConstructor() {
     borderRadius: '25px',
   } : {};
 
-  // if (!constructorIngredients || constructorIngredients.length === 0) {
-  //   return (
-  //     <p
-  //       style={borderColor}
-  //       ref={dropTarget}
-  //       className={`${style.noIngredient} text text_type_main-large`}
-  //     >
-  //       {
-  //       isHover
-  //         ? <img src={addImg} alt="addImg" />
-  //         : <span>Добавьте ингредиенты</span>
-  //     }
-  //     </p>
-  //   );
-  // }
-
   const renderBurgerConstructorElement = useCallback((item, index) => (
     <BurgerConstructorElement
       moveIngredient={moveIngredient}
       key={item._key}
       data={item}
       index={index}
+      id={item._key}
     />
   ), []);
 
