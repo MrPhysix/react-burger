@@ -12,5 +12,5 @@ export default function getOrderDetails(ingredients) {
   })
     .then((res) => checkResult(res))
     .then((res) => res)
-    .catch((err) => console.log(err));
+    .catch((err) => new Error(`Ошибка: ${err}`));
 }

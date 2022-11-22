@@ -14,7 +14,7 @@ const IngredientsList = forwardRef(({ ingredients, onIngredientClick, name }, re
             <IngredientCard
               key={item._id}
               item={item}
-              onClick={onIngredientClick()}
+              onClick={onIngredientClick}
             />
           ))
         }
@@ -23,7 +23,8 @@ const IngredientsList = forwardRef(({ ingredients, onIngredientClick, name }, re
 ));
 
 IngredientsList.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
+  onIngredientClick: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
 };
 

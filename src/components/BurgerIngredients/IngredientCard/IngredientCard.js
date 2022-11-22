@@ -5,6 +5,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
 //
+import PropTypes from 'prop-types';
 import style from './ingredient-card.module.css';
 import { ingredientPropTypes } from '../../../utils/propTypes';
 
@@ -20,7 +21,7 @@ function IngredientCard({ item, onClick }) {
   };
 
   return (
-    <section role="presentation" className={style.card} onClick={handleOpen} draggable ref={dragRef}>
+    <section role="presentation" className={style.card} onClick={handleOpen} ref={dragRef}>
       <img className="ml-4 mr-4" src={item.image} alt={item.name} />
       <div className={`${style.price} text text_type_digits-default mt-1 mb-1`}>
         {item.price}
@@ -33,6 +34,7 @@ function IngredientCard({ item, onClick }) {
 
 IngredientCard.propTypes = {
   item: ingredientPropTypes.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default IngredientCard;

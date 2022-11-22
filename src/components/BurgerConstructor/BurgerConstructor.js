@@ -1,6 +1,4 @@
-import React, {
-  useContext, useMemo, useCallback,
-} from 'react';
+import React, { useMemo } from 'react';
 //
 import {
   CurrencyIcon,
@@ -16,33 +14,22 @@ import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstruct
 import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../Modal/OrderDetails/OrderDetails';
-import { LoadingContext } from '../../utils/context';
 import getOrderDetails from '../../utils/api/order';
 import { setOrder, resetOrder, openOrder } from '../../services/reducers/order';
 import {
+  addConstructorBun,
   addConstructorIngredient,
-  getConstructorIngredients,
   swapConstructorIngredients,
 } from '../../services/reducers/constructorIngredientsSlice';
 
 function BurgerConstructor() {
   // consts
   const dispatch = useDispatch();
-  const { constructorIngredients } = useSelector((state) => state.constructorIngredients);
+  const { constructorIngredients, bun } = useSelector(
+    (state) => state.constructorIngredients,
+  );
   const { order } = useSelector((state) => state);
-  const { setIsLoading } = useContext(LoadingContext);
   //
-  const bun = useMemo(
-    () => constructorIngredients.length > 0
-      && constructorIngredients.find((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
-    [constructorIngredients],
-  );
-
-  const noBunIngredients = useMemo(
-    () => constructorIngredients.filter((item) => item.type !== INGREDIENT_TYPES.BUN.TYPE),
-    [constructorIngredients],
-  );
-
   const totalPrice = useMemo(
     () => constructorIngredients.reduce((total, curr) => {
       if (curr.type === INGREDIENT_TYPES.BUN.TYPE) return total + curr.price * 2;
@@ -57,7 +44,6 @@ function BurgerConstructor() {
       getOrderDetails(ids)
         .then((res) => {
           dispatch(setOrder(res));
-          setIsLoading(false);
         })
         .then(() => dispatch(openOrder()));
     },
@@ -67,8 +53,7 @@ function BurgerConstructor() {
   const addIngredientToConstructor = (item) => {
     const isBun = item.type === INGREDIENT_TYPES.BUN.TYPE;
     if (isBun) {
-      const updatedIngredients = constructorIngredients.filter((i) => i.type !== item.type);
-      dispatch(getConstructorIngredients(updatedIngredients));
+      return dispatch(addConstructorBun(item));
     }
 
     const generatedId = uuidv4();
@@ -92,71 +77,91 @@ function BurgerConstructor() {
   });
 
   const moveIngredient = (fromIndex, toIndex) => {
-    dispatch(swapConstructorIngredients(([fromIndex, toIndex])));
+    dispatch(swapConstructorIngredients([fromIndex, toIndex]));
   };
 
-  const borderColor = isHover ? {
-    outline: '5px #4C4CFF solid',
-    boxShadow: 'inset 0 0 16px 8px rgba(51, 51, 255, .25), inset 0 0px 8px 8px rgba(51, 51, 255, .25), inset 0 4px 32px rgba(51, 51, 255, .5)',
-    borderRadius: '25px',
-  } : {};
-
-  const renderBurgerConstructorElement = useCallback((item, index) => (
-    <BurgerConstructorElement
-      moveIngredient={moveIngredient}
-      key={item._key}
-      data={item}
-      index={index}
-      id={item._key}
-    />
-  ), []);
+  const borderColor = isHover
+    ? {
+      outline: '5px #4C4CFF solid',
+      boxShadow: 'inset 0 0 16px 8px rgba(51, 51, 255, .25), '
+        + 'inset 0 0px 8px 8px rgba(51, 51, 255, .25), '
+        + 'inset 0 4px 32px rgba(51, 51, 255, .5)',
+      borderRadius: '25px',
+    }
+    : {};
 
   return (
     <>
-      {
-          order.isOpen
-          && (
-            <Modal handleClose={() => handleOrderModal.close()}>
-              <OrderDetails order={order} />
-            </Modal>
-          )
-      }
-      { (!constructorIngredients || constructorIngredients.length === 0)
-        ? (
-          <p
-            style={borderColor}
-            ref={dropTarget}
-            className={`${style.noIngredient} text text_type_main-large`}
-          >
-            {
-            isHover
-              ? <img src={addImg} alt="addImg" />
-              : <span>Добавьте ингредиенты</span>
-          }
-          </p>
-        )
-        : (
-          <section className={`${style.element} pt-25 pl-4`} ref={dropTarget} style={borderColor}>
-            <ul className={style.ul}>
-              {bun && <BurgerConstructorElement moveIngredient={moveIngredient} data={bun} position="top" />}
-              <ul className={`${style.scroll} scroll`}>
-                {
-                  noBunIngredients.map((item, index) => renderBurgerConstructorElement(item, index))
-                }
-              </ul>
-              {bun && <BurgerConstructorElement moveIngredient={moveIngredient} data={bun} position="bottom" />}
+      {order.isOpen && (
+        <Modal handleClose={handleOrderModal.close}>
+          <OrderDetails order={order} />
+        </Modal>
+      )}
+      {(constructorIngredients.length === 0 && !bun) ? (
+        <p
+          style={borderColor}
+          ref={dropTarget}
+          className={`${style.noIngredient} text text_type_main-large`}
+        >
+          {isHover ? (
+            <img src={addImg} alt="addImg" />
+          ) : (
+            <span>Добавьте ингредиенты</span>
+          )}
+        </p>
+      ) : (
+        <section
+          className={`${style.element} pt-25 pl-4`}
+          ref={dropTarget}
+          style={borderColor}
+        >
+          <ul className={style.ul}>
+            {bun && (
+              <BurgerConstructorElement
+                moveIngredient={moveIngredient}
+                data={bun}
+                position="top"
+              />
+            )}
+            <ul className={`${style.scroll} scroll`}>
+              {
+                constructorIngredients.map(
+                  (item, index) => (
+                    <BurgerConstructorElement
+                      moveIngredient={moveIngredient}
+                      key={item._key}
+                      data={item}
+                      index={index}
+                      id={item._key}
+                    />
+                  ),
+                )
+              }
             </ul>
-            <div className={`${style.info} mt-10`}>
-              <div className={`${style.price} mr-10`}>
-                <p className="text text_type_digits-medium">{totalPrice}</p>
-                <CurrencyIcon type="primary" />
-              </div>
-              <Button type="primary" size="large" htmlType="button" onClick={() => handleOrderModal.open()}>
-                Оформить заказ
-              </Button>
+            {bun && (
+              <BurgerConstructorElement
+                moveIngredient={moveIngredient}
+                data={bun}
+                position="bottom"
+              />
+            )}
+          </ul>
+          <div className={`${style.info} mt-10`}>
+            <div className={`${style.price} mr-10`}>
+              <p className="text text_type_digits-medium">{totalPrice}</p>
+              <CurrencyIcon type="primary" />
             </div>
-          </section>
-        )}
+            <Button
+              type="primary"
+              size="large"
+              htmlType="button"
+              onClick={() => handleOrderModal.open()}
+            >
+              Оформить заказ
+            </Button>
+          </div>
+        </section>
+      )}
     </>
   );
 }

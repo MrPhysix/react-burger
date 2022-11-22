@@ -31,7 +31,6 @@ function BurgerConstructorElement({
       isDragging: monitor.isDragging(),
     }),
   });
-
   /* eslint no-param-reassign: "error" */
   const [{ handlerId }, drop] = useDrop({
     accept: 'constructorIngredient',
@@ -72,9 +71,7 @@ function BurgerConstructorElement({
 
   return (
     <li
-      style={{ minHeight: '80px' }}
       className={`${style.element} ${position && 'pl-8'} mr-4 `}
-      draggable
       ref={draggableRef}
     >
       {!position && <DragIcon type="primary" />}
@@ -97,12 +94,14 @@ BurgerConstructorElement.propTypes = {
   data: ingredientPropTypes.isRequired,
   position: PropTypes.string,
   moveIngredient: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
-  id: PropTypes.string.isRequired,
+  index: PropTypes.number,
+  id: PropTypes.string,
 };
 
 BurgerConstructorElement.defaultProps = {
   position: null,
+  id: '',
+  index: null,
 };
 
 export default BurgerConstructorElement;

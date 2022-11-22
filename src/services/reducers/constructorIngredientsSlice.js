@@ -4,6 +4,7 @@ const constructorIngredientsSlice = createSlice({
   name: 'constructorIngredients',
   initialState: {
     constructorIngredients: [],
+    bun: null,
   },
   reducers: {
     getConstructorIngredients(state, action) {
@@ -11,6 +12,9 @@ const constructorIngredientsSlice = createSlice({
     },
     addConstructorIngredient(state, action) {
       state.constructorIngredients.push(action.payload);
+    },
+    addConstructorBun(state, action) {
+      state.bun = (action.payload);
     },
     swapConstructorIngredients(state, action) {
       const [fromIndex, toIndex] = action.payload;
@@ -26,6 +30,7 @@ const constructorIngredientsSlice = createSlice({
 export const {
   getConstructorIngredients,
   addConstructorIngredient,
+  addConstructorBun,
   swapConstructorIngredients,
 } = constructorIngredientsSlice.actions;
 export default constructorIngredientsSlice.reducer;

@@ -3,4 +3,6 @@
     align-items: center;
     gap: 8px;
     cursor: grab;
+    min-height: 80px;
 }
+

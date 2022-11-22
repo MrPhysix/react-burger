@@ -5,12 +5,8 @@ import style from './header-link.module.css';
 function HeaderLink({
   link, children, text, selected,
 }) {
-  // я не буду менять на простой link,
-  // смысл мне переделывать, думать про children ('react/void-dom-elements-no-children')
-  // если в след работе меняю на роутинг уже
-
   const handle = () => {
-    console.log(link);
+    console.log(link); // заглушка прст)
   };
 
   return (
