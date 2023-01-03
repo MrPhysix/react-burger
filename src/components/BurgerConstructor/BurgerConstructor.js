@@ -43,6 +43,7 @@ function BurgerConstructor() {
       const ids = constructorIngredients.map((i) => i._id);
       getOrderDetails(ids)
         .then((res) => {
+          console.log(res);
           dispatch(setOrder(res));
         })
         .then(() => dispatch(openOrder()));
