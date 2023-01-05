@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   EmailInput, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
 import FormElement from '../../components/FormElement/FormElement';
-import * as auth from '../../utils/api/auth';
+import { useAuth } from '../../utils/api/auth';
 
 const additionalActions = [
   {
@@ -28,24 +28,13 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const auth = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => () => {
-    console.log('email', email);
-    console.log('password', password);
-  }, [email, password]);
 
   // handlers
   const onLogin = () => {
-    auth.login({ email, password })
-      .then((res) => {
-        if (res.success && res.refreshToken) {
-          localStorage.setItem('jwt', res.refreshToken);
-        }
-        console.log('onLogin', res);
-        return res;
-      })
-      .then((res) => res.success && navigate('/'));
+    auth.signIn({ email, password })
+      .then((res) => res && setTimeout(() => navigate('/profile'), 1000));
   };
 
   return (

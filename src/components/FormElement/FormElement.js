@@ -11,7 +11,7 @@ function FormElement({
   return (
     <form
       className={!profile ? style.form : style.formProfile}
-      onSubmit={(evt) => { evt.preventDefault(); onSubmit(); console.log('onSubmit', onSubmit); }}
+      onSubmit={(evt) => { evt.preventDefault(); onSubmit(); }}
     >
       {title && <h2 className="text text_type_main-medium mb-6">{title}</h2>}
       <div className={style.inputs}>{children}</div>

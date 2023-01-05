@@ -13,7 +13,7 @@ const actions = [
   },
   {
     text: 'История заказов',
-    path: '/',
+    path: '/ff',
   },
   {
     text: 'Выход',
@@ -22,20 +22,13 @@ const actions = [
 ];
 
 function ProfileNav() {
-  // const [current, setCurrent] = useState(true);
-  //
-  // const handleClick = (type) => {
-  //   setCurrent(type);
-  // };
-
   return (
     <nav className={style.nav}>
       {actions?.map((item) => (
         <NavLink
-          key={item.path}
+          key={item.text}
           className={classNames}
           to={item?.path}
-          active
         >
           {item?.text}
         </NavLink>

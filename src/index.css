@@ -27,6 +27,7 @@ body::before {
 
 #root {
   display: flex;
+  height: 100vh;
   flex-direction: column;
   padding: 0 2vw;
 }

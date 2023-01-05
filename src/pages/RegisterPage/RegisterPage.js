@@ -7,7 +7,7 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import FormElement from '../../components/FormElement/FormElement';
-import * as auth from '../../utils/api/auth';
+import { register } from '../../utils/api';
 
 const additionalActions = [
   {
@@ -35,7 +35,7 @@ function RegisterPage() {
 
   // handlers
   const onRegistration = () => {
-    auth.register({ email, password, name })
+    register({ email, password, name })
       .then((res) => {
         console.log('onRegistration', res);
         return res;

@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import {
   createBrowserRouter,
-  RouterProvider,
+  RouterProvider, Outlet,
 } from 'react-router-dom';
 
 import { CirclesWithBar } from 'react-loader-spinner';
@@ -21,13 +21,16 @@ import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import ForgotPassword from '../../pages/Password/ForgotPasswordPage/ForgotPassword';
 import ResetPasswordPage from '../../pages/Password/ResetPasswordPage/ResetPasswordPage';
 import Profile from '../../pages/Profile/Profile';
+import { ProvideAuth } from '../../utils/api/auth';
+import Page404 from '../../pages/Page404/Page404';
+
 //
 
 function App() {
   const dispatch = useDispatch();
   // states
   const { ingredients } = useSelector((state) => state);
-
+  //
   // callbacks
   const getInitialData = useCallback(
     () => {
@@ -42,59 +45,75 @@ function App() {
   };
 
   // effects
-  useEffect(() => getInitialData(), []);
+  useEffect(() => {
+    getInitialData();
+  }, []);
+
+  // useEffect(() => console.log('[App] User', user), [user]);
 
   if (ingredients.status === 'error') return <Modal title="Произошла ошибка..." handleClose={handleErrorModalClose}><ErrorModal handleClose={handleErrorModalClose} /></Modal>;
 
+  // eslint-disable-next-line
+  const Layout = () => (
+    <ProvideAuth>
+      <Header />
+      <Outlet />
+    </ProvideAuth>
+  );
+
   const router = createBrowserRouter([
     {
-      path: '/',
-      element: (
-        <ProtectedRoute isLogged>
-          {
-            ingredients.status === 'request'
-              ? (
-                <CirclesWithBar
-                  width="82"
-                  color="#4C4CFF"
-                  ariaLabel="loading"
-                  wrapperClass="loading-spinner"
-                />
-              )
-              : ingredients.ingredients.length > 0 && <Main />
-          }
-        </ProtectedRoute>
-      ),
+      path: '*',
+      element: <Page404 />,
     },
     {
-      path: '/login',
-      element: <LoginPage />,
-    },
-    {
-      path: '/register',
-      element: <RegisterPage />,
-    },
-    {
-      path: '/forgot-password',
-      element: <ForgotPassword />,
-    },
-    {
-      path: '/reset-password',
-      element: <ResetPasswordPage />,
-    },
-    {
-      path: '/profile',
-      element: (<ProtectedRoute isLogged><Profile /></ProtectedRoute>),
+      element: <Layout />,
+      children: [
+        {
+          path: '/',
+          element: (
+            <ProtectedRoute>
+              {
+                ingredients.status === 'request'
+                  ? (
+                    <CirclesWithBar
+                      width="82"
+                      color="#4C4CFF"
+                      ariaLabel="loading"
+                      wrapperClass="loading-spinner"
+                    />
+                  )
+                  : ingredients.ingredients.length > 0 && <Main />
+              }
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/login',
+          element: <ProtectedRoute noAuth><LoginPage /></ProtectedRoute>,
+        },
+        {
+          path: '/register',
+          element: <ProtectedRoute noAuth><RegisterPage /></ProtectedRoute>,
+        },
+        {
+          path: '/forgot-password',
+          element: <ProtectedRoute noAuth><ForgotPassword /></ProtectedRoute>,
+        },
+        {
+          path: '/reset-password',
+          element: <ProtectedRoute noAuth><ResetPasswordPage /></ProtectedRoute>,
+        },
+        {
+          path: '/profile',
+          element: (<ProtectedRoute><Profile /></ProtectedRoute>),
+        },
+      ],
     },
 
   ]);
 
-  return (
-    <>
-      <Header />
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
