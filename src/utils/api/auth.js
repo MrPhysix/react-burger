@@ -1,22 +1,25 @@
 import React, {
-  createContext, useContext, useEffect, useState,
+  createContext, useContext, useEffect,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getUserRequest, login, logOut, setUserInfo,
 } from './index';
 import { getCookie, setCookie, deleteCookie } from '../cookie';
+import { setUserSlice, resetUserSlice } from '../../services/reducers/user';
 
 const AuthContext = createContext(undefined);
 
 export function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state);
   const token = getCookie('accessToken');
 
   function getUser() {
     return getUserRequest()
       .then((res) => {
         if (res.success) {
-          setUser(res.user);
+          dispatch(setUserSlice(res));
         }
         return res.success;
       });
@@ -25,9 +28,8 @@ export function useProvideAuth() {
   function updateUser({ name, email }) {
     setUserInfo({ name, email })
       .then((res) => {
-        console.log('updateUser', res);
         if (res.success) {
-          setUser({ ...user, ...res.user });
+          dispatch(setUserSlice({ ...user, ...res }));
         }
       });
   }
@@ -40,7 +42,7 @@ export function useProvideAuth() {
         return res;
       });
     if (data.success) {
-      await setUser(data.user);
+      await dispatch(setUserSlice(data));
       return data.success;
     }
 
@@ -49,22 +51,16 @@ export function useProvideAuth() {
 
   function signOut() {
     return logOut()
-      .then((res) => {
-        console.log('signOut', res);
-        setUser(null);
+      .then(() => {
+        dispatch(resetUserSlice());
         deleteCookie('accessToken');
         localStorage.clear();
       });
   }
 
   useEffect(() => {
-    console.log(token);
-    if (token) getUser().then((res) => console.log('if token', res));
-  }, [token]);
-
-  useEffect(() => {
-    console.log('[useEffect] User', user);
-  }, [user]);
+    if (token) getUser();
+  }, []);
 
   return {
     user, getUser, updateUser, signIn, signOut,

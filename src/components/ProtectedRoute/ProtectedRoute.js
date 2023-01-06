@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../utils/api/auth';
 
 function ProtectedRoute({ noAuth, children }) {
-  const { getUser, user } = useAuth();
-  const [isUserLoaded, setUserLoaded] = useState(false);
+  const { user } = useAuth();
 
-  const init = async () => {
-    if (!isUserLoaded) return null;
-    await getUser();
-    return setUserLoaded(true);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
-  if (noAuth && !user) {
-    return children;
-  }
-
-  if (noAuth && user) {
+  if (noAuth && user.success) {
     return children && <Navigate to="/" replace />;
   }
 
-  if (!user) {
+  if (noAuth && !user.success) {
+    return children;
+  }
+
+  if (!user.success) {
     return <Navigate to="/login" replace />;
   }
 

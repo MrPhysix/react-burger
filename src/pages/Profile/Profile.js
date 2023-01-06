@@ -25,35 +25,38 @@ function Profile() {
   return (
     <main className={`main ${style.profile}`}>
       <ProfileNav />
-      <FormElement profile isActive>
-        <Input
-          onChange={(e) => setName({ ...name, name: e.target.value })}
-          value={name?.name || ''}
-          name="name"
-          type="text"
-          placeholder="Имя"
-          icon="EditIcon"
-          disabled={!name.inputActive}
-          onIconClick={nameHandler}
-          onBlur={nameHandler}
-        />
-        <EmailInput
-          onChange={(e) => setEmail(e.target.value)}
-          value={email || ''}
-          name="email"
-          type="email"
-          placeholder="Логин"
-          onBlur={editUser}
-          isIcon
-        />
-        <PasswordInput
-          onChange={(e) => setPassword(e.target.value)}
-          value={password || '******'}
-          name="password"
-          icon="EditIcon"
-          noValidate
-        />
-      </FormElement>
+      <div className={style.element}>
+        <FormElement profile isActive>
+          <Input
+            onChange={(e) => setName({ ...name, name: e.target.value })}
+            value={name?.name || ''}
+            name="name"
+            type="text"
+            placeholder="Имя"
+            icon="EditIcon"
+            disabled={!name.inputActive}
+            onIconClick={nameHandler}
+            onBlur={nameHandler}
+          />
+          <EmailInput
+            onChange={(e) => setEmail(e.target.value)}
+            value={email || ''}
+            name="email"
+            type="email"
+            placeholder="Логин"
+            onBlur={editUser}
+            isIcon
+          />
+          <PasswordInput
+            onChange={(e) => setPassword(e.target.value)}
+            value={password || '******'}
+            name="password"
+            icon="EditIcon"
+            autoComplete="off"
+            noValidate
+          />
+        </FormElement>
+      </div>
     </main>
   );
 }

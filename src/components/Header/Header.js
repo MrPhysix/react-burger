@@ -31,13 +31,13 @@ const sections = [
 ];
 
 function Header() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
 
   return (
     <header className={`mt-2 pt-4 pb-4 ${style.header}`}>
 
       <nav className={style.nav}>
-        {user && (
+        {user.success && (
         <>
           <NavLink
             to={sections[0].path}
@@ -68,7 +68,7 @@ function Header() {
       <Logo />
 
       <nav className={`${style.nav} + ${style.justify__end}`}>
-        {user && (
+        {user.success && (
         <NavLink
           to={sections[2].path}
           className={linkClassNames}
@@ -81,15 +81,6 @@ function Header() {
           )}
         </NavLink>
         )}
-        <button
-          type="button"
-          onClick={(evt) => {
-            evt.preventDefault();
-            signOut();
-          }}
-        >
-          logOut
-        </button>
       </nav>
     </header>
   );

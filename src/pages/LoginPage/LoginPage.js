@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   EmailInput, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useNavigate } from 'react-router-dom';
 import FormElement from '../../components/FormElement/FormElement';
 import { useAuth } from '../../utils/api/auth';
 
@@ -28,13 +27,11 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const auth = useAuth();
-  const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   // handlers
   const onLogin = () => {
-    auth.signIn({ email, password })
-      .then((res) => res && setTimeout(() => navigate('/profile'), 1000));
+    signIn({ email, password });
   };
 
   return (

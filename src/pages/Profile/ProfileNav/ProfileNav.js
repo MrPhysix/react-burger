@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import style from './profile-nav.module.css';
+import { useAuth } from '../../../utils/api/auth';
 
 const classNames = ({ isActive }) => `text text_type_main-medium text_color_inactive ${style.link} ${isActive && style.linkActive}`;
 
@@ -22,9 +23,11 @@ const actions = [
 ];
 
 function ProfileNav() {
+  const { signOut } = useAuth();
+
   return (
     <nav className={style.nav}>
-      {actions?.map((item) => (
+      {actions?.slice(0, 2).map((item) => (
         <NavLink
           key={item.text}
           className={classNames}
@@ -33,7 +36,17 @@ function ProfileNav() {
           {item?.text}
         </NavLink>
       ))}
-      <p className="mt-20 text text_type_main-default text_color_inactive" style={{ opacity: '.4' }}>
+      <button
+        type="button"
+        className={`text text_type_main-medium text_color_inactive ${style.link}`}
+        onClick={(evt) => {
+          evt.preventDefault();
+          signOut();
+        }}
+      >
+        {actions[2].text}
+      </button>
+      <p className="mt-20 text text_type_main-default text_color_inactive" style={{ opacity: '.4', width: '320px' }}>
         {actions[0].note}
       </p>
     </nav>

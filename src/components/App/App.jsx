@@ -21,12 +21,13 @@ import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import ForgotPassword from '../../pages/Password/ForgotPasswordPage/ForgotPassword';
 import ResetPasswordPage from '../../pages/Password/ResetPasswordPage/ResetPasswordPage';
 import Profile from '../../pages/Profile/Profile';
-import { ProvideAuth } from '../../utils/api/auth';
+import { ProvideAuth, useAuth } from '../../utils/api/auth';
 import Page404 from '../../pages/Page404/Page404';
 
 //
 
 function App() {
+  const auth = useAuth();
   const dispatch = useDispatch();
   // states
   const { ingredients } = useSelector((state) => state);
@@ -47,6 +48,7 @@ function App() {
   // effects
   useEffect(() => {
     getInitialData();
+    auth?.getUser();
   }, []);
 
   // useEffect(() => console.log('[App] User', user), [user]);
