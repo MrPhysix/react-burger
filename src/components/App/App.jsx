@@ -4,6 +4,7 @@ import React, {
 import {
   createBrowserRouter,
   RouterProvider, Outlet,
+  Navigate,
 } from 'react-router-dom';
 
 import { CirclesWithBar } from 'react-loader-spinner';
@@ -21,17 +22,32 @@ import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import ForgotPassword from '../../pages/Password/ForgotPasswordPage/ForgotPassword';
 import ResetPasswordPage from '../../pages/Password/ResetPasswordPage/ResetPasswordPage';
 import Profile from '../../pages/Profile/Profile';
-import { ProvideAuth, useAuth } from '../../utils/api/auth';
+import { ProvideAuth } from '../../utils/api/auth';
 import Page404 from '../../pages/Page404/Page404';
+import { getCookie } from '../../utils/cookie';
+import IngredientPage from '../../pages/IngredientPage/IngredientPage';
 
 //
+function Loader() {
+  return (
+    <CirclesWithBar
+      width="82"
+      color="#4C4CFF"
+      ariaLabel="loading"
+      wrapperClass="loading-spinner"
+    />
+  );
+}
 
 function App() {
-  const auth = useAuth();
   const dispatch = useDispatch();
   // states
   const { ingredients } = useSelector((state) => state);
-  //
+  const { ingredientDetails } = useSelector((state) => state);
+  // const
+
+  const codeIsRequested = getCookie('codeIsRequested');
+
   // callbacks
   const getInitialData = useCallback(
     () => {
@@ -48,7 +64,6 @@ function App() {
   // effects
   useEffect(() => {
     getInitialData();
-    auth?.getUser();
   }, []);
 
   // useEffect(() => console.log('[App] User', user), [user]);
@@ -62,6 +77,20 @@ function App() {
       <Outlet />
     </ProvideAuth>
   );
+  // const ingredientModalCheck = ingredients.ingredients.length > 0
+  // && !ingredientDetails.isOpen ? <IngredientPage /> : <Main />;
+  const ingredientRouteRequest = () => {
+    const exp = ingredients.ingredients.length > 0;
+    if (ingredients.status === 'request') {
+      return Loader;
+    } switch (true) {
+      case (exp && ingredientDetails.isOpen):
+        return <Main />;
+      case (exp && !ingredientDetails.isOpen):
+        return <IngredientPage />;
+      default: return <Main />;
+    }
+  };
 
   const router = createBrowserRouter([
     {
@@ -77,14 +106,7 @@ function App() {
             <ProtectedRoute>
               {
                 ingredients.status === 'request'
-                  ? (
-                    <CirclesWithBar
-                      width="82"
-                      color="#4C4CFF"
-                      ariaLabel="loading"
-                      wrapperClass="loading-spinner"
-                    />
-                  )
+                  ? <Loader />
                   : ingredients.ingredients.length > 0 && <Main />
               }
             </ProtectedRoute>
@@ -104,11 +126,21 @@ function App() {
         },
         {
           path: '/reset-password',
-          element: <ProtectedRoute noAuth><ResetPasswordPage /></ProtectedRoute>,
+          element: (
+            <ProtectedRoute noAuth>
+              {codeIsRequested
+                ? <ResetPasswordPage />
+                : <Navigate to="/forgot-password" />}
+            </ProtectedRoute>
+          ),
         },
         {
           path: '/profile',
           element: (<ProtectedRoute><Profile /></ProtectedRoute>),
+        },
+        {
+          path: '/ingredients/:ingredientId',
+          element: ingredientRouteRequest(),
         },
       ],
     },

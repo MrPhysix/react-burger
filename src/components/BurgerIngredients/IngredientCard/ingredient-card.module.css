@@ -3,6 +3,8 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
+    text-decoration: none;
+    color: #ffffff;
 }
 
 .price {

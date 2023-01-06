@@ -8,7 +8,7 @@ export const API_AUTH_LOGIN = `${BASE_URL}/auth/login`;
 export const API_AUTH_LOGOUT = `${BASE_URL}/auth/logout`;
 export const API_AUTH_TOKEN = `${BASE_URL}/auth/token`;
 //
-export const API_USER_REQUSET = `${BASE_URL}/auth/user`;
+export const API_USER_REQUEST = `${BASE_URL}/auth/user`;
 //
 export const API_PASSWORD_STEP1_URL = `${BASE_URL}/password-reset`;
 export const API_PASSWORD_STEP2_URL = `${BASE_URL}/password-reset/reset`;

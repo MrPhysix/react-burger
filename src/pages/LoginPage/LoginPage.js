@@ -24,14 +24,18 @@ const additionalActions = [
 ];
 
 function LoginPage() {
+  const { signIn } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const { signIn } = useAuth();
+  //
+  const [isLoading, setIsLoading] = useState(false);
+  //
 
   // handlers
   const onLogin = () => {
-    signIn({ email, password });
+    setIsLoading(true);
+    signIn({ email, password }).finally(() => setIsLoading(false));
   };
 
   return (
@@ -41,19 +45,22 @@ function LoginPage() {
         submitText="Войти"
         additionalActions={additionalActions}
         onSubmit={onLogin}
-        isActive={password !== '' || email !== ''}
+        isActive={password !== '' && email !== ''}
+        isLoading={isLoading}
       >
         <EmailInput
           onChange={(e) => setEmail(e.target.value)}
           value={email}
           name="email"
           placeholder="E-mail"
+          disabled={isLoading}
         />
         <PasswordInput
           onChange={(e) => setPassword(e.target.value)}
           value={password}
           name="password"
           autoComplete="on"
+          disabled={isLoading}
         />
       </FormElement>
     </main>

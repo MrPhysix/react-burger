@@ -1,34 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { useNavigate } from 'react-router-dom';
 import FormElement from '../../../components/FormElement/FormElement';
-import additionalActions from '../index';
-import { resetPassword } from '../../../utils/api/password';
+import { additionalActions, resetRequest } from '../index';
 
 function ResetPasswordPage() {
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  useEffect(() => () => {
-    console.log('code', code);
-    console.log('password', password);
-  }, [code, password]);
-
-  // handlers
-  const onResetPassword = () => {
-    resetPassword(password, code)
-      .then((res) => {
-        console.log('onReset', res);
-        return res;
-      })
-      .then((res) => res.success && navigate('/'));
-  };
+  //
 
   return (
     <main className="main">
@@ -36,8 +19,9 @@ function ResetPasswordPage() {
         title="Восстановление пароля"
         submitText="Сохранить"
         additionalActions={additionalActions}
-        onSubmit={onResetPassword}
+        onSubmit={resetRequest}
         isActive={password !== '' || code !== ''}
+        isLoading={false}
       >
         <PasswordInput
           onChange={(e) => setPassword(e.target.value)}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
   EmailInput,
@@ -23,24 +23,18 @@ function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  //
+  const [isLoading, setIsLoading] = useState(false);
+  //
   const navigate = useNavigate();
   const inputRef = useRef(null);
 
-  useEffect(() => () => {
-    console.log('name', name);
-    console.log('email', email);
-    console.log('password', password);
-  }, [name, email, password]);
-
   // handlers
   const onRegistration = () => {
+    setIsLoading(true);
     register({ email, password, name })
-      .then((res) => {
-        console.log('onRegistration', res);
-        return res;
-      })
-      .then((res) => res.success && navigate('/login'));
+      .then((res) => res.success && navigate('/login'))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -50,6 +44,8 @@ function RegisterPage() {
         submitText="Зарегистрироваться"
         additionalActions={additionalActions}
         onSubmit={onRegistration}
+        isActive={password !== '' && email !== '' && name !== ''}
+        isLoading={isLoading}
       >
         <Input
           type="text"
@@ -67,6 +63,7 @@ function RegisterPage() {
           value={email}
           name="email"
           placeholder="E-mail"
+          autoComplete="on"
         />
         <PasswordInput
           onChange={(e) => setPassword(e.target.value)}

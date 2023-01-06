@@ -2,12 +2,23 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import { CirclesWithBar } from 'react-loader-spinner';
 import style from './form-element.module.css';
 
 function FormElement({
   title, children, submitText,
-  onSubmit, additionalActions, profile, isActive,
+  onSubmit, additionalActions, profile,
+  isActive, isLoading,
 }) {
+  const loader = (
+    <CirclesWithBar
+      width="24"
+      color="#fff"
+      ariaLabel="loading"
+      wrapperClass="loading-spinner-button"
+    />
+  );
+
   return (
     <form
       className={!profile ? style.form : style.formProfile}
@@ -16,8 +27,14 @@ function FormElement({
       {title && <h2 className="text text_type_main-medium mb-6">{title}</h2>}
       <div className={style.inputs}>{children}</div>
       {submitText && (
-      <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6 mb-20" disabled={!isActive}>
-        {submitText}
+      <Button
+        htmlType="submit"
+        type="primary"
+        size="medium"
+        extraClass="mt-6 mb-20"
+        disabled={!isActive || isLoading}
+      >
+        {isLoading ? loader : submitText}
       </Button>
       )}
       {additionalActions && (
@@ -44,7 +61,9 @@ function FormElement({
 
 FormElement.propTypes = {
   title: PropTypes.string,
-  children: PropTypes.arrayOf(PropTypes.element.isRequired).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element.isRequired).isRequired,
+    PropTypes.element.isRequired]).isRequired,
   submitText: PropTypes.string,
   onSubmit: PropTypes.func,
   additionalActions: PropTypes.arrayOf(PropTypes.shape({
@@ -55,6 +74,7 @@ FormElement.propTypes = {
     }),
   })),
   isActive: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 FormElement.defaultProps = {
@@ -62,6 +82,7 @@ FormElement.defaultProps = {
   submitText: null,
   additionalActions: null,
   onSubmit: null,
+  isLoading: false,
 };
 
 export default FormElement;

@@ -8,6 +8,7 @@ import {
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 //
+import { useNavigate } from 'react-router-dom';
 import IngredientsList from './IngredientsList/IngredientsList';
 import style from './burger-ingredients.module.css';
 import { INGREDIENT_TYPES } from '../../utils/const';
@@ -25,11 +26,14 @@ function BurgerIngredients() {
   const { ingredients } = useSelector((state) => state.ingredients);
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN.TYPE);
   const { ingredientDetails } = useSelector((state) => state);
+  //
+  const navigate = useNavigate();
   // refs
   const [
     scrollRef, bunRef, mainRef, sauceRef,
   ] = [useRef(), useRef(), useRef(), useRef()];
   //
+
   const bun = useMemo(
     () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
     [ingredients],
@@ -48,6 +52,11 @@ function BurgerIngredients() {
   const handleDetailsModal = (item) => {
     dispatch(setIngredientDetails(item));
     dispatch(openIngredientDetails());
+  };
+
+  const handleDetailsModalClose = () => {
+    dispatch(resetIngredientDetails());
+    navigate('/');
   };
 
   useEffect(() => {
@@ -89,7 +98,7 @@ function BurgerIngredients() {
   return (
     <>
       {ingredientDetails.item && ingredientDetails.isOpen && (
-      <Modal handleClose={() => dispatch(resetIngredientDetails())}>
+      <Modal handleClose={handleDetailsModalClose}>
         <IngredientDetails ingredient={ingredientDetails.item} />
       </Modal>
       )}

@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getUserRequest, login, logOut, setUserInfo,
+  getUserRequest, login, logOut, setUserInfo, updateToken,
 } from './index';
 import { getCookie, setCookie, deleteCookie } from '../cookie';
 import { setUserSlice, resetUserSlice } from '../../services/reducers/user';
@@ -18,10 +18,16 @@ export function useProvideAuth() {
   function getUser() {
     return getUserRequest()
       .then((res) => {
-        if (res.success) {
+        if (res?.success) {
           dispatch(setUserSlice(res));
         }
         return res.success;
+      }).catch((err) => {
+        if (err.message === 'token auth err') {
+          updateToken()
+            .then((res) => console.log('[getUser().getUserRequest().updateToken()', res));
+          // .then(() => window.location.reload());
+        }
       });
   }
 
@@ -37,12 +43,14 @@ export function useProvideAuth() {
   async function signIn({ email, password }) {
     const data = await login({ email, password })
       .then((res) => {
+        deleteCookie('accessToken');
         setCookie('accessToken', res.accessToken.split('Bearer ')[1]);
         localStorage.setItem('refreshToken', res.refreshToken);
         return res;
       });
     if (data.success) {
       await dispatch(setUserSlice(data));
+      deleteCookie('codeIsRequested');
       return data.success;
     }
 

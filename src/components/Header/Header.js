@@ -35,7 +35,6 @@ function Header() {
 
   return (
     <header className={`mt-2 pt-4 pb-4 ${style.header}`}>
-
       <nav className={style.nav}>
         {user.success && (
         <>

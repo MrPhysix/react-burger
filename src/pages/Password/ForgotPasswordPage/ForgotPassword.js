@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   EmailInput,
@@ -6,27 +6,13 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import FormElement from '../../../components/FormElement/FormElement';
-import additionalActions from '../index';
-import { forgotPassword } from '../../../utils/api/password';
+import { additionalActions, forgotRequest } from '../index';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
-
-  // effects
-  useEffect(() => () => {
-    console.log('email', email);
-  }, [email]);
-
   // handlers
-  const onForgotPassword = () => {
-    forgotPassword(email)
-      .then((res) => {
-        console.log('onReset', res);
-        return res;
-      })
-      .then((res) => res.success && navigate('/reset-password'));
-  };
+  const onSubmit = () => forgotRequest().then((res) => res && navigate('/reset-password'));
 
   return (
     <main className="main">
@@ -34,8 +20,9 @@ function ForgotPassword() {
         title="Восстановление пароля"
         submitText="Восстановить"
         additionalActions={additionalActions}
-        onSubmit={onForgotPassword}
+        onSubmit={onSubmit}
         isActive={email !== ''}
+        isLoading={false}
       >
         <EmailInput
           onChange={(e) => setEmail(e.target.value)}
