@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 //
 import IngredientCard from '../IngredientCard/IngredientCard';
 import style from './ingredients-list.module.css';
-import dataObjectPropTypes from '../../../utils/propTypes';
+import ingredientPropTypes from '../../../utils/propTypes';
 
 function IngredientsList({ ingredients, name }) {
   return (
@@ -14,9 +14,7 @@ function IngredientsList({ ingredients, name }) {
         ingredients.map((item) => (
           <IngredientCard
             key={item._id}
-            name={item.name}
-            img={item.image}
-            price={item.price}
+            item={item}
           />
         ))
       }
@@ -26,7 +24,7 @@ function IngredientsList({ ingredients, name }) {
 }
 
 IngredientsList.propTypes = {
-  ingredients: PropTypes.objectOf(dataObjectPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
   name: PropTypes.string.isRequired,
 };
 

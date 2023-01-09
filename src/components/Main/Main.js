@@ -5,19 +5,19 @@ import style from './main.module.css';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 //
-import dataObjectPropTypes from '../../utils/propTypes';
+import ingredientPropTypes from '../../utils/propTypes';
 
-function Main({ data }) {
+function Main({ ingredients }) {
   return (
-    <main className={style}>
-      <BurgerIngredients data={data} />
-      <BurgerConstructor data={data} />
+    <main className={style.main}>
+      <BurgerIngredients ingredients={ingredients} />
+      <BurgerConstructor ingredients={ingredients} />
     </main>
   );
 }
 
 Main.propTypes = {
-  data: PropTypes.arrayOf(dataObjectPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
 };
 
 export default Main;

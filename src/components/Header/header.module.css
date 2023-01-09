@@ -8,3 +8,7 @@
     display: flex;
     flex: 1;
 }
+
+.justify__end {
+    justify-content: flex-end;
+}
