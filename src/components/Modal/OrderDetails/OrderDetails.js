@@ -5,10 +5,7 @@ import DoneImage from '../../../images/done.svg';
 import { orderPropTypes } from '../../../utils/propTypes';
 
 function OrderDetails({ order }) {
-  console.log(order);
-
   if (!order || order.success !== true) return <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />;
-
   return (
     <>
       <h3 className={`${style.title} text text_type_digits-large mb-8 ml-15 mr-15`}>{order.order.number}</h3>
