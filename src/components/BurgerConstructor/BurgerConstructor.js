@@ -5,6 +5,7 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,15 +21,20 @@ import {
   addConstructorBun,
   addConstructorIngredient,
   swapConstructorIngredients,
+  resetConstructorIngredients,
 } from '../../services/reducers/constructorIngredientsSlice';
 
 function BurgerConstructor() {
   // consts
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  // states
   const { constructorIngredients, bun } = useSelector(
     (state) => state.constructorIngredients,
   );
   const { order } = useSelector((state) => state);
+  const { user } = useSelector((state) => state);
   //
   const totalPrice = useMemo(
     () => constructorIngredients.reduce((total, curr) => {
@@ -47,7 +53,15 @@ function BurgerConstructor() {
         })
         .then(() => dispatch(openOrder()));
     },
-    close: () => dispatch(resetOrder()),
+    close: () => {
+      dispatch(resetOrder());
+      dispatch(resetConstructorIngredients());
+    },
+  };
+
+  const handleOrderSubmit = () => {
+    if (!user || user?.success === false) navigate('/login', { state: { from: location } });
+    return user.success && handleOrderModal.open();
   };
 
   const addIngredientToConstructor = (item) => {
@@ -94,7 +108,7 @@ function BurgerConstructor() {
     <>
       {order.isOpen && (
         <Modal handleClose={handleOrderModal.close}>
-          <OrderDetails order={order} />
+          <OrderDetails order={order} isLoading />
         </Modal>
       )}
       {(constructorIngredients.length === 0 && !bun) ? (
@@ -155,7 +169,7 @@ function BurgerConstructor() {
               type="primary"
               size="large"
               htmlType="button"
-              onClick={() => handleOrderModal.open()}
+              onClick={handleOrderSubmit}
             >
               Оформить заказ
             </Button>

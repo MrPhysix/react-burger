@@ -7,19 +7,70 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
+import { NavLink } from 'react-router-dom';
 import style from './header.module.css';
-import HeaderLink from './HeaderLink/HeaderLink';
+
+const linkClassNames = ({ isActive }) => `text_type_main-small pl-5 pr-5 pt-4 pb-4 no-select ${style.link} ${isActive && style.linkActive}`;
+const iconClassNames = (isActive) => (isActive ? 'primary' : 'secondary');
+const textClassNames = (isActive) => `ml-2 ${!isActive && 'text_color_inactive'}`;
+
+const sections = [
+  {
+    text: 'Конструктор',
+    path: '/',
+  },
+  {
+    text: 'Лента заказов',
+    path: '/ff',
+  },
+  {
+    text: 'Личный кабинет',
+    path: '/profile',
+  },
+];
 
 function Header() {
   return (
-    <header className={style.header}>
+    <header className={`mt-2 pt-4 pb-4 ${style.header}`}>
       <nav className={style.nav}>
-        <HeaderLink link="#" text="Конструктор" selected><BurgerIcon type="primary" /></HeaderLink>
-        <HeaderLink link="#" text="Лента заказов"><ListIcon type="secondary" /></HeaderLink>
+        <NavLink
+          to={sections[0].path}
+          className={linkClassNames}
+        >
+          {({ isActive }) => (
+            <>
+              <BurgerIcon type={iconClassNames(isActive)} />
+              <span className={textClassNames(isActive)}>{sections[0].text}</span>
+            </>
+          )}
+        </NavLink>
+        <NavLink
+          to={sections[1].path}
+          className={linkClassNames}
+        >
+          {({ isActive }) => (
+            <>
+              <ListIcon type={iconClassNames(isActive)} />
+              <span className={textClassNames(isActive)}>{sections[1].text}</span>
+            </>
+          )}
+        </NavLink>
       </nav>
-      <Logo />
+
+      <NavLink to="/"><Logo /></NavLink>
+
       <nav className={`${style.nav} + ${style.justify__end}`}>
-        <HeaderLink link="#" text="Личный кабинет"><ProfileIcon type="secondary" /></HeaderLink>
+        <NavLink
+          to={sections[2].path}
+          className={linkClassNames}
+        >
+          {({ isActive }) => (
+            <>
+              <ProfileIcon type={iconClassNames(isActive)} />
+              <span className={textClassNames(isActive)}>{sections[2].text}</span>
+            </>
+          )}
+        </NavLink>
       </nav>
     </header>
   );
