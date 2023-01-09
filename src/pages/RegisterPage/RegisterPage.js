@@ -8,6 +8,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import FormElement from '../../components/FormElement/FormElement';
 import { register } from '../../utils/api';
+import checkResult from '../../utils/api/checkResult';
+import useForm from '../../hooks/useForm';
 
 const additionalActions = [
   {
@@ -20,9 +22,8 @@ const additionalActions = [
 ];
 
 function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({ name: '', email: '', password: '' });
+  const { name, email, password } = values;
   //
   const [isLoading, setIsLoading] = useState(false);
   //
@@ -33,6 +34,7 @@ function RegisterPage() {
   const onRegistration = () => {
     setIsLoading(true);
     register({ email, password, name })
+      .then((res) => checkResult(res))
       .then((res) => res.success && navigate('/login'))
       .finally(() => setIsLoading(false));
   };
@@ -50,7 +52,7 @@ function RegisterPage() {
         <Input
           type="text"
           placeholder="Имя"
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => handleChange(e)}
           value={name}
           name="name"
           error={false}
@@ -59,16 +61,17 @@ function RegisterPage() {
           size="default"
         />
         <EmailInput
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => handleChange(e)}
           value={email}
           name="email"
           placeholder="E-mail"
           autoComplete="on"
         />
         <PasswordInput
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => handleChange(e)}
           value={password}
           name="password"
+          autoComplete="on"
         />
       </FormElement>
     </main>

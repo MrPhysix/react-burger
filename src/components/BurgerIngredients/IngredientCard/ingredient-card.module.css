@@ -5,6 +5,21 @@
     cursor: pointer;
     text-decoration: none;
     color: #ffffff;
+    position: relative;
+}
+
+.counter {
+    content: '';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: royalblue;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .price {

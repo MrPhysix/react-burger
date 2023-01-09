@@ -9,7 +9,6 @@ import {
 //
 import { NavLink } from 'react-router-dom';
 import style from './header.module.css';
-import { useAuth } from '../../utils/api/auth';
 
 const linkClassNames = ({ isActive }) => `text_type_main-small pl-5 pr-5 pt-4 pb-4 no-select ${style.link} ${isActive && style.linkActive}`;
 const iconClassNames = (isActive) => (isActive ? 'primary' : 'secondary');
@@ -31,43 +30,36 @@ const sections = [
 ];
 
 function Header() {
-  const { user } = useAuth();
-
   return (
     <header className={`mt-2 pt-4 pb-4 ${style.header}`}>
       <nav className={style.nav}>
-        {user.success && (
-        <>
-          <NavLink
-            to={sections[0].path}
-            className={linkClassNames}
-          >
-            {({ isActive }) => (
-              <>
-                <BurgerIcon type={iconClassNames(isActive)} />
-                <span className={textClassNames(isActive)}>{sections[0].text}</span>
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to={sections[1].path}
-            className={linkClassNames}
-          >
-            {({ isActive }) => (
-              <>
-                <ListIcon type={iconClassNames(isActive)} />
-                <span className={textClassNames(isActive)}>{sections[1].text}</span>
-              </>
-            )}
-          </NavLink>
-        </>
-        )}
+        <NavLink
+          to={sections[0].path}
+          className={linkClassNames}
+        >
+          {({ isActive }) => (
+            <>
+              <BurgerIcon type={iconClassNames(isActive)} />
+              <span className={textClassNames(isActive)}>{sections[0].text}</span>
+            </>
+          )}
+        </NavLink>
+        <NavLink
+          to={sections[1].path}
+          className={linkClassNames}
+        >
+          {({ isActive }) => (
+            <>
+              <ListIcon type={iconClassNames(isActive)} />
+              <span className={textClassNames(isActive)}>{sections[1].text}</span>
+            </>
+          )}
+        </NavLink>
       </nav>
 
-      <Logo />
+      <NavLink to="/"><Logo /></NavLink>
 
       <nav className={`${style.nav} + ${style.justify__end}`}>
-        {user.success && (
         <NavLink
           to={sections[2].path}
           className={linkClassNames}
@@ -79,7 +71,6 @@ function Header() {
             </>
           )}
         </NavLink>
-        )}
       </nav>
     </header>
   );

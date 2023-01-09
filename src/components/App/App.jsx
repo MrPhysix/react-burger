@@ -4,7 +4,7 @@ import React, {
 import {
   createBrowserRouter,
   RouterProvider, Outlet,
-  Navigate,
+  Navigate, useLocation,
 } from 'react-router-dom';
 
 import { CirclesWithBar } from 'react-loader-spinner';
@@ -39,10 +39,25 @@ function Loader() {
   );
 }
 
+// eslint-disable-next-line
+const Layout = () => {
+  const location = useLocation();
+  const background = location.state && location.state.background;
+  // console.log('background', background);
+
+  return (
+    <ProvideAuth>
+      <Header />
+      <Outlet context={background} />
+    </ProvideAuth>
+  );
+};
+
 function App() {
   const dispatch = useDispatch();
   // states
   const { ingredients } = useSelector((state) => state);
+  // const background = useOutletContext();
   const { ingredientDetails } = useSelector((state) => state);
   // const
 
@@ -70,28 +85,6 @@ function App() {
 
   if (ingredients.status === 'error') return <Modal title="Произошла ошибка..." handleClose={handleErrorModalClose}><ErrorModal handleClose={handleErrorModalClose} /></Modal>;
 
-  // eslint-disable-next-line
-  const Layout = () => (
-    <ProvideAuth>
-      <Header />
-      <Outlet />
-    </ProvideAuth>
-  );
-  // const ingredientModalCheck = ingredients.ingredients.length > 0
-  // && !ingredientDetails.isOpen ? <IngredientPage /> : <Main />;
-  const ingredientRouteRequest = () => {
-    const exp = ingredients.ingredients.length > 0;
-    if (ingredients.status === 'request') {
-      return Loader;
-    } switch (true) {
-      case (exp && ingredientDetails.isOpen):
-        return <Main />;
-      case (exp && !ingredientDetails.isOpen):
-        return <IngredientPage />;
-      default: return <Main />;
-    }
-  };
-
   const router = createBrowserRouter([
     {
       path: '*',
@@ -102,15 +95,10 @@ function App() {
       children: [
         {
           path: '/',
-          element: (
-            <ProtectedRoute>
-              {
+          element:
                 ingredients.status === 'request'
                   ? <Loader />
-                  : ingredients.ingredients.length > 0 && <Main />
-              }
-            </ProtectedRoute>
-          ),
+                  : ingredients.ingredients.length > 0 && <Main />,
         },
         {
           path: '/login',
@@ -140,7 +128,14 @@ function App() {
         },
         {
           path: '/ingredients/:ingredientId',
-          element: ingredientRouteRequest(),
+          element:
+          // eslint-disable-next-line
+            ingredients.status === 'request'
+              ? <Loader />
+              : !ingredientDetails.isOpen // по идее использовать outletContext,
+                // но я не понимаю как в createBrowserRouter его не терять (background === null)
+                ? ingredients.ingredients.length > 0 && <IngredientPage />
+                : <Main />,
         },
       ],
     },

@@ -5,12 +5,15 @@ import FormElement from '../../components/FormElement/FormElement';
 import style from './profile.module.css';
 import ProfileNav from './ProfileNav/ProfileNav';
 import { useAuth } from '../../utils/api/auth';
+import useForm from '../../hooks/useForm';
 
 function Profile() {
   const { user, updateUser } = useAuth();
+
+  const { values, handleChange } = useForm({ email: user.email, password: user?.password });
+  const { email, password } = values;
+
   const [name, setName] = useState({ name: user.name, inputActive: false });
-  const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState(user?.password);
 
   // handlers
   const editUser = () => {
@@ -28,6 +31,7 @@ function Profile() {
       <div className={style.element}>
         <FormElement profile isActive>
           <Input
+            autoFocus
             onChange={(e) => setName({ ...name, name: e.target.value })}
             value={name?.name || ''}
             name="name"
@@ -36,10 +40,10 @@ function Profile() {
             icon="EditIcon"
             disabled={!name.inputActive}
             onIconClick={nameHandler}
-            onBlur={nameHandler}
+            onBlur={() => nameHandler()}
           />
           <EmailInput
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleChange(e)}
             value={email || ''}
             name="email"
             type="email"
@@ -48,7 +52,7 @@ function Profile() {
             isIcon
           />
           <PasswordInput
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => handleChange(e)}
             value={password || '******'}
             name="password"
             icon="EditIcon"

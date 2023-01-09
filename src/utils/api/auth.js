@@ -7,6 +7,7 @@ import {
 } from './index';
 import { getCookie, setCookie, deleteCookie } from '../cookie';
 import { setUserSlice, resetUserSlice } from '../../services/reducers/user';
+import checkResult from './checkResult';
 
 const AuthContext = createContext(undefined);
 
@@ -17,22 +18,33 @@ export function useProvideAuth() {
 
   function getUser() {
     return getUserRequest()
+      .then((res) => checkResult(res))
       .then((res) => {
         if (res?.success) {
           dispatch(setUserSlice(res));
         }
         return res.success;
-      }).catch((err) => {
-        if (err.message === 'token auth err') {
-          updateToken()
-            .then((res) => console.log('[getUser().getUserRequest().updateToken()', res));
-          // .then(() => window.location.reload());
-        }
+      })
+      .catch(() => {
+        updateToken()
+          .then((res) => checkResult(res))
+          .then((res) => {
+            deleteCookie('accessToken');
+            return res;
+          })
+          .then((res) => {
+            if (res.success) {
+              localStorage.setItem('refreshToken', res.refreshToken);
+              setCookie('accessToken', res.accessToken.split('Bearer ')[1]);
+            }
+            return res;
+          });
       });
   }
 
   function updateUser({ name, email }) {
     setUserInfo({ name, email })
+      .then((res) => checkResult(res))
       .then((res) => {
         if (res.success) {
           dispatch(setUserSlice({ ...user, ...res }));
@@ -42,6 +54,7 @@ export function useProvideAuth() {
 
   async function signIn({ email, password }) {
     const data = await login({ email, password })
+      .then((res) => checkResult(res))
       .then((res) => {
         deleteCookie('accessToken');
         setCookie('accessToken', res.accessToken.split('Bearer ')[1]);
@@ -59,6 +72,7 @@ export function useProvideAuth() {
 
   function signOut() {
     return logOut()
+      // .then((res) => checkResult(res))
       .then(() => {
         dispatch(resetUserSlice());
         deleteCookie('accessToken');
