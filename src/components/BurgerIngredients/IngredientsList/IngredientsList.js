@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 //
 import IngredientCard from '../IngredientCard/IngredientCard';
 import style from './ingredients-list.module.css';
-import ingredientPropTypes from '../../../utils/propTypes';
+import { ingredientPropTypes } from '../../../utils/propTypes';
 
-function IngredientsList({ ingredients, name }) {
+function IngredientsList({ ingredients, name, onIngredientClick }) {
   return (
     <section className="ingredients-list">
       <h3 className="ingredients-list__title text text_type_main-medium">{name}</h3>
@@ -15,6 +15,7 @@ function IngredientsList({ ingredients, name }) {
           <IngredientCard
             key={item._id}
             item={item}
+            onClick={onIngredientClick()}
           />
         ))
       }

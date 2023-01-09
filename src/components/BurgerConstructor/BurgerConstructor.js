@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, {
+  useState, useMemo, useContext,
+} from 'react';
 //
 import {
   CurrencyIcon,
@@ -9,23 +10,35 @@ import {
 import style from './burger-constructor.module.css';
 import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstructorElement';
 import { INGREDIENT_TYPES } from '../../utils/const';
-import ingredientPropTypes from '../../utils/propTypes';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../Modal/OrderDetails/OrderDetails';
+import { ConstructorContext, LoadingContext } from '../../utils/context';
+import getOrderDetails from '../../utils/api/order';
 
-function BurgerConstructor({ ingredients }) {
+function BurgerConstructor() {
   // consts
+  const { selectedIngredients } = useContext(ConstructorContext);
+  const { setIsLoading } = useContext(LoadingContext);
+  //
+  const [order, setOrder] = useState({});
+
   const bun = useMemo(
-    () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
-    [ingredients],
+    () => selectedIngredients.length > 0
+      && selectedIngredients.find((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
+    [selectedIngredients],
   );
+
   const noBunIngredients = useMemo(
-    () => ingredients.filter((item) => item.type !== INGREDIENT_TYPES.BUN.TYPE),
-    [ingredients],
+    () => selectedIngredients.filter((item) => item.type !== INGREDIENT_TYPES.BUN.TYPE),
+    [selectedIngredients],
   );
+
   const totalPrice = useMemo(
-    () => ingredients.reduce((total, curr) => total + curr.price, 0),
-    [ingredients],
+    () => selectedIngredients.reduce((total, curr) => {
+      if (curr.type === INGREDIENT_TYPES.BUN.TYPE) return total + curr.price * 2;
+      return total + curr.price;
+    }, 0),
+    [selectedIngredients],
   );
 
   // states
@@ -33,34 +46,47 @@ function BurgerConstructor({ ingredients }) {
 
   // handlers
   const handleOrderModal = {
-    open: () => setOrderIsOpen(true),
+    open: () => {
+      // setIsLoading(true); не получается лоадер сделать так((
+      const ids = selectedIngredients.map((i) => i._id);
+      getOrderDetails(ids)
+        .then((res) => {
+          setOrder(res);
+          setIsLoading(false);
+        })
+        .then(() => setOrderIsOpen(true))
+        .then(() => orderIsOpen && setOrder({})); // желательно очищать конструктор
+      // после успешного получения номера заказа с сервера в блоке then
+    },
     close: () => setOrderIsOpen(false),
   };
+
+  if (!selectedIngredients || selectedIngredients.length === 0) return <p className={`${style.noIngredient} text text_type_main-large`}>Ингредиенты не выбраны</p>;
 
   return (
     <>
       {
-        orderIsOpen
-        && (
-        <Modal handleClose={() => handleOrderModal.close()}>
-          <OrderDetails />
-        </Modal>
-        )
+      orderIsOpen
+         && (
+           <Modal handleClose={() => handleOrderModal.close()}>
+             <OrderDetails order={order} />
+           </Modal>
+         )
       }
       <section className={`${style.element} pt-25 pl-4`}>
         <ul className={style.ul}>
-          <BurgerConstructorElement data={bun[0]} position="top" />
+          {bun && <BurgerConstructorElement data={bun} position="top" />}
           <ul className={`${style.scroll} scroll`}>
             {
-            noBunIngredients.map((item) => (
-              <BurgerConstructorElement
-                key={item._id}
-                data={item}
-              />
-            ))
+              noBunIngredients.map((item) => (
+                <BurgerConstructorElement
+                  key={item._key}
+                  data={item}
+                />
+              ))
            }
           </ul>
-          <BurgerConstructorElement data={bun[1]} position="bottom" />
+          {bun && <BurgerConstructorElement data={bun} position="bottom" />}
         </ul>
         <div className={`${style.info} mt-10`}>
           <div className={`${style.price} mr-10`}>
@@ -75,9 +101,5 @@ function BurgerConstructor({ ingredients }) {
     </>
   );
 }
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
-};
 
 export default BurgerConstructor;

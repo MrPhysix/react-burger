@@ -15,4 +15,14 @@ const ingredientPropTypes = PropTypes.shape({
   __v: PropTypes.number,
 });
 
-export default ingredientPropTypes;
+const orderPropTypes = PropTypes.shape(
+  {
+    name: PropTypes.string.isRequired,
+    order: PropTypes.shape({
+      number: PropTypes.number.isRequired,
+    }).isRequired,
+    success: PropTypes.bool.isRequired,
+  },
+);
+
+export { ingredientPropTypes, orderPropTypes };
