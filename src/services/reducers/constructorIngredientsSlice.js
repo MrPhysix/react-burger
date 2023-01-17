@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  constructorIngredients: [],
+  bun: null,
+};
+
 const constructorIngredientsSlice = createSlice({
   name: 'constructorIngredients',
-  initialState: {
-    constructorIngredients: [],
-    bun: null,
-  },
+  initialState,
   reducers: {
     getConstructorIngredients(state, action) {
       state.constructorIngredients = action.payload;
@@ -24,6 +26,7 @@ const constructorIngredientsSlice = createSlice({
 
       state.constructorIngredients = ingredients;
     },
+    resetConstructorIngredients: () => initialState,
   },
 });
 
@@ -32,5 +35,6 @@ export const {
   addConstructorIngredient,
   addConstructorBun,
   swapConstructorIngredients,
+  resetConstructorIngredients,
 } = constructorIngredientsSlice.actions;
 export default constructorIngredientsSlice.reducer;

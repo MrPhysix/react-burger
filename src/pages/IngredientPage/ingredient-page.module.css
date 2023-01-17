@@ -1,0 +1,7 @@
+.section {
+    margin-top: 15vh;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 30vw;
+}

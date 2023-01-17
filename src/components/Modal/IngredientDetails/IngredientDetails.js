@@ -16,6 +16,7 @@ function NutritionValue({ children, value }) {
 function IngredientDetails({ ingredient }) {
   return (
     <>
+      <h3 className={`text text_type_main-large mb-10 ${style.h3}`}>Детали ингредиента</h3>
       <img src={ingredient.image_large} className="ml-4 mr-4" alt={ingredient.name} />
       <p className="text text_type_main-medium mt-4 mb-8">{ingredient.name}</p>
       <ul className={style.ul}>

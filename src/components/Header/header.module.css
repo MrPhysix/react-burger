@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /*background-color: #1C1C21;*/
 }
 
 .nav {
@@ -11,4 +12,21 @@
 
 .justify__end {
     justify-content: flex-end;
+}
+
+.link {
+    border-radius: 40px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    min-height: 16px;
+    max-height: 56px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.linkActive {
+    color: #fff;
 }

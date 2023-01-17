@@ -27,9 +27,18 @@ body::before {
 
 #root {
   display: flex;
+  height: 100vh;
   flex-direction: column;
   padding: 0 2vw;
 }
+
+.main {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
 
 .loading-spinner {
   display: flex;
@@ -38,3 +47,10 @@ body::before {
   height: 90vh;
 }
 
+.loading-spinner-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+
+}
