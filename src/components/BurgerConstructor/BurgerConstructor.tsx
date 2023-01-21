@@ -23,6 +23,7 @@ import {
   swapConstructorIngredients,
   resetConstructorIngredients,
 } from '../../services/reducers/constructorIngredientsSlice';
+import { TIngredient } from '../../types';
 
 function BurgerConstructor() {
   // consts
@@ -30,14 +31,14 @@ function BurgerConstructor() {
   const navigate = useNavigate();
   const location = useLocation();
   // states
-  const { constructorIngredients, bun } = useSelector(
+  const { constructorIngredients, bun }: any = useSelector<any>(
     (state) => state.constructorIngredients,
   );
-  const { order } = useSelector((state) => state);
-  const { user } = useSelector((state) => state);
+  const { order }: any = useSelector((state) => state);
+  const { user }: any = useSelector((state) => state);
   //
   const totalPrice = useMemo(
-    () => constructorIngredients.reduce((total, curr) => {
+    () => constructorIngredients.reduce((total: number, curr: TIngredient) => {
       if (curr.type === INGREDIENT_TYPES.BUN.TYPE) return total + curr.price * 2;
       return total + curr.price;
     }, 0),
@@ -46,7 +47,7 @@ function BurgerConstructor() {
 
   const handleOrderModal = {
     open: () => {
-      const ids = constructorIngredients.map((i) => i._id);
+      const ids = constructorIngredients.map((i: TIngredient) => i._id);
       getOrderDetails(ids)
         .then((res) => {
           dispatch(setOrder(res));
@@ -64,7 +65,7 @@ function BurgerConstructor() {
     return user.success && handleOrderModal.open();
   };
 
-  const addIngredientToConstructor = (item) => {
+  const addIngredientToConstructor = (item: TIngredient) => {
     const isBun = item.type === INGREDIENT_TYPES.BUN.TYPE;
     if (isBun) {
       return dispatch(addConstructorBun(item));
@@ -76,13 +77,13 @@ function BurgerConstructor() {
   };
 
   // r dnd
-  const dropHandler = (item) => {
+  const dropHandler = (item: TIngredient) => {
     addIngredientToConstructor(item);
   };
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: 'ingredientCard',
-    drop(item) {
+    drop(item: TIngredient) {
       dropHandler(item);
     },
     collect: (monitor) => ({
@@ -90,7 +91,7 @@ function BurgerConstructor() {
     }),
   });
 
-  const moveIngredient = (fromIndex, toIndex) => {
+  const moveIngredient = (fromIndex: number, toIndex: number): void => {
     dispatch(swapConstructorIngredients([fromIndex, toIndex]));
   };
 
@@ -108,7 +109,7 @@ function BurgerConstructor() {
     <>
       {order.isOpen && (
         <Modal handleClose={handleOrderModal.close}>
-          <OrderDetails order={order} isLoading />
+          <OrderDetails order={order} />
         </Modal>
       )}
       {(constructorIngredients.length === 0 && !bun) ? (
@@ -140,7 +141,7 @@ function BurgerConstructor() {
             <ul className={`${style.scroll} scroll`}>
               {
                 constructorIngredients.map(
-                  (item, index) => (
+                  (item: TIngredient & { _key: string}, index: number) => (
                     <BurgerConstructorElement
                       moveIngredient={moveIngredient}
                       key={item._key}

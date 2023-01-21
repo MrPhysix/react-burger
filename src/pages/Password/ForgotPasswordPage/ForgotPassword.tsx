@@ -12,8 +12,12 @@ function ForgotPassword() {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
   // handlers
-  const onSubmit = () => forgotRequest().then((res) => res && navigate('/reset-password'));
-
+  const onSubmit = (): void => {
+    forgotRequest(email)
+      .then((res) => {
+        if (res) navigate('/reset-password');
+      });
+  };
   return (
     <main className="main">
       <FormElement

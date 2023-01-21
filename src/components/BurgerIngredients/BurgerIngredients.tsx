@@ -19,42 +19,46 @@ import {
   resetIngredientDetails,
   setIngredientDetails,
 } from '../../services/reducers/ingredientDetails';
+import { TIngredient } from '../../types';
 
 function BurgerIngredients() {
   //
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state) => state.ingredients);
+  const { ingredients }: any = useSelector<any>((state) => state.ingredients);
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN.TYPE);
-  const { ingredientDetails } = useSelector((state) => state);
+  const { ingredientDetails }: any = useSelector((state) => state);
   //
   const navigate = useNavigate();
   // refs
   const [
     scrollRef, bunRef, mainRef, sauceRef,
-  ] = [useRef(), useRef(), useRef(), useRef()];
+  ] = [useRef<HTMLUListElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null)];
   //
 
   const bun = useMemo(
-    () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.BUN.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.BUN.TYPE),
     [ingredients],
   );
 
   const main = useMemo(
-    () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.MAIN.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.MAIN.TYPE),
     [ingredients],
   );
   const sauce = useMemo(
-    () => ingredients.filter((item) => item.type === INGREDIENT_TYPES.SAUCE.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.SAUCE.TYPE),
     [ingredients],
   );
 
   // handlers
-  const handleDetailsModal = (item) => {
+  const handleDetailsModal = (item: TIngredient): void => {
     dispatch(setIngredientDetails(item));
     dispatch(openIngredientDetails());
   };
 
-  const handleDetailsModalClose = () => {
+  const handleDetailsModalClose = (): void => {
     dispatch(resetIngredientDetails());
     navigate('/');
   };
@@ -62,8 +66,10 @@ function BurgerIngredients() {
   useEffect(() => {
     const scrollElement = scrollRef.current;
 
-    const scrollListener = () => {
-      const scrollElementTop = scrollRef.current.getBoundingClientRect().top;
+    const scrollListener = (): null => {
+      if (!scrollElement || !bunRef.current || !mainRef.current || !sauceRef.current) return null;
+
+      const scrollElementTop = scrollElement.getBoundingClientRect().top;
       const bunTab = Math.abs(scrollElementTop - bunRef.current.getBoundingClientRect().top);
       const mainTab = Math.abs(scrollElementTop - mainRef.current.getBoundingClientRect().top);
       const sauceTab = Math.abs(scrollElementTop - sauceRef.current.getBoundingClientRect().top);
@@ -80,17 +86,22 @@ function BurgerIngredients() {
           default: return state;
         }
       });
+      return null;
     };
 
-    scrollElement.addEventListener('scroll', scrollListener);
+    scrollElement?.addEventListener('scroll', scrollListener);
 
     return () => {
-      scrollElement.removeEventListener('scroll', scrollListener);
+      scrollElement?.removeEventListener('scroll', scrollListener);
     };
   }, []);
 
-  const scrollToList = (ref) => ref.current.scrollIntoView();
-  const handleTabClick = (type, ref) => {
+  const scrollToList = (ref: React.RefObject<HTMLDivElement>
+    | React.RefObject<HTMLUListElement>) => {
+    ref.current?.scrollIntoView();
+  };
+  const handleTabClick = (type: string, ref: React.RefObject<HTMLDivElement>
+    | React.RefObject<HTMLUListElement>) => {
     scrollToList(ref);
     setCurrent(type);
   };

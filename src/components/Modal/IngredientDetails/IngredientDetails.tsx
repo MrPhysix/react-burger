@@ -1,10 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { ingredientPropTypes } from '../../../utils/propTypes';
+
 import style from './ingredient-details.module.css';
+import { TIngredient } from '../../../types';
 //
 
-function NutritionValue({ children, value }) {
+interface INutritionValue {
+  children: React.ReactNode;
+  value: number;
+}
+
+function NutritionValue({ children, value }: INutritionValue) {
   return (
     <li className={style.value}>
       <h4 className="text text_type_main-default text_color_inactive">{children}</h4>
@@ -13,7 +18,11 @@ function NutritionValue({ children, value }) {
   );
 }
 
-function IngredientDetails({ ingredient }) {
+interface IIngredientDetails {
+  ingredient: TIngredient
+}
+
+function IngredientDetails({ ingredient }: IIngredientDetails) {
   return (
     <>
       <h3 className={`text text_type_main-large mb-10 ${style.h3}`}>Детали ингредиента</h3>
@@ -29,13 +38,13 @@ function IngredientDetails({ ingredient }) {
   );
 }
 
-NutritionValue.propTypes = {
-  children: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
-};
+// NutritionValue.propTypes = {
+//   children: PropTypes.string.isRequired,
+//   value: PropTypes.number.isRequired,
+// };
+//
+// IngredientDetails.propTypes = {
+//   ingredient: ingredientPropTypes.isRequired,
+// };
 
 export default IngredientDetails;

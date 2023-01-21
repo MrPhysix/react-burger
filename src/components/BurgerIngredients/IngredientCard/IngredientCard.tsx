@@ -9,8 +9,15 @@ import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import style from './ingredient-card.module.css';
 import { ingredientPropTypes } from '../../../utils/propTypes';
+import { TIngredient } from '../../../types';
 
-function IngredientCard({ item, onClick, count }) {
+interface IIngredientCard {
+  item: TIngredient;
+  onClick: Function;
+  count: number;
+}
+
+function IngredientCard({ item, onClick, count }: IIngredientCard) {
   const [, dragRef] = useDrag({
     type: 'ingredientCard',
     item,

@@ -8,7 +8,7 @@ import { useAuth } from '../../utils/api/auth';
 import useForm from '../../hooks/useForm';
 
 function Profile() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser }: any = useAuth();
 
   const { values, handleChange } = useForm({ email: user.email, password: user?.password });
   const { email, password } = values;
@@ -16,11 +16,11 @@ function Profile() {
   const [name, setName] = useState({ name: user.name, inputActive: false });
 
   // handlers
-  const editUser = () => {
+  const editUser = (): void => {
     updateUser({ name: name.name, email });
   };
 
-  const nameHandler = () => {
+  const nameHandler = (): void => {
     setName({ ...name, inputActive: !name?.inputActive });
     editUser();
   };
@@ -40,13 +40,13 @@ function Profile() {
             icon="EditIcon"
             disabled={!name.inputActive}
             onIconClick={nameHandler}
-            onBlur={() => nameHandler()}
+            onBlur={nameHandler}
           />
           <EmailInput
             onChange={(e) => handleChange(e)}
             value={email || ''}
             name="email"
-            type="email"
+            // type="email"
             placeholder="Логин"
             onBlur={editUser}
             isIcon

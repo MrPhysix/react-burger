@@ -4,9 +4,15 @@ import { NavLink } from 'react-router-dom';
 import style from './profile-nav.module.css';
 import { useAuth } from '../../../utils/api/auth';
 
-const classNames = ({ isActive }) => `text text_type_main-medium text_color_inactive ${style.link} ${isActive && style.linkActive}`;
+const classNames = ({ isActive }: { isActive: boolean}) => `text text_type_main-medium text_color_inactive ${style.link} ${isActive && style.linkActive}`;
 
-const actions = [
+interface IActions {
+  text: string;
+  path: string;
+  note?: string;
+}
+
+const actions: Array<IActions> = [
   {
     text: 'Профиль',
     path: '/profile',
@@ -23,7 +29,7 @@ const actions = [
 ];
 
 function ProfileNav() {
-  const { signOut } = useAuth();
+  const { signOut }: any = useAuth();
 
   return (
     <nav className={style.nav}>
@@ -39,7 +45,7 @@ function ProfileNav() {
       <button
         type="button"
         className={`text text_type_main-medium text_color_inactive ${style.link}`}
-        onClick={(evt) => {
+        onClick={(evt: React.SyntheticEvent) => {
           evt.preventDefault();
           signOut();
         }}

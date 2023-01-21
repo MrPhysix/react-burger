@@ -2,10 +2,15 @@ import React from 'react';
 import { CirclesWithBar } from 'react-loader-spinner';
 import style from './order-details.module.css';
 import DoneImage from '../../../images/done.svg';
-import { orderPropTypes } from '../../../utils/propTypes';
+import { TOrder } from '../../../types';
 
-function OrderDetails({ order }) {
-  if (!order || order.success !== true) return <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />;
+interface IOrderDetails {
+  order: TOrder;
+
+}
+
+function OrderDetails({ order }: IOrderDetails) {
+  if (!order || order?.success !== true) return <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />;
 
   return (
     <>
@@ -18,8 +23,8 @@ function OrderDetails({ order }) {
   );
 }
 
-OrderDetails.propTypes = {
-  order: orderPropTypes.isRequired,
-};
+// OrderDetails.propTypes = {
+//   order: orderPropTypes.isRequired,
+// };
 
 export default OrderDetails;

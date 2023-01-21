@@ -12,17 +12,31 @@ import { useDrag, useDrop } from 'react-dnd';
 import style from './burger-constructor-element.module.css';
 import { ingredientPropTypes } from '../../../utils/propTypes';
 import { getConstructorIngredients } from '../../../services/reducers/constructorIngredientsSlice';
+import { TIngredient } from '../../../types';
+
+type TdragItem = {
+  id: string;
+  index: number;
+}
+
+interface IBurgerConstructorElement {
+  data: TIngredient;
+  position?: 'top' | 'bottom';
+  moveIngredient: Function;
+  index?: number;
+  id?: string;
+}
 
 function BurgerConstructorElement({
   data, position,
   moveIngredient, index,
   id,
-}) {
+}: IBurgerConstructorElement) {
   // const
   const dispatch = useDispatch();
-  const { constructorIngredients } = useSelector((state) => state.constructorIngredients);
+  const { constructorIngredients }: any = useSelector<any>((state) => state.constructorIngredients);
   const bunPosText = position && position === 'bottom' ? '(низ)' : position && '(вверх)';
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
 
   const [{ isDragging }, drag] = useDrag({
     type: 'constructorIngredient',
@@ -32,14 +46,14 @@ function BurgerConstructorElement({
     }),
   });
   /* eslint no-param-reassign: "error" */
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop]: any = useDrop<any>({
     accept: 'constructorIngredient',
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(dragItem, monitor) {
+    hover(dragItem: TdragItem, monitor) {
       if (!ref.current) return;
 
       const dragIndex = dragItem.index;
@@ -50,20 +64,25 @@ function BurgerConstructorElement({
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
+
+      if (!clientOffset) return;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
       // Dragging downwards
+      // @ts-ignore
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       // Dragging upwards
+      // @ts-ignore
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
       moveIngredient(dragIndex, hoverIndex);
+      // @ts-ignore
       dragItem.index = hoverIndex;
     },
   });
   drag(drop(ref));
   // handlers
   const handleRemoveFromConstructor = () => {
-    const updatedIngredients = constructorIngredients.filter((item) => item !== data);
+    const updatedIngredients = constructorIngredients.filter((item: TIngredient) => item !== data);
     dispatch(getConstructorIngredients(updatedIngredients));
   };
 
@@ -81,7 +100,7 @@ function BurgerConstructorElement({
         text={`${data.name} ${bunPosText || ''}`}
         thumbnail={data.image}
         price={data.price}
-        isLocked={position}
+        isLocked={Boolean(position)}
         handleClose={handleRemoveFromConstructor}
         data-handler-id={handlerId}
       />
@@ -90,13 +109,13 @@ function BurgerConstructorElement({
   );
 }
 
-BurgerConstructorElement.propTypes = {
-  data: ingredientPropTypes.isRequired,
-  position: PropTypes.string,
-  moveIngredient: PropTypes.func.isRequired,
-  index: PropTypes.number,
-  id: PropTypes.string,
-};
+// BurgerConstructorElement.propTypes = {
+//   data: ingredientPropTypes.isRequired,
+//   position: PropTypes.string,
+//   moveIngredient: PropTypes.func.isRequired,
+//   index: PropTypes.number,
+//   id: PropTypes.string,
+// };
 
 BurgerConstructorElement.defaultProps = {
   position: null,

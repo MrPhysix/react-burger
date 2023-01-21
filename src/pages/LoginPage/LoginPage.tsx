@@ -7,8 +7,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import FormElement from '../../components/FormElement/FormElement';
 import { useAuth } from '../../utils/api/auth';
 import useForm from '../../hooks/useForm';
+import { TAdditionalActions } from '../../types';
 
-const additionalActions = [
+const additionalActions: TAdditionalActions = [
   {
     text: 'Вы — новый пользователь?',
     link: {
@@ -26,7 +27,7 @@ const additionalActions = [
 ];
 
 function LoginPage() {
-  const { signIn } = useAuth();
+  const { signIn }: any = useAuth();
 
   const { values, handleChange } = useForm({ email: '', password: '' });
   const { email, password } = values;
@@ -38,10 +39,13 @@ function LoginPage() {
   const location = useLocation();
 
   // handlers
-  const onLogin = () => {
+  const onLogin = (): void => {
     setIsLoading(true);
     signIn({ email, password })
-      .finally(() => setIsLoading(false) && navigate(location.state?.from?.pathname || '/'));
+      .finally(() => {
+        setIsLoading(false);
+        navigate(location.state?.from?.pathname || '/');
+      });
   };
 
   return (

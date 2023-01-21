@@ -1,15 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import { CirclesWithBar } from 'react-loader-spinner';
 import style from './form-element.module.css';
+import { TAdditionalActions } from '../../types';
+
+interface IFormElement {
+  title?: string;
+  children: React.ReactNode;
+  submitText?: string;
+  onSubmit?: Function;
+  additionalActions?: TAdditionalActions;
+  profile?: boolean;
+  isActive: boolean;
+  isLoading?: boolean;
+}
 
 function FormElement({
   title, children, submitText,
   onSubmit, additionalActions, profile,
   isActive, isLoading,
-}) {
+}: IFormElement) {
   const loader = (
     <CirclesWithBar
       width="24"
@@ -19,10 +30,16 @@ function FormElement({
     />
   );
 
+  // handlers
+  const handleSubmit = (evt: React.SyntheticEvent): void => {
+    evt.preventDefault();
+    onSubmit?.(); // Cannot invoke an object which is possibly 'undefined'. --fix
+  };
+
   return (
     <form
       className={!profile ? style.form : style.formProfile}
-      onSubmit={(evt) => { evt.preventDefault(); onSubmit(); }}
+      onSubmit={handleSubmit}
     >
       {title && <h2 className="text text_type_main-medium mb-6">{title}</h2>}
       <div className={style.inputs}>{children}</div>
@@ -59,30 +76,31 @@ function FormElement({
   );
 }
 
-FormElement.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element.isRequired).isRequired,
-    PropTypes.element.isRequired]).isRequired,
-  submitText: PropTypes.string,
-  onSubmit: PropTypes.func,
-  additionalActions: PropTypes.arrayOf(PropTypes.shape({
-    text: PropTypes.string.isRequired,
-    link: PropTypes.shape({
-      path: PropTypes.string,
-      text: PropTypes.string,
-    }),
-  })),
-  isActive: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool,
-};
-
+// FormElement.propTypes = {
+//   title: PropTypes.string,
+//   children: PropTypes.oneOfType([
+//     PropTypes.arrayOf(PropTypes.element.isRequired).isRequired,
+//     PropTypes.element.isRequired]).isRequired,
+//   submitText: PropTypes.string,
+//   onSubmit: PropTypes.func,
+//   additionalActions: PropTypes.arrayOf(PropTypes.shape({
+//     text: PropTypes.string.isRequired,
+//     link: PropTypes.shape({
+//       path: PropTypes.string,
+//       text: PropTypes.string,
+//     }),
+//   })),
+//   isActive: PropTypes.bool.isRequired,
+//   isLoading: PropTypes.bool,
+// };
+//
 FormElement.defaultProps = {
   title: '',
   submitText: null,
   additionalActions: null,
   onSubmit: null,
   isLoading: false,
+  profile: false,
 };
 
 export default FormElement;

@@ -1,5 +1,7 @@
 import React, {
+  FC,
   useEffect, useCallback,
+  ReactElement,
 } from 'react';
 import {
   createBrowserRouter,
@@ -26,8 +28,8 @@ import { ProvideAuth } from '../../utils/api/auth';
 import Page404 from '../../pages/Page404/Page404';
 import { getCookie } from '../../utils/cookie';
 import IngredientPage from '../../pages/IngredientPage/IngredientPage';
-
 //
+
 function Loader() {
   return (
     <CirclesWithBar
@@ -40,7 +42,7 @@ function Loader() {
 }
 
 // eslint-disable-next-line
-const Layout = () => {
+const Layout: FC = () => {
   const location = useLocation();
   const background = location.state && location.state.background;
   // console.log('background', background);
@@ -53,26 +55,25 @@ const Layout = () => {
   );
 };
 
-function App() {
+function App(): ReactElement {
   const dispatch = useDispatch();
   // states
-  const { ingredients } = useSelector((state) => state);
+  const { ingredients }: any = useSelector((state) => state);
   // const background = useOutletContext();
-  const { ingredientDetails } = useSelector((state) => state);
+  const { ingredientDetails }: any = useSelector((state) => state);
   // const
-
   const codeIsRequested = getCookie('codeIsRequested');
 
   // callbacks
   const getInitialData = useCallback(
     () => {
-      dispatch(fetchIngredients());
+      dispatch(fetchIngredients() as any);
     },
     [dispatch],
   );
 
   // handlers
-  const handleErrorModalClose = () => {
+  const handleErrorModalClose: FC = (): any => {
     window.location.reload();
   };
 
