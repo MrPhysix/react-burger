@@ -41,10 +41,4 @@ const IngredientsList = forwardRef((
   );
 });
 
-// IngredientsList.propTypes = {
-//   ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-//   onIngredientClick: PropTypes.func.isRequired,
-//   name: PropTypes.string.isRequired,
-// };
-
 export default IngredientsList;

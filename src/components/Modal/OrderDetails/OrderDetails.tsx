@@ -23,8 +23,4 @@ function OrderDetails({ order }: IOrderDetails) {
   );
 }
 
-// OrderDetails.propTypes = {
-//   order: orderPropTypes.isRequired,
-// };
-
 export default OrderDetails;

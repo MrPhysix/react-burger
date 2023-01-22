@@ -93,7 +93,17 @@ export function ProvideAuth({ children }) {
   const auth = useProvideAuth();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
-
 export function useAuth() {
   return useContext(AuthContext);
 }
+
+// // @ts-ignore
+// export function ProvideAuth<T>({ children }: {children: React.ReactNode}): React.Provider<T>  {
+//   const auth = useProvideAuth();
+//   // @ts-ignore
+//   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+// }
+//
+// export function useAuth<T >(): T | undefined {
+//   return useContext(AuthContext);
+// }

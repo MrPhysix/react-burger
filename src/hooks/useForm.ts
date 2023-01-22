@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-function useForm<Type>(inputValue: Type) {
+function useForm<Type extends {[key: string]: string}>(inputValue: Type) {
   const [values, setValues] = useState(inputValue);
 
   const handleChange = (event: React.ChangeEvent) => {
-    const { value, name }: any = event.target;
+    const { value, name } = event.target as HTMLInputElement;
     setValues({ ...values, [name]: value });
   };
   return { values, handleChange, setValues };

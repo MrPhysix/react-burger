@@ -14,10 +14,9 @@ function ForgotPassword() {
   // handlers
   const onSubmit = (): void => {
     forgotRequest(email)
-      .then((res) => {
-        if (res) navigate('/reset-password');
-      });
+      .then(() => navigate('/reset-password'));
   };
+  //
   return (
     <main className="main">
       <FormElement

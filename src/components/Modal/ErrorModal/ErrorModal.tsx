@@ -17,8 +17,4 @@ function ErrorModal({ handleClose }: IErrorModal) {
   );
 }
 
-// Modal.propTypes = {
-//   handleClose: PropTypes.func.isRequired,
-// };
-
 export default ErrorModal;

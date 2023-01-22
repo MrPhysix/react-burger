@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 //
 import {
   DragIcon,
@@ -10,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 //
 import { useDrag, useDrop } from 'react-dnd';
 import style from './burger-constructor-element.module.css';
-import { ingredientPropTypes } from '../../../utils/propTypes';
 import { getConstructorIngredients } from '../../../services/reducers/constructorIngredientsSlice';
 import { TIngredient } from '../../../types';
 
@@ -108,14 +106,6 @@ function BurgerConstructorElement({
     </li>
   );
 }
-
-// BurgerConstructorElement.propTypes = {
-//   data: ingredientPropTypes.isRequired,
-//   position: PropTypes.string,
-//   moveIngredient: PropTypes.func.isRequired,
-//   index: PropTypes.number,
-//   id: PropTypes.string,
-// };
 
 BurgerConstructorElement.defaultProps = {
   position: null,

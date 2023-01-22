@@ -38,13 +38,4 @@ function IngredientDetails({ ingredient }: IIngredientDetails) {
   );
 }
 
-// NutritionValue.propTypes = {
-//   children: PropTypes.string.isRequired,
-//   value: PropTypes.number.isRequired,
-// };
-//
-// IngredientDetails.propTypes = {
-//   ingredient: ingredientPropTypes.isRequired,
-// };
-
 export default IngredientDetails;

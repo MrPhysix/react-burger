@@ -49,15 +49,6 @@ function Modal({
   return createPortal(jsx, root);
 }
 
-// Modal.propTypes = {
-//   children: PropTypes.oneOfType([
-//     PropTypes.arrayOf(PropTypes.node),
-//     PropTypes.node,
-//   ]).isRequired,
-//   title: PropTypes.string,
-//   handleClose: PropTypes.func.isRequired,
-// };
-
 Modal.defaultProps = {
   title: '',
 };

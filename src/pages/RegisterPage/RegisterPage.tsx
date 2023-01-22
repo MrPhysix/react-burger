@@ -36,7 +36,7 @@ function RegisterPage() {
     setIsLoading(true);
     register({ email, password, name })
       .then((res) => checkResult(res))
-      .then((res) => res.success && navigate('/login'))
+      .then((res) => res && navigate('/login'))
       .finally(() => setIsLoading(false));
   };
 

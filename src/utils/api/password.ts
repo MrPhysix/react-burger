@@ -1,7 +1,12 @@
 import { API_PASSWORD_STEP1_URL, API_PASSWORD_STEP2_URL } from '../const';
 import checkResult from './checkResult';
 
-export function forgotPassword(email) {
+type TResponseForgotPassword = {
+  message: string;
+  success: boolean;
+}
+
+export function forgotPassword(email: string) {
   return fetch(API_PASSWORD_STEP1_URL, {
     method: 'POST',
     headers: {
@@ -11,11 +16,10 @@ export function forgotPassword(email) {
     body: JSON.stringify({ email }),
   })
     .then((res) => checkResult(res))
-    .then((res) => res)
-    .catch((err) => new Error(`Ошибка: ${err}`));
+    .then((res) => res as TResponseForgotPassword);
 }
 
-export function resetPassword(password, token) {
+export function resetPassword(password: string, token: string) {
   return fetch(API_PASSWORD_STEP2_URL, {
     method: 'POST',
     headers: {
@@ -25,6 +29,5 @@ export function resetPassword(password, token) {
     body: JSON.stringify({ password, token }),
   })
     .then((res) => checkResult(res))
-    .then((res) => res)
-    .catch((err) => new Error(`Ошибка: ${err}`));
+    .then((res) => res as TResponseForgotPassword);
 }

@@ -1,15 +1,15 @@
-import React, { ReactElement } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { Navigate, useLocation, RouteProps } from 'react-router-dom';
 import { useAuth } from '../../utils/api/auth';
+import { TUser } from '../../types';
 
 type TProtectedRoute = RouteProps & {
   noAuth?: boolean
 };
 
-function ProtectedRoute({ noAuth, children }: TProtectedRoute): ReactElement
-  | React.ReactNode | any {
-  // не знаю как тут тип return ставить
-  const { user }: any /* и такое */ = useAuth();
+// не работает
+function ProtectedRoute<P>({ noAuth, children }: TProtectedRoute): FC<PropsWithChildren<P>> | any {
+  const { user }: {user: TUser } | any = useAuth();
 
   const location = useLocation();
   const from = location?.state?.from || '/';

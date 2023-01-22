@@ -19,7 +19,7 @@ export function forgotRequest(email: string) {
         setCookie('codeIsRequested', res.success, { expires: 240 });
       }
       return res.success;
-    });
+    }).catch((err) => new Error(`Ошибка: ${err}`));
 }
 
 export function resetRequest(password: string, code: string) {
@@ -28,5 +28,5 @@ export function resetRequest(password: string, code: string) {
       if (res.success) {
         deleteCookie('codeIsRequested');
       }
-    });
+    }).catch((err) => new Error(`Ошибка: ${err}`));
 }

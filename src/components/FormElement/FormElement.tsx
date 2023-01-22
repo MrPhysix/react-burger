@@ -76,24 +76,6 @@ function FormElement({
   );
 }
 
-// FormElement.propTypes = {
-//   title: PropTypes.string,
-//   children: PropTypes.oneOfType([
-//     PropTypes.arrayOf(PropTypes.element.isRequired).isRequired,
-//     PropTypes.element.isRequired]).isRequired,
-//   submitText: PropTypes.string,
-//   onSubmit: PropTypes.func,
-//   additionalActions: PropTypes.arrayOf(PropTypes.shape({
-//     text: PropTypes.string.isRequired,
-//     link: PropTypes.shape({
-//       path: PropTypes.string,
-//       text: PropTypes.string,
-//     }),
-//   })),
-//   isActive: PropTypes.bool.isRequired,
-//   isLoading: PropTypes.bool,
-// };
-//
 FormElement.defaultProps = {
   title: '',
   submitText: null,
