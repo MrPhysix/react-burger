@@ -6,7 +6,7 @@ import React, {
 import {
   createBrowserRouter,
   RouterProvider, Outlet,
-  Navigate, useLocation,
+  Navigate, useLocation, useMatch,
 } from 'react-router-dom';
 
 import { CirclesWithBar } from 'react-loader-spinner';
@@ -28,6 +28,10 @@ import { ProvideAuth } from '../../utils/api/auth';
 import Page404 from '../../pages/Page404/Page404';
 import { getCookie } from '../../utils/cookie';
 import IngredientPage from '../../pages/IngredientPage/IngredientPage';
+import OrderFeed from '../../pages/OrderFeed/OrderFeed';
+import OrderInfoPage from '../../pages/OrderInfoPage/OrderInfoPage';
+import ProfileOrders from '../../pages/Profile/ProfileOrders/ProfileOrders';
+import ProfileLayout from '../../pages/Profile/ProfileLayout/ProfileLayout';
 //
 
 function Loader() {
@@ -60,7 +64,7 @@ function App(): ReactElement {
   // states
   const { ingredients }: any = useSelector((state) => state);
   // const background = useOutletContext();
-  const { ingredientDetails }: any = useSelector((state) => state);
+  const { modal }: any = useSelector((state) => state);
   // const
   const codeIsRequested = getCookie('codeIsRequested');
 
@@ -128,19 +132,39 @@ function App(): ReactElement {
           element: (<ProtectedRoute><Profile /></ProtectedRoute>),
         },
         {
+          path: '/profile/orders',
+          element: (<ProtectedRoute><ProfileOrders /></ProtectedRoute>),
+        },
+        {
+          path: '/profile/orders/1',
+          element: (
+            <ProtectedRoute>
+              {modal.isOpen
+                ? <ProfileOrders /> : <OrderInfoPage />}
+            </ProtectedRoute>
+          ),
+        },
+        {
           path: '/ingredients/:ingredientId',
           element:
           // eslint-disable-next-line
             ingredients.status === 'request'
               ? <Loader />
-              : !ingredientDetails.isOpen // по идее использовать outletContext,
+              : !modal.isOpen // по идее использовать outletContext,
                 // но я не понимаю как в createBrowserRouter его не терять (background === null)
                 ? ingredients.ingredients.length > 0 && <IngredientPage />
                 : <Main />,
         },
+        {
+          path: '/feed',
+          element: <OrderFeed />,
+        },
+        {
+          path: '/feed/1',
+          element: modal.isOpen ? <OrderFeed /> : <OrderInfoPage />,
+        },
       ],
     },
-
   ]);
 
   return <RouterProvider router={router} />;

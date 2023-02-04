@@ -1,0 +1,46 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    justify-content: center;
+}
+
+.number {
+    align-self: center;
+}
+
+.statusColor {
+    color: #00CCCC;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.ul {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-right: 24px;
+    height: 235px;
+    margin-bottom: 40px;
+}
+
+.ingredient {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.countPrice {
+    display: flex;
+    gap: 8px;
+}
+
+.under {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

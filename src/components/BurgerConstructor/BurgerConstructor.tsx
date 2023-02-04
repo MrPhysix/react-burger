@@ -14,7 +14,7 @@ import style from './burger-constructor.module.css';
 import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstructorElement';
 import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
-import OrderDetails from '../Modal/OrderDetails/OrderDetails';
+import OrderSubmitDetails from '../Modal/OrderSubmitDetails/OrderSubmitDetails';
 import getOrderDetails from '../../utils/api/order';
 import { setOrder, resetOrder, openOrder } from '../../services/reducers/order';
 import {
@@ -109,7 +109,7 @@ function BurgerConstructor() {
     <>
       {order.isOpen && (
         <Modal handleClose={handleOrderModal.close}>
-          <OrderDetails order={order} />
+          <OrderSubmitDetails order={order} />
         </Modal>
       )}
       {(constructorIngredients.length === 0 && !bun) ? (

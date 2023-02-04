@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import ingredientsReducer from './reducers/ingredientsSlice';
 import constructorIngredientsReducer from './reducers/constructorIngredientsSlice';
-import ingredientDetailsReducer from './reducers/ingredientDetails';
+import modalReducer from './reducers/modal';
 import orderReducer from './reducers/order';
 import userReducer from './reducers/user';
 
@@ -9,7 +9,7 @@ export default configureStore({
   reducer: {
     ingredients: ingredientsReducer,
     constructorIngredients: constructorIngredientsReducer,
-    ingredientDetails: ingredientDetailsReducer,
+    modal: modalReducer,
     order: orderReducer,
     user: userReducer,
   },

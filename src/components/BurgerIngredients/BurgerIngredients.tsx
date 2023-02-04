@@ -15,10 +15,10 @@ import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../Modal/IngredientDetails/IngredientDetails';
 import {
-  openIngredientDetails,
-  resetIngredientDetails,
-  setIngredientDetails,
-} from '../../services/reducers/ingredientDetails';
+  openModal,
+  resetModalInfo,
+  setModalInfo,
+} from '../../services/reducers/modal';
 import { TIngredient } from '../../types';
 
 function BurgerIngredients() {
@@ -26,7 +26,7 @@ function BurgerIngredients() {
   const dispatch = useDispatch();
   const { ingredients }: any = useSelector<any>((state) => state.ingredients);
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN.TYPE);
-  const { ingredientDetails }: any = useSelector((state) => state);
+  const { modal }: any = useSelector((state) => state);
   //
   const navigate = useNavigate();
   // refs
@@ -54,12 +54,12 @@ function BurgerIngredients() {
 
   // handlers
   const handleDetailsModal = (item: TIngredient): void => {
-    dispatch(setIngredientDetails(item));
-    dispatch(openIngredientDetails());
+    dispatch(setModalInfo(item));
+    dispatch(openModal());
   };
 
   const handleDetailsModalClose = (): void => {
-    dispatch(resetIngredientDetails());
+    dispatch(resetModalInfo());
     navigate('/');
   };
 
@@ -108,9 +108,9 @@ function BurgerIngredients() {
 
   return (
     <>
-      {ingredientDetails.item && ingredientDetails.isOpen && (
+      {modal.item && modal.isOpen && (
       <Modal handleClose={handleDetailsModalClose}>
-        <IngredientDetails ingredient={ingredientDetails.item} />
+        <IngredientDetails ingredient={modal.item} />
       </Modal>
       )}
       <section className={`${style.ingredients} pt-10`}>

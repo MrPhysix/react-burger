@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import FormElement from '../../components/FormElement/FormElement';
 
-import style from './profile.module.css';
-import ProfileNav from './ProfileNav/ProfileNav';
+import ProfileLayout from './ProfileLayout/ProfileLayout';
 import { useAuth } from '../../utils/api/auth';
 import useForm from '../../hooks/useForm';
 
@@ -26,42 +25,39 @@ function Profile() {
   };
 
   return (
-    <main className={`main ${style.profile}`}>
-      <ProfileNav />
-      <div className={style.element}>
-        <FormElement profile isActive>
-          <Input
-            autoFocus
-            onChange={(e) => setName({ ...name, name: e.target.value })}
-            value={name?.name || ''}
-            name="name"
-            type="text"
-            placeholder="Имя"
-            icon="EditIcon"
-            disabled={!name.inputActive}
-            onIconClick={nameHandler}
-            onBlur={nameHandler}
-          />
-          <EmailInput
-            onChange={(e) => handleChange(e)}
-            value={email || ''}
-            name="email"
+    <ProfileLayout>
+      <FormElement profile isActive>
+        <Input
+          autoFocus
+          onChange={(e) => setName({ ...name, name: e.target.value })}
+          value={name?.name || ''}
+          name="name"
+          type="text"
+          placeholder="Имя"
+          icon="EditIcon"
+          disabled={!name.inputActive}
+          onIconClick={nameHandler}
+          onBlur={nameHandler}
+        />
+        <EmailInput
+          onChange={(e) => handleChange(e)}
+          value={email || ''}
+          name="email"
             // type="email"
-            placeholder="Логин"
-            onBlur={editUser}
-            isIcon
-          />
-          <PasswordInput
-            onChange={(e) => handleChange(e)}
-            value={password || '******'}
-            name="password"
-            icon="EditIcon"
-            autoComplete="off"
-            noValidate
-          />
-        </FormElement>
-      </div>
-    </main>
+          placeholder="Логин"
+          onBlur={editUser}
+          isIcon
+        />
+        <PasswordInput
+          onChange={(e) => handleChange(e)}
+          value={password || '******'}
+          name="password"
+          icon="EditIcon"
+          autoComplete="off"
+          noValidate
+        />
+      </FormElement>
+    </ProfileLayout>
   );
 }
 
