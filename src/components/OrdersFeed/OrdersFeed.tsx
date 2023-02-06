@@ -19,11 +19,15 @@ function OrdersFeed() {
   const { wsStart, wsClose } = wsOrdersActions;
   const { wsOrders }: any = useSelector((state) => state);
   const { orders } = wsOrders;
-  const [preparedOrders, setPreparedOrders] = useState([]);
   const { modal }: any = useSelector((state) => state);
 
   const profileOrdersPage = location.pathname.includes('/profile/orders');
   // handlers
+  console.log('Array.prototype', Array.prototype);
+  // @ts-ignore
+  // Array.prototype.modify = function () {
+  //   return profileOrdersPage ? this.reverse() : this;
+  // };
   const handleDetailsModalClose = (): void => {
     dispatch(resetModalInfo());
     navigate(-1);
@@ -42,13 +46,6 @@ function OrdersFeed() {
     };
   }, []);
 
-  useEffect(() => {
-    if (profileOrdersPage) {
-      setPreparedOrders(orders.reverse());
-    }
-    setPreparedOrders(orders);
-  }, [orders]);
-
   return (
     <>
       {modal.item && modal.isOpen && (
@@ -58,13 +55,21 @@ function OrdersFeed() {
       )}
       <ul className={`${style.ul} ${orders?.length > 4 && 'scroll'}`}>
         {
-          preparedOrders?.length > 0
-            ? preparedOrders.map((item: TOrder, i: number) => (
-              <OrderCard
-                key={item._id + i}
-                order={item}
-              />
-            ))
+          // eslint-disable-next-line
+          orders.length > 0
+            ? profileOrdersPage
+              ? orders.map((item: TOrder, i: number) => (
+                <OrderCard
+                  key={item._id + i}
+                  order={item}
+                />
+              )).reverse()
+              : orders.map((item: TOrder, i: number) => (
+                <OrderCard
+                  key={item._id + i}
+                  order={item}
+                />
+              ))
             : <p className="text text_type_main-large text_color_inactive">Заказов нет</p>
             }
       </ul>
