@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import style from './order-feed.module.css';
 import OrderCard from '../../components/OrderCard/OrderCard';
 import OrdersStats from '../../components/OrdersStats/OrdersStats';
 import { openModal, resetModalInfo, setModalInfo } from '../../services/reducers/modal';
 import Modal from '../../components/Modal/Modal';
 import OrderInfo from '../../components/Modal/OrderInfo/OrderInfo';
+import { wsOrdersActions } from '../../services/reducers/wsOrders';
+import { WS_ALL_ORDERS_URL } from '../../utils/const';
+import { TOrder } from '../../types';
 
 const arr = [
   {
@@ -62,6 +65,11 @@ const order = {
 function OrderFeed() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  //
+  const { wsStart, wsClose } = wsOrdersActions;
+  const { wsOrders }: any = useSelector((state) => state);
+  const { orders } = wsOrders;
 
   const { modal }: any = useSelector((state) => state);
   // handlers
@@ -75,6 +83,19 @@ function OrderFeed() {
     navigate(-1);
   };
 
+  // effects
+
+  useEffect(() => {
+    if (location.pathname.includes('/feed')) {
+      console.log('yes');
+      dispatch(wsStart(WS_ALL_ORDERS_URL));
+    }
+    return () => {
+      console.log('no');
+      dispatch(wsClose());
+    };
+  }, [location]);
+
   return (
     <>
       {modal.item && modal.isOpen && (
@@ -86,22 +107,14 @@ function OrderFeed() {
         <h2 className="text text_type_main-large">Лента заказов</h2>
         <div className={style.flex}>
           <ul className={`${style.ul} scroll`}>
-            <OrderCard
-              order={order}
-              onOrderClick={handleDetailsModal}
-            />
-            <OrderCard
-              order={order}
-              onOrderClick={handleDetailsModal}
-            />
-            <OrderCard
-              order={order}
-              onOrderClick={handleDetailsModal}
-            />
-            <OrderCard
-              order={order}
-              onOrderClick={handleDetailsModal}
-            />
+            {
+              orders && orders.map((item: TOrder) => (
+                <OrderCard
+                  order={item}
+                  onOrderClick={handleDetailsModal}
+                />
+              ))
+            }
           </ul>
           <OrdersStats />
         </div>

@@ -36,5 +36,7 @@ module.exports = {
         'state',
       ],
     }],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
   },
 };

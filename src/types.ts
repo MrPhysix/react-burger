@@ -1,4 +1,6 @@
 /* eslint-disable no-eval */
+import { useStore } from 'react-redux';
+
 export enum IngredientType {
   bun = 'bun',
   sauce ='sauce',
@@ -35,10 +37,11 @@ export type TAdditionalActions = Array<{
 }>
 
 export type TOrder = {
-  name: string;
-  order: {
-    number?: number;
-  };
-  success: boolean;
-  isOpen: boolean;
+  _id: string,
+  ingredients: Array<string>,
+  status: string,
+  name: string,
+  createdAt: string,
+  updatedAt: string,
+  number: number,
 }

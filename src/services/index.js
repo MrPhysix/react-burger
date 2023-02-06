@@ -4,6 +4,8 @@ import constructorIngredientsReducer from './reducers/constructorIngredientsSlic
 import modalReducer from './reducers/modal';
 import orderReducer from './reducers/order';
 import userReducer from './reducers/user';
+import wsOrdersReducer, { wsOrdersActions } from './reducers/wsOrders';
+import socketMiddleware from './middleware/socketMiddleware';
 
 export default configureStore({
   reducer: {
@@ -12,5 +14,8 @@ export default configureStore({
     modal: modalReducer,
     order: orderReducer,
     user: userReducer,
+    wsOrders: wsOrdersReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+    .concat(socketMiddleware(wsOrdersActions)),
 });

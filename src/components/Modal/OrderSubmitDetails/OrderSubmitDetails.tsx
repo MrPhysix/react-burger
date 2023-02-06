@@ -1,11 +1,9 @@
 import React from 'react';
 import { CirclesWithBar } from 'react-loader-spinner';
 import DoneImage from '../../../images/done.svg';
-import { TOrder } from '../../../types';
 
 interface IOrderDetails {
-  order: TOrder;
-
+  order: any;
 }
 
 function OrderSubmitDetails({ order }: IOrderDetails) {
