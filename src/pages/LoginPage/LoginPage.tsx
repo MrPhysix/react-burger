@@ -41,7 +41,6 @@ function LoginPage() {
   // handlers
   const onLogin = (): void => {
     setIsLoading(true);
-    console.log(signIn);
     signIn({ email, password })
       .finally(() => {
         setIsLoading(false);

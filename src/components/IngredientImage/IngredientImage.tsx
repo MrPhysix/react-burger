@@ -10,7 +10,7 @@ type TIngredientImage = {
 function IngredientImage({ url, name, count }: TIngredientImage) {
   return (
     <li className={style.ingredient}>
-      {count && (
+      {count && count > 0 && (
       <p className={`${style.count} text text_type_digits-default`}>
         +
         {count}

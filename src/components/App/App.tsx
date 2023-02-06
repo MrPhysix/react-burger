@@ -28,13 +28,12 @@ import { ProvideAuth } from '../../utils/api/auth';
 import Page404 from '../../pages/Page404/Page404';
 import { getCookie } from '../../utils/cookie';
 import IngredientPage from '../../pages/IngredientPage/IngredientPage';
-import OrderFeed from '../../pages/OrderFeed/OrderFeed';
+import OrdersFeed from '../OrdersFeed/OrdersFeed';
 import OrderInfoPage from '../../pages/OrderInfoPage/OrderInfoPage';
 import ProfileOrders from '../../pages/Profile/ProfileOrders/ProfileOrders';
-import ProfileLayout from '../../pages/Profile/ProfileLayout/ProfileLayout';
-//
+import OrdersFeedPage from '../../pages/OrdersFeedPage/OrdersFeedPage';
 
-function Loader() {
+export function Loader() {
   return (
     <CirclesWithBar
       width="82"
@@ -136,7 +135,7 @@ function App(): ReactElement {
           element: (<ProtectedRoute><ProfileOrders /></ProtectedRoute>),
         },
         {
-          path: '/profile/orders/1',
+          path: '/profile/orders/:orderId',
           element: (
             <ProtectedRoute>
               {modal.isOpen
@@ -157,11 +156,11 @@ function App(): ReactElement {
         },
         {
           path: '/feed',
-          element: <OrderFeed />,
+          element: <OrdersFeedPage />,
         },
         {
-          path: '/feed/1',
-          element: modal.isOpen ? <OrderFeed /> : <OrderInfoPage />,
+          path: '/feed/:orderId',
+          element: modal.isOpen ? <OrdersFeedPage /> : <OrderInfoPage />,
         },
       ],
     },

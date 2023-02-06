@@ -44,7 +44,8 @@ const socketMiddleware = (wsActions: TWsActions) => (store: any) => {
         socket.send(JSON.stringify(payload));
       }
 
-      if (type === wsClose.type) {
+      if (type === wsClose.type && socket.readyState === 1) {
+        console.log('wsClosed');
         socket.close();
       }
     }

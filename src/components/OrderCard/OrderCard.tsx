@@ -1,28 +1,31 @@
 import React, { useMemo } from 'react';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useMatch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import style from './order-card.module.css';
 import IngredientImage from '../IngredientImage/IngredientImage';
 import { TIngredient, TOrder } from '../../types';
+import { openModal, setModalInfo } from '../../services/reducers/modal';
 
 type TOrderCard = {
   order: TOrder | any,
-  onOrderClick: () => void,
+  // onOrderClick: () => void,
 }
 
-function OrderCard({ order, onOrderClick }: TOrderCard) {
+function OrderCard({ order }: TOrderCard) {
   const feedPathMatch = useMatch('/feed');
+  const dispatch = useDispatch();
+
   const { ingredients }: any = useSelector((state) => state);
 
   const getIngredientFromId = (id: string) => ingredients.ingredients
-    .find((item: TOrder) => item._id === id);
+    .find((item: TIngredient) => item._id === id);
 
   const ingredientsByIds = useMemo(() => order.ingredients
     .map((item: any) => getIngredientFromId(item)), [order]);
 
   const totalPrice = useMemo(() => ingredientsByIds
-    .reduce((total: number, curr: any) => total + curr.price, 0), [ingredients, order]);
+    .reduce((total: number, curr: any) => total + curr.price, 0), [order]);
 
   const statusText = (status: string) => {
     switch (status) {
@@ -37,11 +40,17 @@ function OrderCard({ order, onOrderClick }: TOrderCard) {
     }
   };
 
+  // handlers
+  const handleDetailsModal = (): void => {
+    dispatch(setModalInfo(order));
+    dispatch(openModal());
+  };
+
   return (
     <Link
       className={style.card}
-      to={`${feedPathMatch ? '/feed/1' : '/profile/orders/1'}`}
-      onClick={onOrderClick}
+      to={`${feedPathMatch ? `/feed/${order._id}` : `/profile/orders/${order._id}`}`}
+      onClick={handleDetailsModal}
     >
       <div className={style.flex}>
         <p className="text text_type_digits-default">
@@ -67,7 +76,7 @@ function OrderCard({ order, onOrderClick }: TOrderCard) {
                       key={item._id + i}
                       url={item.image}
                       name={item.name}
-                      count={ingredientsByIds.length - 6}
+                      count={ingredientsByIds.length - i}
                     />
                   );
                 }

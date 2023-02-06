@@ -15,7 +15,7 @@ import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstruct
 import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
 import OrderSubmitDetails from '../Modal/OrderSubmitDetails/OrderSubmitDetails';
-import getOrderDetails from '../../utils/api/order';
+import { getOrderDetails } from '../../utils/api/order';
 import { setOrder, resetOrder, openOrder } from '../../services/reducers/order';
 import {
   addConstructorBun,
@@ -62,7 +62,7 @@ function BurgerConstructor() {
 
   const handleOrderSubmit = () => {
     if (!user || user?.success === false) navigate('/login', { state: { from: location } });
-    return user.success && handleOrderModal.open();
+    handleOrderModal.open();
   };
 
   const addIngredientToConstructor = (item: TIngredient) => {

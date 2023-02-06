@@ -1,8 +1,7 @@
 const BASE_URL = 'https://norma.nomoreparties.space/api';
 const WS_URL = 'wss://norma.nomoreparties.space';
 
-export const WS_ALL_ORDERS_URL = `${WS_URL}/orders/all`;
-export const WS_PROFILE_ORDERS_URL = `${WS_URL}/orders/profile`;
+export const WS_ORDERS_URL = `${WS_URL}/orders`;
 //
 export const API_INGREDIENTS_URL = `${BASE_URL}/ingredients`;
 export const API_ORDER_URL = `${BASE_URL}/orders`;

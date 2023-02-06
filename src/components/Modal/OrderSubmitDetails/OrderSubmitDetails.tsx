@@ -1,13 +1,13 @@
 import React from 'react';
-import { CirclesWithBar } from 'react-loader-spinner';
 import DoneImage from '../../../images/done.svg';
+import { Loader } from '../../App/App';
 
 interface IOrderDetails {
   order: any;
 }
 
 function OrderSubmitDetails({ order }: IOrderDetails) {
-  if (!order || order?.success !== true) return <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />;
+  if (!order || !order.success) return <Loader />;
 
   return (
     <>

@@ -36,9 +36,7 @@ const wsOrdersSlice = createSlice({
     wsOpen: (state) => {
       state.status = wsStatus.CONNECTION_SUCCESS;
     },
-    wsClose: (state) => {
-      state.status = wsStatus.CONNECTION_CLOSED;
-    },
+    wsClose: () => initialState,
     wsMessage: (state, { payload }) => {
       state.status = wsStatus.GET_MESSAGE;
       state.orders = payload.orders;
