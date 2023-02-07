@@ -1,8 +1,15 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { API_INGREDIENTS_URL } from '../../utils/const';
 import checkResult from '../../utils/api/checkResult';
+import { TIngredient } from '../../types';
 
-const initialState = {
+type TInitialState = {
+  ingredients: Array<TIngredient>,
+  status: string | null,
+  error: string | null,
+};
+
+const initialState: TInitialState = {
   ingredients: [],
   status: null,
   error: null,
@@ -16,7 +23,7 @@ export const fetchIngredients = createAsyncThunk(
   },
 );
 
-function isRejectedAction(action) {
+function isRejectedAction(action: PayloadAction<any>) {
   return action.type.endsWith('rejected');
 }
 
@@ -24,7 +31,7 @@ const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {
-    getIngredients(state, action) {
+    getIngredients(state, action: PayloadAction<any>) {
       state.ingredients = action.payload;
     },
   },
@@ -34,7 +41,7 @@ const ingredientsSlice = createSlice({
         state.status = 'request';
         state.error = null;
       })
-      .addCase(fetchIngredients.fulfilled, (state, action) => {
+      .addCase(fetchIngredients.fulfilled, (state, action: PayloadAction<any>) => {
         state.status = 'success';
         state.ingredients = action.payload.data;
         state.error = null;

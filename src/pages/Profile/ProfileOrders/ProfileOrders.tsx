@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ProfileLayout from '../ProfileLayout/ProfileLayout';
 import { resetModalInfo } from '../../../services/reducers/modal';
@@ -8,12 +8,12 @@ import style from './profile-orders.module.css';
 import Modal from '../../../components/Modal/Modal';
 import OrderInfo from '../../../components/Modal/OrderInfo/OrderInfo';
 import OrdersFeed from '../../../components/OrdersFeed/OrdersFeed';
+import { RootState, useAppDispatch } from '../../../services';
 
 function ProfileOrders() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const { modal }: any = useSelector((state) => state);
+  const { modal } = useSelector((state: RootState) => state);
   // handlers
   const handleDetailsModalClose = (): void => {
     dispatch(resetModalInfo());

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   constructorIngredients: [],
@@ -9,17 +9,17 @@ const constructorIngredientsSlice = createSlice({
   name: 'constructorIngredients',
   initialState,
   reducers: {
-    getConstructorIngredients(state, action) {
-      state.constructorIngredients = action.payload;
+    getConstructorIngredients(state, actions: PayloadAction<any>) {
+      state.constructorIngredients = actions.payload;
     },
-    addConstructorIngredient(state, action) {
-      state.constructorIngredients.push(action.payload);
+    addConstructorIngredient(state, actions: PayloadAction<any>) {
+      state.constructorIngredients.push(actions.payload as never);
     },
-    addConstructorBun(state, action) {
-      state.bun = (action.payload);
+    addConstructorBun(state, actions: PayloadAction<any>) {
+      state.bun = (actions.payload);
     },
-    swapConstructorIngredients(state, action) {
-      const [fromIndex, toIndex] = action.payload;
+    swapConstructorIngredients(state, actions: PayloadAction<any>) {
+      const [fromIndex, toIndex] = actions.payload;
 
       const ingredients = [...state.constructorIngredients];
       ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);

@@ -6,7 +6,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import addImg from '../../images/add.svg';
@@ -24,18 +24,19 @@ import {
   resetConstructorIngredients,
 } from '../../services/reducers/constructorIngredientsSlice';
 import { TIngredient } from '../../types';
+import { RootState, useAppDispatch } from '../../services';
 
 function BurgerConstructor() {
-  // consts
-  const dispatch = useDispatch();
+  // consts useDispatch
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   // states
-  const { constructorIngredients, bun }: any = useSelector<any>(
-    (state) => state.constructorIngredients,
+  const { constructorIngredients, bun } = useSelector(
+    (state: RootState | any) => state.constructorIngredients,
   );
-  const { order }: any = useSelector((state) => state);
-  const { user }: any = useSelector((state) => state);
+  const { order } = useSelector((state: RootState) => state);
+  const { user } = useSelector((state: RootState) => state);
   //
   const totalPrice = useMemo(
     () => constructorIngredients.reduce((total: number, curr: TIngredient) => {

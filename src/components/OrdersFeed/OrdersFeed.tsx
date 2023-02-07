@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import style from './orders-feed.module.css';
 import OrderCard from '../OrderCard/OrderCard';
@@ -10,20 +10,20 @@ import { wsOrdersActions } from '../../services/reducers/wsOrders';
 import { WS_ORDERS_URL } from '../../utils/const';
 import { TOrder } from '../../types';
 import { getCookie } from '../../utils/cookie';
+import { RootState, useAppDispatch } from '../../services';
 
 function OrdersFeed() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   //
   const { wsStart, wsClose } = wsOrdersActions;
-  const { wsOrders }: any = useSelector((state) => state);
+  const { wsOrders, modal } = useSelector((state: RootState) => state);
   const { orders } = wsOrders;
-  const { modal }: any = useSelector((state) => state);
 
   const profileOrdersPage = location.pathname.includes('/profile/orders');
   // handlers
-  console.log('Array.prototype', Array.prototype);
+
   // @ts-ignore
   // Array.prototype.modify = function () {
   //   return profileOrdersPage ? this.reverse() : this;

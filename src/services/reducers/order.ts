@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TOrder } from '../../types';
 
 const initialState = {
   name: '',
@@ -13,7 +14,7 @@ const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    setOrder(state, action) {
+    setOrder(state, action: PayloadAction<any>) {
       state.name = action.payload.name;
       state.order.number = action.payload.order.number;
       state.success = action.payload.success;

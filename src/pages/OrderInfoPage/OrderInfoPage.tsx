@@ -13,14 +13,9 @@ function OrderInfoPage() {
   useEffect(() => {
     getOrderInfoById(orderId)
       .then((res: any) => {
-        console.log('res', res);
         setOrder(res.orders[0]);
       });
   }, [orderId]);
-
-  useEffect(() => {
-    console.log(order);
-  }, [order]);
 
   if (!order) return <Loader />;
 

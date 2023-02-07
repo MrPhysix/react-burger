@@ -2,6 +2,7 @@ import React from 'react';
 
 import style from './ingredient-details.module.css';
 import { TIngredient } from '../../../types';
+import { Loader } from '../../App/App';
 //
 
 interface INutritionValue {
@@ -19,10 +20,12 @@ function NutritionValue({ children, value }: INutritionValue) {
 }
 
 interface IIngredientDetails {
-  ingredient: TIngredient
+  ingredient?: TIngredient
 }
 
 function IngredientDetails({ ingredient }: IIngredientDetails) {
+  if (!ingredient) return <Loader />;
+
   return (
     <>
       <h3 className={`text text_type_main-large mb-10 ${style.h3}`}>Детали ингредиента</h3>
@@ -37,5 +40,9 @@ function IngredientDetails({ ingredient }: IIngredientDetails) {
     </>
   );
 }
+
+IngredientDetails.defaultProps = {
+  ingredient: null,
+};
 
 export default IngredientDetails;

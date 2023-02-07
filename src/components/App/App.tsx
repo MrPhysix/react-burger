@@ -6,12 +6,12 @@ import React, {
 import {
   createBrowserRouter,
   RouterProvider, Outlet,
-  Navigate, useLocation, useMatch,
+  Navigate, useLocation,
 } from 'react-router-dom';
 
 import { CirclesWithBar } from 'react-loader-spinner';
 //
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
 import Main from '../../pages/Main/Main';
 //
@@ -28,10 +28,10 @@ import { ProvideAuth } from '../../utils/api/auth';
 import Page404 from '../../pages/Page404/Page404';
 import { getCookie } from '../../utils/cookie';
 import IngredientPage from '../../pages/IngredientPage/IngredientPage';
-import OrdersFeed from '../OrdersFeed/OrdersFeed';
 import OrderInfoPage from '../../pages/OrderInfoPage/OrderInfoPage';
 import ProfileOrders from '../../pages/Profile/ProfileOrders/ProfileOrders';
 import OrdersFeedPage from '../../pages/OrdersFeedPage/OrdersFeedPage';
+import { RootState, useAppDispatch } from '../../services';
 
 export function Loader() {
   return (
@@ -59,11 +59,11 @@ const Layout: FC = () => {
 };
 
 function App(): ReactElement {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // states
-  const { ingredients }: any = useSelector((state) => state);
+  const { ingredients } = useSelector((state: RootState) => state);
   // const background = useOutletContext();
-  const { modal }: any = useSelector((state) => state);
+  const { modal } = useSelector((state: RootState) => state);
   // const
   const codeIsRequested = getCookie('codeIsRequested');
 

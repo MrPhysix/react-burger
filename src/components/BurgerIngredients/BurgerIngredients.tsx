@@ -6,7 +6,7 @@ import {
   Tab,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 // redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 //
 import { useNavigate } from 'react-router-dom';
 import IngredientsList from './IngredientsList/IngredientsList';
@@ -20,13 +20,14 @@ import {
   setModalInfo,
 } from '../../services/reducers/modal';
 import { TIngredient } from '../../types';
+import { RootState, useAppDispatch } from '../../services';
 
 function BurgerIngredients() {
   //
-  const dispatch = useDispatch();
-  const { ingredients }: any = useSelector<any>((state) => state.ingredients);
+  const dispatch = useAppDispatch();
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN.TYPE);
-  const { modal }: any = useSelector((state) => state);
+  const { ingredients } = useSelector((state: RootState) => state.ingredients);
+  const { modal } = useSelector((state: RootState) => state);
   //
   const navigate = useNavigate();
   // refs

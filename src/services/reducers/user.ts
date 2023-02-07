@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   name: '',
@@ -10,7 +10,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserSlice(state, action) {
+    setUserSlice(state, action: PayloadAction<any>) {
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.success = action.payload.success;

@@ -1,18 +1,19 @@
 import React, {
   createContext, useContext, useEffect,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   getUserRequest, login, logOut, setUserInfo, updateToken,
 } from './index';
 import { getCookie, setCookie, deleteCookie } from '../cookie';
 import { setUserSlice, resetUserSlice } from '../../services/reducers/user';
 import checkResult from './checkResult';
+import { useAppDispatch } from '../../services';
 
 const AuthContext = createContext(undefined);
 
 export function useProvideAuth() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { user } = useSelector((state) => state);
   const token = getCookie('accessToken');
 
@@ -91,12 +92,12 @@ export function useProvideAuth() {
 
 export function ProvideAuth({ children }) {
   const auth = useProvideAuth();
+  // eslint-disable-next-line
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 export function useAuth() {
   return useContext(AuthContext);
 }
-
 // // @ts-ignore
 // export function ProvideAuth<T>({ children }: {children: React.ReactNode}): React.Provider<T>  {
 //   const auth = useProvideAuth();

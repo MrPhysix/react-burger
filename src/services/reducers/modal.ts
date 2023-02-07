@@ -1,4 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TIngredient } from '../../types';
+import { RootState } from '../index';
 
 const initialState = {
   item: null,
@@ -9,7 +11,7 @@ const modalSlice = createSlice({
   name: 'ingredientDetails',
   initialState,
   reducers: {
-    setModalInfo(state, action) {
+    setModalInfo(state: any, action: PayloadAction<TIngredient>) {
       state.item = action.payload;
     },
     resetModalInfo: () => initialState,

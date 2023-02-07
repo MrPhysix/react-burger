@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import IngredientCard from '../IngredientCard/IngredientCard';
 import style from './ingredients-list.module.css';
 import { TIngredient } from '../../../types';
+import { RootState } from '../../../services';
 
 interface IIngredientsList {
   ingredients: Array<TIngredient>,
@@ -13,9 +14,11 @@ interface IIngredientsList {
 
 const IngredientsList = forwardRef((
   { ingredients, onIngredientClick, name }: IIngredientsList,
-  ref: any,
+  ref: React.ElementRef<any> | React.LegacyRef<any> | any,
 ) => {
-  const { constructorIngredients }: any = useSelector<any>((state) => state.constructorIngredients);
+  const { constructorIngredients } = useSelector(
+    (state: RootState) => state.constructorIngredients,
+  );
 
   return (
     <section className="ingredients-list">
@@ -31,7 +34,7 @@ const IngredientsList = forwardRef((
                 key={item._id}
                 item={item}
                 onClick={onIngredientClick}
-                count={constructorMatches?.length || null}
+                count={constructorMatches?.length || undefined}
               />
             );
           })

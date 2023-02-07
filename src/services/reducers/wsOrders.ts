@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder } from '../../types';
 
 /* eslint-disable */
@@ -16,7 +16,7 @@ type TInitialState = {
   orders: Array<TOrder>,
   total: number,
   totalToday: number,
-  status: wsStatus,
+  status?: wsStatus,
 }
 
 const initialState: TInitialState = {
@@ -30,18 +30,18 @@ const wsOrdersSlice = createSlice({
   name: 'ws',
   initialState,
   reducers: {
-    wsStart: (state, { payload }) => {
+    wsStart: (state, actions: PayloadAction<any>) => {
       state.status = wsStatus.CONNECTION_START;
     },
     wsOpen: (state) => {
       state.status = wsStatus.CONNECTION_SUCCESS;
     },
     wsClose: () => initialState,
-    wsMessage: (state, { payload }) => {
+    wsMessage: (state, actions: PayloadAction<TInitialState>) => {
       state.status = wsStatus.GET_MESSAGE;
-      state.orders = payload.orders;
-      state.total = payload.total;
-      state.totalToday = payload.totalToday;
+      state.orders = actions.payload.orders;
+      state.total = actions.payload.total;
+      state.totalToday = actions.payload.totalToday;
     },
     wsSend: (state) => {
       state.status = wsStatus.SEND_MESSAGE;

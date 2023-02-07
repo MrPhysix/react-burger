@@ -2,9 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import style from './orders-stats.module.css';
 import { TOrder } from '../../types';
+import { RootState } from '../../services';
 
 type TStatsList = {
-  list: Array<string>,
+  list: Array<number | boolean>,
   done?: boolean,
 }
 
@@ -37,7 +38,7 @@ function OrdersCompleted({ title, count }: TOrdersCompleted) {
 }
 
 function OrdersStats() {
-  const { wsOrders }: any = useSelector((state) => state);
+  const { wsOrders } = useSelector((state: RootState) => state);
   const { orders, total, totalToday } = wsOrders;
 
   const doneOrders = orders.map((item: TOrder) => item.status === 'done' && item.number).slice(0, 22);

@@ -5,14 +5,15 @@ import {
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 // redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 //
 import { useDrag, useDrop } from 'react-dnd';
 import style from './burger-constructor-element.module.css';
 import { getConstructorIngredients } from '../../../services/reducers/constructorIngredientsSlice';
 import { TIngredient } from '../../../types';
+import { RootState, useAppDispatch } from '../../../services';
 
-type TdragItem = {
+type TDragItem = {
   id: string;
   index: number;
 }
@@ -31,8 +32,10 @@ function BurgerConstructorElement({
   id,
 }: IBurgerConstructorElement) {
   // const
-  const dispatch = useDispatch();
-  const { constructorIngredients }: any = useSelector<any>((state) => state.constructorIngredients);
+  const dispatch = useAppDispatch();
+  const { constructorIngredients } = useSelector(
+    (state: RootState) => state.constructorIngredients,
+  );
   const bunPosText = position && position === 'bottom' ? '(низ)' : position && '(вверх)';
   const ref = useRef<HTMLLIElement>(null);
 
@@ -51,7 +54,7 @@ function BurgerConstructorElement({
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(dragItem: TdragItem, monitor) {
+    hover(dragItem: TDragItem, monitor) {
       if (!ref.current) return;
 
       const dragIndex = dragItem.index;

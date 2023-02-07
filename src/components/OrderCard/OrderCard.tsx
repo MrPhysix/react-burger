@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useMatch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import style from './order-card.module.css';
 import IngredientImage from '../IngredientImage/IngredientImage';
 import { TIngredient, TOrder } from '../../types';
 import { openModal, setModalInfo } from '../../services/reducers/modal';
+import { RootState, useAppDispatch } from '../../services';
 
 type TOrderCard = {
   order: TOrder | any,
@@ -14,15 +15,15 @@ type TOrderCard = {
 
 function OrderCard({ order }: TOrderCard) {
   const feedPathMatch = useMatch('/feed');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { ingredients }: any = useSelector((state) => state);
+  const { ingredients } = useSelector((state: RootState) => state);
 
   const getIngredientFromId = (id: string) => ingredients.ingredients
     .find((item: TIngredient) => item._id === id);
 
   const ingredientsByIds = useMemo(() => order.ingredients
-    .map((item: any) => getIngredientFromId(item)), [order]);
+    .map((item: string) => getIngredientFromId(item)), [order]);
 
   const totalPrice = useMemo(() => ingredientsByIds
     .reduce((total: number, curr: any) => total + curr.price, 0), [order]);

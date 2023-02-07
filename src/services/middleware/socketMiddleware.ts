@@ -1,10 +1,11 @@
+import { Middleware } from 'redux';
 import {
   wsOrdersActions,
 } from '../reducers/wsOrders';
 
 type TWsActions = typeof wsOrdersActions;
 
-const socketMiddleware = (wsActions: TWsActions) => (store: any) => {
+const socketMiddleware = (wsActions: TWsActions) : Middleware => (store: any) => {
   let socket: WebSocket | null = null;
 
   return (next: any) => (action: any) => {

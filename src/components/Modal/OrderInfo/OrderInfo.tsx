@@ -3,14 +3,16 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { useSelector } from 'react-redux';
 import style from './order-info.module.css';
 import IngredientImage from '../../IngredientImage/IngredientImage';
+import { RootState } from '../../../services';
+import { TIngredient } from '../../../types';
+import { Loader } from '../../App/App';
 
 type TInfoIngredient = {
-  item: any,
+  item: TIngredient,
 }
 
 function InfoIngredient({ item } : TInfoIngredient) {
-  console.log('InfoIngredient', item);
-
+  if (!item) return <Loader />;
   return (
     <li className={style.ingredient}>
       <div className={style.flex}>
@@ -32,16 +34,16 @@ type TOrderInfo = {
 }
 
 function OrderInfo({ order }: TOrderInfo) {
-  const { ingredients }: any = useSelector((state) => state);
+  const { ingredients } = useSelector((state: RootState) => state);
 
   const getIngredientFromId = (id: string) => ingredients.ingredients
-    .find((ingredient: any) => ingredient._id === id);
+    .find((ingredient) => ingredient._id === id);
 
   const ingredientsByIds = useMemo(() => order.ingredients
-    .map((ingredient: any) => getIngredientFromId(ingredient)), [order]);
+    .map((ingredient: string) => getIngredientFromId(ingredient)), [order]);
 
   const totalPrice = useMemo(() => ingredientsByIds
-    .reduce((total: number, curr: any) => total + curr.price, 0), [order]);
+    .reduce((total: number, curr: TIngredient) => total + curr.price, 0), [order]);
 
   const statusText = (status: string) => {
     switch (status) {
@@ -67,7 +69,7 @@ function OrderInfo({ order }: TOrderInfo) {
       <p className="text text_type_main-medium mt-15 mb-6">Состав</p>
       <ul className={`${style.ul} scroll`}>
         {
-          ingredientsByIds.map((item: any) => <InfoIngredient item={item} />)
+          ingredientsByIds?.map((item: TIngredient) => <InfoIngredient item={item} />)
         }
       </ul>
       <div className={style.under}>
