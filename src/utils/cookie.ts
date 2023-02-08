@@ -5,7 +5,17 @@ export function getCookie(name: string) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name: string, value: any, props: any) {
+// interface ICookieDate extends Date{
+//   toUTCString: () => string,
+// }
+
+type TProps = {
+  path?: string,
+  expires?: Date | string | number ,
+  [propName: string] : any,
+}
+
+export function setCookie(name: string, value: any, props: TProps) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp === 'number' && exp) {
@@ -13,7 +23,9 @@ export function setCookie(name: string, value: any, props: any) {
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
   }
+  // @ts-ignore
   if (exp && exp.toUTCString) {
+    // @ts-ignore
     props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);

@@ -26,29 +26,33 @@ import {
 import { TIngredient } from '../../types';
 import { RootState, useAppDispatch } from '../../services';
 
+const getConstructorIngredients = (state: RootState | any) => state.constructorIngredients;
+const getUser = (state: RootState) => state.user;
+const getOrder = (state: RootState) => state.order;
+
 function BurgerConstructor() {
   // consts useDispatch
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   // states
-  const { constructorIngredients, bun } = useSelector(
-    (state: RootState | any) => state.constructorIngredients,
-  );
-  const { order } = useSelector((state: RootState) => state);
-  const { user } = useSelector((state: RootState) => state);
+  const { constructorIngredients, bun } = useSelector(getConstructorIngredients);
+  const order = useSelector(getOrder);
+  const user = useSelector(getUser);
   //
+  const bunPrice = bun ? bun.price * 2 : 0;
+
   const totalPrice = useMemo(
     () => constructorIngredients.reduce((total: number, curr: TIngredient) => {
       if (curr.type === INGREDIENT_TYPES.BUN.TYPE) return total + curr.price * 2;
       return total + curr.price;
-    }, 0),
-    [constructorIngredients],
+    }, 0) + bunPrice,
+    [constructorIngredients, bun],
   );
 
   const handleOrderModal = {
     open: () => {
-      const ids = constructorIngredients.map((i: TIngredient) => i._id);
+      const ids = [...constructorIngredients.map((i: TIngredient) => i._id), bun._id, bun._id];
       getOrderDetails(ids)
         .then((res) => {
           dispatch(setOrder(res));

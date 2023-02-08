@@ -13,11 +13,13 @@ type TOrderCard = {
   // onOrderClick: () => void,
 }
 
+const getIngredients = (state: RootState) => state.ingredients;
+
 function OrderCard({ order }: TOrderCard) {
   const feedPathMatch = useMatch('/feed');
   const dispatch = useAppDispatch();
 
-  const { ingredients } = useSelector((state: RootState) => state);
+  const ingredients = useSelector(getIngredients);
 
   const getIngredientFromId = (id: string) => ingredients.ingredients
     .find((item: TIngredient) => item._id === id);
@@ -60,7 +62,6 @@ function OrderCard({ order }: TOrderCard) {
         </p>
         <p className="text text_type_main-default text_color_inactive">
           <FormattedDate date={new Date(order.createdAt)} />
-          {/* {order.updatedAt} */}
         </p>
       </div>
       <h3 className="text text_type_main-medium">{order.name}</h3>

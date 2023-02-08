@@ -22,12 +22,15 @@ import {
 import { TIngredient } from '../../types';
 import { RootState, useAppDispatch } from '../../services';
 
+const getIngredients = (state: RootState) => state.ingredients;
+const getModal = (state: RootState) => state.modal;
+
 function BurgerIngredients() {
   //
   const dispatch = useAppDispatch();
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN.TYPE);
-  const { ingredients } = useSelector((state: RootState) => state.ingredients);
-  const { modal } = useSelector((state: RootState) => state);
+  const { ingredients } = useSelector(getIngredients);
+  const modal = useSelector(getModal);
   //
   const navigate = useNavigate();
   // refs

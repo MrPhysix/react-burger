@@ -33,8 +33,10 @@ type TOrderInfo = {
   order: any
 }
 
+const getIngredients = (state: RootState) => state.ingredients;
+
 function OrderInfo({ order }: TOrderInfo) {
-  const { ingredients } = useSelector((state: RootState) => state);
+  const ingredients = useSelector(getIngredients);
 
   const getIngredientFromId = (id: string) => ingredients.ingredients
     .find((ingredient) => ingredient._id === id);
