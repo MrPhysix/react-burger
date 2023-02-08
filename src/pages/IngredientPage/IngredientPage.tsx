@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import IngredientDetails from '../../components/Modal/IngredientDetails/IngredientDetails';
 import style from './ingredient-page.module.css';
+import { TIngredient } from '../../types';
 
 function IngredientPage() {
-  const { ingredients } = useSelector((state) => state);
+  const { ingredients }: any = useSelector((state) => state);
   const { ingredientId } = useParams();
 
   const ingredient = useMemo(() => ingredients.ingredients.find(
-    (item) => item._id === ingredientId,
+    (item: TIngredient) => item._id === ingredientId,
   ), [ingredientId]);
 
   return (

@@ -1,8 +1,10 @@
-const data = [
+import { TIngredient, IngredientType } from '../types';
+
+const data: Array<TIngredient> = [
   {
     _id: '60666c42cc7b410027a1a9b1',
     name: 'Краторная булка N-200i',
-    type: 'bun',
+    type: IngredientType.bun,
     proteins: 80,
     fat: 24,
     carbohydrates: 53,
@@ -16,7 +18,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b5',
     name: 'Говяжий метеорит (отбивная)',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 800,
     fat: 800,
     carbohydrates: 300,
@@ -30,7 +32,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b6',
     name: 'Биокотлета из марсианской Магнолии',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 420,
     fat: 142,
     carbohydrates: 242,
@@ -44,7 +46,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b7',
     name: 'Соус Spicy-X',
-    type: 'sauce',
+    type: IngredientType.sauce,
     proteins: 30,
     fat: 20,
     carbohydrates: 40,
@@ -58,7 +60,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b4',
     name: 'Мясо бессмертных моллюсков Protostomia',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 433,
     fat: 244,
     carbohydrates: 33,
@@ -72,7 +74,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b9',
     name: 'Соус традиционный галактический',
-    type: 'sauce',
+    type: IngredientType.sauce,
     proteins: 42,
     fat: 24,
     carbohydrates: 42,
@@ -86,7 +88,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b8',
     name: 'Соус фирменный Space Sauce',
-    type: 'sauce',
+    type: IngredientType.sauce,
     proteins: 50,
     fat: 22,
     carbohydrates: 11,
@@ -100,7 +102,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9bc',
     name: 'Плоды Фалленианского дерева',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 20,
     fat: 5,
     carbohydrates: 55,
@@ -114,7 +116,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9bb',
     name: 'Хрустящие минеральные кольца',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 808,
     fat: 689,
     carbohydrates: 609,
@@ -128,7 +130,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9ba',
     name: 'Соус с шипами Антарианского плоскоходца',
-    type: 'sauce',
+    type: IngredientType.sauce,
     proteins: 101,
     fat: 99,
     carbohydrates: 100,
@@ -142,7 +144,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9bd',
     name: 'Кристаллы марсианских альфа-сахаридов',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 234,
     fat: 432,
     carbohydrates: 111,
@@ -156,7 +158,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9be',
     name: 'Мини-салат Экзо-Плантаго',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 1,
     fat: 2,
     carbohydrates: 3,
@@ -170,7 +172,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b3',
     name: 'Филе Люминесцентного тетраодонтимформа',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 44,
     fat: 26,
     carbohydrates: 85,
@@ -184,7 +186,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9bf',
     name: 'Сыр с астероидной плесенью',
-    type: 'main',
+    type: IngredientType.main,
     proteins: 84,
     fat: 48,
     carbohydrates: 420,
@@ -198,7 +200,7 @@ const data = [
   {
     _id: '60666c42cc7b410027a1a9b2',
     name: 'Флюоресцентная булка R2-D3',
-    type: 'bun',
+    type: IngredientType.bun,
     proteins: 44,
     fat: 26,
     carbohydrates: 85,

@@ -10,8 +10,9 @@ import FormElement from '../../components/FormElement/FormElement';
 import { register } from '../../utils/api';
 import checkResult from '../../utils/api/checkResult';
 import useForm from '../../hooks/useForm';
+import { TAdditionalActions } from '../../types';
 
-const additionalActions = [
+const additionalActions: TAdditionalActions = [
   {
     text: 'Уже зарегистрированы?',
     link: {
@@ -28,14 +29,14 @@ function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   //
   const navigate = useNavigate();
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // handlers
-  const onRegistration = () => {
+  const onRegistration = (): void => {
     setIsLoading(true);
     register({ email, password, name })
       .then((res) => checkResult(res))
-      .then((res) => res.success && navigate('/login'))
+      .then((res) => res && navigate('/login'))
       .finally(() => setIsLoading(false));
   };
 

@@ -10,11 +10,16 @@ import {
 import { NavLink } from 'react-router-dom';
 import style from './header.module.css';
 
-const linkClassNames = ({ isActive }) => `text_type_main-small pl-5 pr-5 pt-4 pb-4 no-select ${style.link} ${isActive && style.linkActive}`;
-const iconClassNames = (isActive) => (isActive ? 'primary' : 'secondary');
-const textClassNames = (isActive) => `ml-2 ${!isActive && 'text_color_inactive'}`;
+const linkClassNames = ({ isActive }: { isActive: boolean }) => `text_type_main-small pl-5 pr-5 pt-4 pb-4 no-select ${style.link} ${isActive && style.linkActive}`;
+const iconClassNames = (isActive: boolean) => (isActive ? 'primary' : 'secondary');
+const textClassNames = (isActive: boolean) => `ml-2 ${!isActive && 'text_color_inactive'}`;
 
-const sections = [
+type TSections = Array<{
+  text: string;
+  path: string;
+}>
+
+const sections: TSections = [
   {
     text: 'Конструктор',
     path: '/',

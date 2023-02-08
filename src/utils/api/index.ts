@@ -1,7 +1,26 @@
 import {
-  API_AUTH_LOGIN, API_AUTH_LOGOUT, API_AUTH_REG, API_AUTH_TOKEN, API_USER_REQUEST,
+  API_AUTH_LOGIN,
+  API_AUTH_LOGOUT, API_AUTH_REG,
+  API_AUTH_TOKEN, API_USER_REQUEST,
 } from '../const';
 import { getCookie } from '../cookie';
+
+// types
+type TRegister = {
+  email: string;
+  password: string;
+  name: string;
+}
+
+type TLogin = {
+  email: string;
+  password: string;
+}
+
+type TSetUserInfo = {
+  name: string;
+  email: string;
+}
 
 export function updateToken() {
   const token = localStorage.getItem('refreshToken');
@@ -17,7 +36,7 @@ export function updateToken() {
   });
 }
 
-export function register({ email, password, name }) {
+export function register({ email, password, name }: TRegister) {
   return fetch(API_AUTH_REG, {
     method: 'POST',
     headers: {
@@ -28,7 +47,7 @@ export function register({ email, password, name }) {
   });
 }
 
-export function login({ email, password }) {
+export function login({ email, password }: TLogin) {
   return fetch(API_AUTH_LOGIN, {
     method: 'POST',
     headers: {
@@ -52,7 +71,7 @@ export function getUserRequest() {
   });
 }
 
-export function setUserInfo({ name, email }) {
+export function setUserInfo({ name, email }: TSetUserInfo) {
   return fetch(API_USER_REQUEST, {
     method: 'PATCH',
     mode: 'cors',

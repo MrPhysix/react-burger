@@ -1,13 +1,21 @@
 import React, { forwardRef } from 'react';
-import PropTypes from 'prop-types';
 //
 import { useSelector } from 'react-redux';
 import IngredientCard from '../IngredientCard/IngredientCard';
 import style from './ingredients-list.module.css';
-import { ingredientPropTypes } from '../../../utils/propTypes';
+import { TIngredient } from '../../../types';
 
-const IngredientsList = forwardRef(({ ingredients, onIngredientClick, name }, ref) => {
-  const { constructorIngredients } = useSelector((state) => state.constructorIngredients);
+interface IIngredientsList {
+  ingredients: Array<TIngredient>,
+  onIngredientClick: Function,
+  name: string,
+}
+
+const IngredientsList = forwardRef((
+  { ingredients, onIngredientClick, name }: IIngredientsList,
+  ref: any,
+) => {
+  const { constructorIngredients }: any = useSelector<any>((state) => state.constructorIngredients);
 
   return (
     <section className="ingredients-list">
@@ -15,7 +23,8 @@ const IngredientsList = forwardRef(({ ingredients, onIngredientClick, name }, re
       <ul className={`${style.ul} pt-6 pl-4 pr-4`}>
         {
           ingredients.map((item) => {
-            const constructorMatches = constructorIngredients?.filter((i) => i._id === item._id);
+            const constructorMatches = constructorIngredients
+              ?.filter((i: TIngredient) => i._id === item._id);
 
             return (
               <IngredientCard
@@ -31,11 +40,5 @@ const IngredientsList = forwardRef(({ ingredients, onIngredientClick, name }, re
     </section>
   );
 });
-
-IngredientsList.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-  onIngredientClick: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-};
 
 export default IngredientsList;

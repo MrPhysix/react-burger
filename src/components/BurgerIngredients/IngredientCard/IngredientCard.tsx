@@ -5,12 +5,17 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
 //
-import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import style from './ingredient-card.module.css';
-import { ingredientPropTypes } from '../../../utils/propTypes';
+import { TIngredient } from '../../../types';
 
-function IngredientCard({ item, onClick, count }) {
+interface IIngredientCard {
+  item: TIngredient;
+  onClick: Function;
+  count?: number;
+}
+
+function IngredientCard({ item, onClick, count }: IIngredientCard) {
   const [, dragRef] = useDrag({
     type: 'ingredientCard',
     item,
@@ -39,12 +44,6 @@ function IngredientCard({ item, onClick, count }) {
     </Link>
   );
 }
-
-IngredientCard.propTypes = {
-  item: ingredientPropTypes.isRequired,
-  onClick: PropTypes.func.isRequired,
-  count: PropTypes.number,
-};
 
 IngredientCard.defaultProps = {
   count: null,
