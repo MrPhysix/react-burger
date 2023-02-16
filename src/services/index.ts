@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import ingredientsReducer from './reducers/ingredientsSlice';
-import constructorIngredientsReducer from './reducers/constructorIngredientsSlice';
+import ingredientsReducer from './reducers/ingredients';
+import constructorIngredientsReducer from './reducers/constructorIngredients';
 import modalReducer from './reducers/modal';
 import orderReducer from './reducers/order';
 import userReducer from './reducers/user';

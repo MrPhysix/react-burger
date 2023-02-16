@@ -19,7 +19,7 @@ import {
   resetModalInfo,
   setModalInfo,
 } from '../../services/reducers/modal';
-import { TIngredient } from '../../types';
+import { IngredientType, TIngredient } from '../../types';
 import { RootState, useAppDispatch } from '../../services';
 
 const getIngredients = (state: RootState) => state.ingredients;
@@ -43,16 +43,16 @@ function BurgerIngredients() {
   //
 
   const bun = useMemo(
-    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.BUN.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === IngredientType.bun),
     [ingredients],
   );
 
   const main = useMemo(
-    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.MAIN.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === IngredientType.main),
     [ingredients],
   );
   const sauce = useMemo(
-    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.SAUCE.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === IngredientType.sauce),
     [ingredients],
   );
 

@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TIngredient } from '../../types';
-import { RootState } from '../index';
+import { TIngredient, TModal } from '../../types';
 
-const initialState = {
+const initialState: TModal = {
   item: null,
   isOpen: false,
 };

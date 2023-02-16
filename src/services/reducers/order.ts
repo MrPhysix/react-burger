@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TOrder } from '../../types';
+import { TCurrentOrderState } from '../../types';
 
-const initialState = {
+const initialState: TCurrentOrderState = {
   name: '',
   order: {
     number: null,
