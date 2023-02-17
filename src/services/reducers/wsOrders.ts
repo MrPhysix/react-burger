@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder } from '../../types';
 
 /* eslint-disable */
-enum wsStatus {
+export enum wsStatus {
   CONNECTION_START = 'CONNECTION_START',
   CONNECTION_SUCCESS = 'CONNECTION_SUCCESS',
   CONNECTION_CLOSED = 'CONNECTION_CLOSED',
@@ -12,7 +12,7 @@ enum wsStatus {
 }
 /* eslint-enable */
 
-type TInitialState = {
+export type TInitialState = {
   orders: Array<TOrder>,
   total: number,
   totalToday: number,

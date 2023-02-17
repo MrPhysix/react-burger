@@ -1,7 +1,3 @@
-// @ts-ignore
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-
 import reducer, { TInitialState, fetchIngredients } from './ingredients';
 import { mockedIngredients } from '../../utils/mocked';
 
@@ -13,36 +9,47 @@ const initialState: TInitialState = {
   error: null,
 };
 
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
-
 test(`[${name}]: should return the initial ${name} state`, () => {
   expect(reducer(undefined, { type: undefined })).toEqual(
     initialState,
   );
 });
 
-test(`[${name}]: should handle a ${name} info`, () => {
-  const expectedActions = [ // не понял как сделать тут
-    expect.anything(),
-    {
-      meta: expect.anything(),
-    },
-    {
-      type: 'ingredients/fetchIngredients/pending',
-      payload: undefined,
-    },
-    {
-      type: 'fulfilled',
-      payload: {
-        data: mockedIngredients,
-      },
-    },
-  ];
+test(`[${name}]: should set status 'request' when is pending`, () => {
+  const action = { type: fetchIngredients.pending.type };
+  const state = reducer(initialState, action);
 
-  const store = mockStore({ initialState });
-  store.dispatch(fetchIngredients());
+  expect(state).toEqual({
+    ingredients: [],
+    status: 'request',
+    error: null,
+  });
+});
 
-  // expect(store.getActions()).toEqual(expectedActions);
-  // из-за этого теста как бы и нет
+test(`[${name}]: should handle ${name} array and status 'success' when is fulfilled`, () => {
+  const action = {
+    type: fetchIngredients.fulfilled.type,
+    payload: {
+      data: mockedIngredients,
+    },
+  };
+
+  const state = reducer(initialState, action);
+
+  expect(state).toEqual({
+    ingredients: mockedIngredients,
+    status: 'success',
+    error: null,
+  });
+});
+
+test(`[${name}]: should set status 'error' when is pending`, () => {
+  const action = { type: 'ingredients/fetchIngredients/rejected' };
+  const state = reducer(initialState, action);
+
+  expect(state).toEqual({
+    ingredients: [],
+    status: 'error',
+    error: 'some error', // не знаю как доставать ерроры
+  });
 });

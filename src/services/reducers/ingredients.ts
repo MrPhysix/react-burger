@@ -24,7 +24,7 @@ export const fetchIngredients = createAsyncThunk(
 );
 
 function isRejectedAction(action: PayloadAction<any>) {
-  return action?.type?.endsWith('rejected');
+  return action.type?.endsWith('rejected');
 }
 
 const ingredients = createSlice({
@@ -50,7 +50,7 @@ const ingredients = createSlice({
         isRejectedAction,
         (state) => {
           state.status = 'error';
-          state.error = null;
+          state.error = 'some error'; // не знаю как доставать ерроры
         },
       );
     // and provide a default case if no other handlers matched
