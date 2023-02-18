@@ -6,7 +6,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 //
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import addImg from '../../images/add.svg';
@@ -14,8 +14,8 @@ import style from './burger-constructor.module.css';
 import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstructorElement';
 import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
-import OrderDetails from '../Modal/OrderDetails/OrderDetails';
-import getOrderDetails from '../../utils/api/order';
+import OrderSubmitDetails from '../Modal/OrderSubmitDetails/OrderSubmitDetails';
+import { getOrderDetails } from '../../utils/api/order';
 import { setOrder, resetOrder, openOrder } from '../../services/reducers/order';
 import {
   addConstructorBun,
@@ -24,30 +24,35 @@ import {
   resetConstructorIngredients,
 } from '../../services/reducers/constructorIngredientsSlice';
 import { TIngredient } from '../../types';
+import { RootState, useAppDispatch } from '../../services';
+
+const getConstructorIngredients = (state: RootState | any) => state.constructorIngredients;
+const getUser = (state: RootState) => state.user;
+const getOrder = (state: RootState) => state.order;
 
 function BurgerConstructor() {
-  // consts
-  const dispatch = useDispatch();
+  // consts useDispatch
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   // states
-  const { constructorIngredients, bun }: any = useSelector<any>(
-    (state) => state.constructorIngredients,
-  );
-  const { order }: any = useSelector((state) => state);
-  const { user }: any = useSelector((state) => state);
+  const { constructorIngredients, bun } = useSelector(getConstructorIngredients);
+  const order = useSelector(getOrder);
+  const user = useSelector(getUser);
   //
+  const bunPrice = bun ? bun.price * 2 : 0;
+
   const totalPrice = useMemo(
     () => constructorIngredients.reduce((total: number, curr: TIngredient) => {
       if (curr.type === INGREDIENT_TYPES.BUN.TYPE) return total + curr.price * 2;
       return total + curr.price;
-    }, 0),
-    [constructorIngredients],
+    }, 0) + bunPrice,
+    [constructorIngredients, bun],
   );
 
   const handleOrderModal = {
     open: () => {
-      const ids = constructorIngredients.map((i: TIngredient) => i._id);
+      const ids = [...constructorIngredients.map((i: TIngredient) => i._id), bun._id, bun._id];
       getOrderDetails(ids)
         .then((res) => {
           dispatch(setOrder(res));
@@ -62,7 +67,7 @@ function BurgerConstructor() {
 
   const handleOrderSubmit = () => {
     if (!user || user?.success === false) navigate('/login', { state: { from: location } });
-    return user.success && handleOrderModal.open();
+    handleOrderModal.open();
   };
 
   const addIngredientToConstructor = (item: TIngredient) => {
@@ -109,7 +114,7 @@ function BurgerConstructor() {
     <>
       {order.isOpen && (
         <Modal handleClose={handleOrderModal.close}>
-          <OrderDetails order={order} />
+          <OrderSubmitDetails order={order} />
         </Modal>
       )}
       {(constructorIngredients.length === 0 && !bun) ? (

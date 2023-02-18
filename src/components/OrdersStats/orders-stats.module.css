@@ -1,0 +1,28 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 36px;
+}
+
+.statsListFlex {
+    display: flex;
+    flex-direction: column;
+}
+
+.statsList {
+    list-style: none;
+}
+
+.statsListTen {
+    column-count: 3;
+}
+
+.statsListDone {
+    color: #00CCCC;
+}

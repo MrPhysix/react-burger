@@ -26,7 +26,7 @@ const sections: TSections = [
   },
   {
     text: 'Лента заказов',
-    path: '/ff',
+    path: '/feed',
   },
   {
     text: 'Личный кабинет',

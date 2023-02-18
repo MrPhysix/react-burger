@@ -7,22 +7,21 @@ type TProtectedRoute = RouteProps & {
   noAuth?: boolean
 };
 
-// не работает
 function ProtectedRoute<P>({ noAuth, children }: TProtectedRoute): FC<PropsWithChildren<P>> | any {
   const { user }: {user: TUser } | any = useAuth();
 
   const location = useLocation();
   const from = location?.state?.from || '/';
 
-  if (noAuth && user.success) {
+  if (noAuth && user?.success) {
     return children && <Navigate to={from} />;
   }
 
-  if (noAuth && !user.success) {
+  if (noAuth && !user?.success) {
     return children;
   }
 
-  if (!user.success) {
+  if (!user || !user.success) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
 

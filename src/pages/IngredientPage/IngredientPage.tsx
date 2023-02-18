@@ -4,9 +4,12 @@ import { useSelector } from 'react-redux';
 import IngredientDetails from '../../components/Modal/IngredientDetails/IngredientDetails';
 import style from './ingredient-page.module.css';
 import { TIngredient } from '../../types';
+import { RootState } from '../../services';
+
+const getIngredients = (state: RootState) => state.ingredients;
 
 function IngredientPage() {
-  const { ingredients }: any = useSelector((state) => state);
+  const ingredients = useSelector(getIngredients);
   const { ingredientId } = useParams();
 
   const ingredient = useMemo(() => ingredients.ingredients.find(

@@ -1,20 +1,17 @@
 import React from 'react';
-import { CirclesWithBar } from 'react-loader-spinner';
-import style from './order-details.module.css';
 import DoneImage from '../../../images/done.svg';
-import { TOrder } from '../../../types';
+import { Loader } from '../../App/App';
 
 interface IOrderDetails {
-  order: TOrder;
-
+  order: any;
 }
 
-function OrderDetails({ order }: IOrderDetails) {
-  if (!order || order?.success !== true) return <CirclesWithBar width="82" color="#4C4CFF" ariaLabel="loading" wrapperClass="loading-spinner" />;
+function OrderSubmitDetails({ order }: IOrderDetails) {
+  if (!order || !order.success) return <Loader />;
 
   return (
     <>
-      <h3 className={`${style.title} text text_type_digits-large mb-8 ml-15 mr-15`}>{order.order.number}</h3>
+      <h3 className="digitsShadowGlow text text_type_digits-large mb-8 ml-15 mr-15">{order.order.number}</h3>
       <p className="text text_type_main-medium">идентификатор заказа</p>
       <img src={DoneImage} className="mt-15 mb-15" alt="done" />
       <p className="text text_type_main-default mb-2">Ваш заказ начали готовить</p>
@@ -23,4 +20,4 @@ function OrderDetails({ order }: IOrderDetails) {
   );
 }
 
-export default OrderDetails;
+export default OrderSubmitDetails;

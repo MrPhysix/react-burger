@@ -11,7 +11,7 @@ import {
 
 import { CirclesWithBar } from 'react-loader-spinner';
 //
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Header from '../Header/Header';
 import Main from '../../pages/Main/Main';
 //
@@ -28,9 +28,12 @@ import { ProvideAuth } from '../../utils/api/auth';
 import Page404 from '../../pages/Page404/Page404';
 import { getCookie } from '../../utils/cookie';
 import IngredientPage from '../../pages/IngredientPage/IngredientPage';
-//
+import OrderInfoPage from '../../pages/OrderInfoPage/OrderInfoPage';
+import ProfileOrders from '../../pages/Profile/ProfileOrders/ProfileOrders';
+import OrdersFeedPage from '../../pages/OrdersFeedPage/OrdersFeedPage';
+import { RootState, useAppDispatch } from '../../services';
 
-function Loader() {
+export function Loader() {
   return (
     <CirclesWithBar
       width="82"
@@ -56,11 +59,11 @@ const Layout: FC = () => {
 };
 
 function App(): ReactElement {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // states
-  const { ingredients }: any = useSelector((state) => state);
+  const { ingredients } = useSelector((state: RootState) => state);
   // const background = useOutletContext();
-  const { ingredientDetails }: any = useSelector((state) => state);
+  const { modal } = useSelector((state: RootState) => state);
   // const
   const codeIsRequested = getCookie('codeIsRequested');
 
@@ -128,19 +131,39 @@ function App(): ReactElement {
           element: (<ProtectedRoute><Profile /></ProtectedRoute>),
         },
         {
+          path: '/profile/orders',
+          element: (<ProtectedRoute><ProfileOrders /></ProtectedRoute>),
+        },
+        {
+          path: '/profile/orders/:orderId',
+          element: (
+            <ProtectedRoute>
+              {modal.isOpen
+                ? <ProfileOrders /> : <OrderInfoPage />}
+            </ProtectedRoute>
+          ),
+        },
+        {
           path: '/ingredients/:ingredientId',
           element:
           // eslint-disable-next-line
             ingredients.status === 'request'
               ? <Loader />
-              : !ingredientDetails.isOpen // по идее использовать outletContext,
+              : !modal.isOpen // по идее использовать outletContext,
                 // но я не понимаю как в createBrowserRouter его не терять (background === null)
                 ? ingredients.ingredients.length > 0 && <IngredientPage />
                 : <Main />,
         },
+        {
+          path: '/feed',
+          element: <OrdersFeedPage />,
+        },
+        {
+          path: '/feed/:orderId',
+          element: modal.isOpen ? <OrdersFeedPage /> : <OrderInfoPage />,
+        },
       ],
     },
-
   ]);
 
   return <RouterProvider router={router} />;
