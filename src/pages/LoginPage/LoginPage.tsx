@@ -59,6 +59,7 @@ function LoginPage() {
         isLoading={isLoading}
       >
         <EmailInput
+          data-cy="email"
           onChange={(e) => handleChange(e)}
           value={email}
           name="email"
@@ -66,6 +67,7 @@ function LoginPage() {
           disabled={isLoading}
         />
         <PasswordInput
+          data-cy="password"
           onChange={(e) => handleChange(e)}
           value={password}
           name="password"

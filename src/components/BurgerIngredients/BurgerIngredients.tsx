@@ -119,7 +119,7 @@ function BurgerIngredients() {
       )}
       <section className={`${style.ingredients} pt-10`}>
         <h2 className="text text text_type_main-large mb-5">Соберите бургер</h2>
-        <ul className={style.flex}>
+        <ul className={style.flex} data-cy="ingredients-list">
           <Tab value="bun" active={current === INGREDIENT_TYPES.BUN.TYPE} onClick={() => handleTabClick(INGREDIENT_TYPES.BUN.TYPE, bunRef)}>
             {INGREDIENT_TYPES.BUN.NAME}
           </Tab>

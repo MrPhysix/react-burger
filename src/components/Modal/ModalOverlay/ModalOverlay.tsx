@@ -7,7 +7,11 @@ interface IModalOverlay {
 
 function ModalOverlay({ handleClose }: IModalOverlay) {
   return (
-    <div role="presentation" className={style.overlay} onClick={handleClose as (evt: React.MouseEvent<HTMLElement>) => void} />
+    <div
+      role="presentation"
+      className={style.overlay}
+      onClick={handleClose as (evt: React.MouseEvent<HTMLElement>) => void}
+    />
   );
 }
 

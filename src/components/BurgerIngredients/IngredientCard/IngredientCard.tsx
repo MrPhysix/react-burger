@@ -28,6 +28,7 @@ function IngredientCard({ item, onClick, count }: IIngredientCard) {
 
   return (
     <Link
+      data-cy="ingredient-card"
       className={style.card}
       onClick={handleOpen}
       ref={dragRef}

@@ -52,11 +52,12 @@ function BurgerConstructor() {
   const handleOrderModal = {
     open: () => {
       const ids = [...constructorIngredients.map((i: TIngredient) => i._id), bun._id, bun._id];
+      dispatch(openOrder());
       getOrderDetails(ids)
         .then((res) => {
           dispatch(setOrder(res as TCurrentOrderState));
-        })
-        .then(() => dispatch(openOrder()));
+        });
+      // .then(() => dispatch(openOrder()));
     },
     close: () => {
       dispatch(resetOrder());
@@ -117,7 +118,8 @@ function BurgerConstructor() {
         </Modal>
       )}
       {(constructorIngredients.length === 0 && !bun) ? (
-        <p
+        <section
+          data-cy="constructor-target"
           style={borderColor}
           ref={dropTarget}
           className={`${style.noIngredient} text text_type_main-large`}
@@ -127,9 +129,10 @@ function BurgerConstructor() {
           ) : (
             <span>Добавьте ингредиенты</span>
           )}
-        </p>
+        </section>
       ) : (
         <section
+          data-cy="constructor-target"
           className={`${style.element} pt-25 pl-4`}
           ref={dropTarget}
           style={borderColor}
@@ -142,7 +145,7 @@ function BurgerConstructor() {
                 position="top"
               />
             )}
-            <ul className={`${style.scroll} scroll`}>
+            <ul className={`${style.scroll} scroll`} data-cy="constructor-list">
               {
                 constructorIngredients.map(
                   (item: TIngredient & { _key: string}, index: number) => (

@@ -93,6 +93,7 @@ function BurgerConstructorElement({
     <li
       className={`${style.element} ${position && 'pl-8'} mr-4 `}
       ref={draggableRef}
+      data-cy="constructor-element"
     >
       {!position && <DragIcon type="primary" />}
       {!isDragging && (

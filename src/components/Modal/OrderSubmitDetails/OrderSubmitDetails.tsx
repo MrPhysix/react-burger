@@ -7,7 +7,16 @@ interface IOrderDetails {
 }
 
 function OrderSubmitDetails({ order }: IOrderDetails) {
-  if (!order || !order.success) return <Loader />;
+  if (!order || !order.success) {
+    return (
+      <div style={{
+        height: '20vh', width: '20vh', display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>
