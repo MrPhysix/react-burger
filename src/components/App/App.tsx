@@ -17,7 +17,7 @@ import Main from '../../pages/Main/Main';
 //
 import Modal from '../Modal/Modal';
 import ErrorModal from '../Modal/ErrorModal/ErrorModal';
-import { fetchIngredients } from '../../services/reducers/ingredientsSlice';
+import { fetchIngredients } from '../../services/reducers/ingredients';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import RegisterPage from '../../pages/RegisterPage/RegisterPage';

@@ -23,7 +23,7 @@ const socketMiddleware = (wsActions: TWsActions) : Middleware => (store: any) =>
 
     if (socket) {
       socket.onopen = () => {
-        console.log('wsConnected');
+        // console.log('wsConnected');
         dispatch(wsOpen());
       };
 
@@ -41,12 +41,12 @@ const socketMiddleware = (wsActions: TWsActions) : Middleware => (store: any) =>
       };
 
       if (type === wsSend.type) {
-        console.log('wsSent');
+        // console.log('wsSent');
         socket.send(JSON.stringify(payload));
       }
 
       if (type === wsClose.type && socket.readyState === 1) {
-        console.log('wsClosed');
+        // console.log('wsClosed');
         socket.close();
       }
     }

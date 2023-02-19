@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TConstructorIngredients } from '../../types';
 
-const initialState = {
+const initialState: TConstructorIngredients = {
   constructorIngredients: [],
-  bun: null,
+  bun: undefined,
 };
 
-const constructorIngredientsSlice = createSlice({
+const constructorIngredients = createSlice({
   name: 'constructorIngredients',
   initialState,
   reducers: {
@@ -36,5 +37,5 @@ export const {
   addConstructorBun,
   swapConstructorIngredients,
   resetConstructorIngredients,
-} = constructorIngredientsSlice.actions;
-export default constructorIngredientsSlice.reducer;
+} = constructorIngredients.actions;
+export default constructorIngredients.reducer;

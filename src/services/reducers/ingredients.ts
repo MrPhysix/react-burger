@@ -3,7 +3,7 @@ import { API_INGREDIENTS_URL } from '../../utils/const';
 import checkResult from '../../utils/api/checkResult';
 import { TIngredient } from '../../types';
 
-type TInitialState = {
+export type TInitialState = {
   ingredients: Array<TIngredient>,
   status: string | null,
   error: string | null,
@@ -24,10 +24,10 @@ export const fetchIngredients = createAsyncThunk(
 );
 
 function isRejectedAction(action: PayloadAction<any>) {
-  return action.type.endsWith('rejected');
+  return action.type?.endsWith('rejected');
 }
 
-const ingredientsSlice = createSlice({
+const ingredients = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {
@@ -50,7 +50,7 @@ const ingredientsSlice = createSlice({
         isRejectedAction,
         (state) => {
           state.status = 'error';
-          state.error = null;
+          state.error = 'some error'; // не знаю как доставать ерроры
         },
       );
     // and provide a default case if no other handlers matched
@@ -60,5 +60,5 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const { getIngredients } = ingredientsSlice.actions;
-export default ingredientsSlice.reducer;
+export const { getIngredients } = ingredients.actions;
+export default ingredients.reducer;

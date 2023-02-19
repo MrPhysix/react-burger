@@ -3,12 +3,13 @@ import { useStore } from 'react-redux';
 
 export enum IngredientType {
   bun = 'bun',
-  sauce ='sauce',
+  sauce = 'sauce',
   main = 'main',
 }
 
 export type TIngredient = {
   _id: string;
+  _key?: string,
   name: string;
   type: IngredientType;
   proteins: number;
@@ -38,10 +39,29 @@ export type TAdditionalActions = Array<{
 
 export type TOrder = {
   _id: string,
-  ingredients: Array<string>,
+  ingredients: Array<TIngredient>,
   status: string,
   name: string,
   createdAt: string,
   updatedAt: string,
   number: number,
 }
+
+export type TCurrentOrderState = {
+  name: string,
+  order: {
+    number: number | null,
+  },
+  success: boolean,
+  isOpen: boolean,
+}
+
+export type TModal = {
+  item?: any,
+  isOpen: boolean,
+}
+
+export type TConstructorIngredients = {
+  constructorIngredients: Array<TIngredient>,
+  bun?: TIngredient,
+};

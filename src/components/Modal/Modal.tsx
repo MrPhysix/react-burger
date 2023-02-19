@@ -38,7 +38,7 @@ function Modal({
       <div className={style.modal}>
         <div className={style.top}>
           <h2 className="text text_type_main-large">{title}</h2>
-          <button onClick={handleClose as (evt: React.MouseEvent<HTMLButtonElement>) => void} className={style.button} type="button">&times;</button>
+          <button data-cy="close-button" onClick={handleClose as (evt: React.MouseEvent<HTMLButtonElement>) => void} className={style.button} type="button">&times;</button>
         </div>
         {children}
       </div>

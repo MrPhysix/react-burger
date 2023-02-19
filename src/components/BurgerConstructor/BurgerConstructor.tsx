@@ -12,7 +12,6 @@ import { v4 as uuidv4 } from 'uuid';
 import addImg from '../../images/add.svg';
 import style from './burger-constructor.module.css';
 import BurgerConstructorElement from './BurgerConstructorElement/BurgerConstructorElement';
-import { INGREDIENT_TYPES } from '../../utils/const';
 import Modal from '../Modal/Modal';
 import OrderSubmitDetails from '../Modal/OrderSubmitDetails/OrderSubmitDetails';
 import { getOrderDetails } from '../../utils/api/order';
@@ -22,8 +21,8 @@ import {
   addConstructorIngredient,
   swapConstructorIngredients,
   resetConstructorIngredients,
-} from '../../services/reducers/constructorIngredientsSlice';
-import { TIngredient } from '../../types';
+} from '../../services/reducers/constructorIngredients';
+import { IngredientType, TCurrentOrderState, TIngredient } from '../../types';
 import { RootState, useAppDispatch } from '../../services';
 
 const getConstructorIngredients = (state: RootState | any) => state.constructorIngredients;
@@ -44,7 +43,7 @@ function BurgerConstructor() {
 
   const totalPrice = useMemo(
     () => constructorIngredients.reduce((total: number, curr: TIngredient) => {
-      if (curr.type === INGREDIENT_TYPES.BUN.TYPE) return total + curr.price * 2;
+      if (curr.type === IngredientType.bun) return total + curr.price * 2;
       return total + curr.price;
     }, 0) + bunPrice,
     [constructorIngredients, bun],
@@ -53,11 +52,12 @@ function BurgerConstructor() {
   const handleOrderModal = {
     open: () => {
       const ids = [...constructorIngredients.map((i: TIngredient) => i._id), bun._id, bun._id];
+      dispatch(openOrder());
       getOrderDetails(ids)
         .then((res) => {
-          dispatch(setOrder(res));
-        })
-        .then(() => dispatch(openOrder()));
+          dispatch(setOrder(res as TCurrentOrderState));
+        });
+      // .then(() => dispatch(openOrder()));
     },
     close: () => {
       dispatch(resetOrder());
@@ -71,7 +71,7 @@ function BurgerConstructor() {
   };
 
   const addIngredientToConstructor = (item: TIngredient) => {
-    const isBun = item.type === INGREDIENT_TYPES.BUN.TYPE;
+    const isBun = item.type === IngredientType.bun;
     if (isBun) {
       return dispatch(addConstructorBun(item));
     }
@@ -118,7 +118,8 @@ function BurgerConstructor() {
         </Modal>
       )}
       {(constructorIngredients.length === 0 && !bun) ? (
-        <p
+        <section
+          data-cy="constructor-target"
           style={borderColor}
           ref={dropTarget}
           className={`${style.noIngredient} text text_type_main-large`}
@@ -128,9 +129,10 @@ function BurgerConstructor() {
           ) : (
             <span>Добавьте ингредиенты</span>
           )}
-        </p>
+        </section>
       ) : (
         <section
+          data-cy="constructor-target"
           className={`${style.element} pt-25 pl-4`}
           ref={dropTarget}
           style={borderColor}
@@ -143,7 +145,7 @@ function BurgerConstructor() {
                 position="top"
               />
             )}
-            <ul className={`${style.scroll} scroll`}>
+            <ul className={`${style.scroll} scroll`} data-cy="constructor-list">
               {
                 constructorIngredients.map(
                   (item: TIngredient & { _key: string}, index: number) => (

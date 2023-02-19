@@ -19,7 +19,7 @@ import {
   resetModalInfo,
   setModalInfo,
 } from '../../services/reducers/modal';
-import { TIngredient } from '../../types';
+import { IngredientType, TIngredient } from '../../types';
 import { RootState, useAppDispatch } from '../../services';
 
 const getIngredients = (state: RootState) => state.ingredients;
@@ -43,16 +43,16 @@ function BurgerIngredients() {
   //
 
   const bun = useMemo(
-    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.BUN.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === IngredientType.bun),
     [ingredients],
   );
 
   const main = useMemo(
-    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.MAIN.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === IngredientType.main),
     [ingredients],
   );
   const sauce = useMemo(
-    () => ingredients.filter((item: TIngredient) => item.type === INGREDIENT_TYPES.SAUCE.TYPE),
+    () => ingredients.filter((item: TIngredient) => item.type === IngredientType.sauce),
     [ingredients],
   );
 
@@ -119,7 +119,7 @@ function BurgerIngredients() {
       )}
       <section className={`${style.ingredients} pt-10`}>
         <h2 className="text text text_type_main-large mb-5">Соберите бургер</h2>
-        <ul className={style.flex}>
+        <ul className={style.flex} data-cy="ingredients-list">
           <Tab value="bun" active={current === INGREDIENT_TYPES.BUN.TYPE} onClick={() => handleTabClick(INGREDIENT_TYPES.BUN.TYPE, bunRef)}>
             {INGREDIENT_TYPES.BUN.NAME}
           </Tab>
