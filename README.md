@@ -5,7 +5,7 @@
 ![alt text](./Image.png)
 
 ## ⚙️ Основной функионал
-##### В процессе..:
+##### Простой drag & drop конструктор ингредиентов, с возможностью отслеживания готовки заказов через личный кабинет
 
 
 [Mr.Stellar Burgers](https://mr.stellar-burgers.nomoredomains.work/ "Mr.Stellar Burgers")
